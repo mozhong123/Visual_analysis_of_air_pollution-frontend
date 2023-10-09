@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>易视“气”质</title>
+    <script src="../lib/flexible.js"></script>
+    <link href="../styles/common.css" rel="stylesheet">
+    <script src="../scripts/common.js"></script>
+    <script src="../scripts/trend.js"></script>
+    <script src="../lib/echarts.min.js"></script>
+    <script src="../lib/jquery.min.js"></script>
+    <script src="../lib/echarts-gl.min.js"></script>
+    <script src="../lib/bmap.min.js"></script>
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=wlmlTWodLfDSxDe5KS6kijzY86fk2e69"></script>
+</head>
+
+<body>
+    <!--顶部-->
+    <header class="header left">
+        <div class="left nav">
+            <ul>
+                <li><i class="nav_1"></i><a href="single.html">污染源分析</a> </li>
+                <li><i class="nav_2"></i><a href="cluster.html">聚类对比分析</a> </li>
+            </ul>
+        </div>
+        <div class="header_center left" style="position:relative">
+
+            <h2><strong>大气污染物可视分析系统</strong></h2>
+
+        </div>
+
+        <div class="right nav text_right">
+            <ul>
+                <li><i class="nav_3"></i><a href="map.html">传输模式分析</a> </li>
+                <li class="nav_active"><i class="nav_4"></i><a href="predict.html">污染预测</a> </li>
+            </ul>
+        </div>
+
+    </header>
+    <div class="con left" style="width:20%;position:relative;">
+        <!--统计分析图-->
+
+        <div class="div_any">
+            <div class="left div_any01" style="width:100%;">
+                <div class="div_any_child" style="width:98%;position:relative;height: 14.375rem;">
+                    <div class="div_any_title">日历图对比</div>
+                    <div id="calander" style="width:98%;position:relative;left:1%;height: 13.75rem;top:0.3125rem"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="con right" style="width:80%;position:relative;">
+        <div class="div_any">
+            <div class="left div_any01" style="width:100%;">
+                <div class="div_any_child" style="width:98%;position:relative;height: 14.375rem;">
+                    <div class="div_any_title">预测情况</div>
+                    <div id="line" style="width:98%;position:relative;left:1%;height: 13.75rem;top:0.3125rem"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+
+    var mCharts = echarts.init(document.getElementById('line'), );
+    var mCharts2 = echarts.init(document.getElementById('calander'), 'dark')
+    var option;
+    var option2;
+    var url = '../data/predict/2018predict.json';
+    function dataChange(url) {
+        var data1 = [];
+        var data2 = [];
+        $.get(url, function (ret) {
+            var day = 1;
+            var hour = 0;
+            for (var i = 0; i < 742; i++) {
+                // 
+                hour++;
+                if (hour > 24) {
+                    hour = 1;
+                    day++;
+                }
+                var time = '1月' + day + '日' + hour + '时';
+                var temp1 = [time, ret["predict"][i]];
+                var temp2 = [time, ret["reality"][i]];
+                data1.push(temp1)
+                data2.push(temp2)
+            }
+
+            mCharts.setOption(option = {
+                legend: {
+                    data: ['2018年实际值', '2018年预测值']
+                },
+                title: {
+                    // text: city + pollution,
+                    left: '1%'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                grid: {
+                    left: '5%',
+                    right: '15%',
+                    bottom: '10%'
+                },
+                xAxis: {
+                    data: data1.map(function (item) {
+                        return item[0];
+                    })
+                },
+                yAxis: {},
+                toolbox: {
+                    right: 10,
+                    feature: {
+                        dataZoom: {
+                            yAxisIndex: 'none'
+                        },
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                dataZoom: [{
+                    startValue: '1月1日1时'
+                }, {
+                    type: 'inside'
+                }],
+                visualMap: {
+                    top: 50,
+                    right: 10,
+                    pieces: [{
+                        gt: 0,
+                        lte: 50,
+                        color: '#ea8685'
+                    }, {
+                        gt: 50,
+                        lte: 50 * 2,
+                        color: '#e77f67'
+                    }, {
+                        gt: 50 * 2,
+                        lte: 50 * 3,
+                        color: '#e66767'
+                    }, {
+                        gt: 50 * 3,
+                        lte: 50 * 4,
+                        color: '#e15f41'
+                    }, {
+                        gt: 50 * 4,
+                        lte: 50 * 6,
+                        color: '#ff4d4d'
+                    }, {
+                        gt: 50 * 6,
+                        lte: 50 * 8,
+                        color: '#ff3838'
+                    }],
+                    outOfRange: {
+                        color: '#535c68'
+                    }
+                },
+                series: [
+                    {
+                        // name: city + pollution,
+                        name: '2018年实际值',
+                        type: 'line',
+                        data: data2.map(function (item) {
+                            return item[1];
+                        }),
+                        markLine: {
+                            silent: true,
+                            lineStyle: {
+                                color: '#333'
+                            },
+                            data: [{
+                                yAxis: 0
+                            }, {
+                                yAxis: 50 * 2
+                            }, {
+                                yAxis: 50 * 3
+                            }, {
+                                yAxis: 50 * 4
+                            }, {
+                                yAxis: 50 * 6
+                            }, {
+                                yAxis: 50 * 8
+                            }, {
+                                yAxis: 50 * 10
+                            }]
+                        }
+                    },
+                    {
+                        // name: city + pollution,
+                        name: '2018年预测值',
+                        type: 'line',
+                        lineStyle: {
+                            color: '#34e7e4',
+                        },
+                        data: data1.map(function (item) {
+                            return item[1];
+                        }),
+                        markLine: {
+                            silent: true,
+                            lineStyle: {
+                                color: '#333'
+                            },
+                            data: [{
+                                yAxis: 0
+                            }, {
+                                yAxis: 50 * 2
+                            }, {
+                                yAxis: 50 * 3
+                            }, {
+                                yAxis: 50 * 4
+                            }, {
+                                yAxis: 50 * 6
+                            }, {
+                                yAxis: 50 * 8
+                            }, {
+                                yAxis: 50 * 10
+                            }]
+                        }
+                    },
+                ]
+            });
+        });
+
+        option && mCharts.setOption(option);
+        setTimeout(function () {
+                window.onresize = function () {
+                    mCharts.resize();
+                    mCharts2.resize();
+                }
+            }, 200)
+    }
+    dataChange(url);
+    function dataChange2() {
+
+        var url2 = '../data/predict/' + 2013 + 'predict.json';
+        // var date = +echarts.number.parseDate(year + '-01-01');
+        // var end = +echarts.number.parseDate((+year) + '-01-31');
+        // var dayTime = 3600 * 24 * 1000;
+        // var time = date;
+        // time += dayTime
+        // var data=Object.create(Array.prototype)
+        $.get(url2, function (ret) {
+            console.log(ret)
+            function getVirtulData(year, flag) {
+                year = year || '2017';
+                var date = +echarts.number.parseDate(year + '-01-01');
+                var end = +echarts.number.parseDate((+year) + '-02-01');
+                var dayTime = 3600 * 24 * 1000;
+                var data = [];
+                var i = 0;
+                if (year == 2013) {
+                    for (var time = date; time < end; time += dayTime) {
+                        var sum = 0;
+                        for (var j = 0; j < 24; j++) {
+                            sum += ret["reality"][i];
+                            i++;
+                        }
+                        sum /= 24;
+                        console.log(sum)
+                        data.push([
+                            echarts.format.formatTime('yyyy-MM-dd', time),
+                            Math.floor(sum)
+                        ]);
+                    }
+                    return data;
+                }
+                if (year == 2014) {
+                    for (var time = date; time < end; time += dayTime) {
+                        var sum = 0;
+                        for (var j = 0; j < 24; j++) {
+                            sum += ret["reality2"][i];
+                            i++;
+                        }
+                        sum /= 24;
+                        console.log(sum)
+                        data.push([
+                            echarts.format.formatTime('yyyy-MM-dd', time),
+                            Math.floor(sum)
+                        ]);
+                    }
+                    return data;
+                }
+                if (year == 2015) {
+                    for (var time = date; time < end; time += dayTime) {
+                        var sum = 0;
+                        for (var j = 0; j < 24; j++) {
+                            sum += ret["reality3"][i];
+                            i++;
+                        }
+                        sum /= 24;
+                        console.log(sum)
+                        data.push([
+                            echarts.format.formatTime('yyyy-MM-dd', time),
+                            Math.floor(sum)
+                        ]);
+                    }
+                    return data;
+                }
+                if (year == 2016) {
+                    for (var time = date; time < end; time += dayTime) {
+                        var sum = 0;
+                        for (var j = 0; j < 24; j++) {
+                            sum += ret["reality4"][i];
+                            i++;
+                        }
+                        sum /= 24;
+                        console.log(sum)
+                        data.push([
+                            echarts.format.formatTime('yyyy-MM-dd', time),
+                            Math.floor(sum)
+                        ]);
+                    }
+                    return data;
+                }
+                if (year == 2017) {
+                    for (var time = date; time < end; time += dayTime) {
+                        var sum = 0;
+                        for (var j = 0; j < 24; j++) {
+                            sum += ret["reality5"][i];
+                            i++;
+                        }
+                        sum /= 24;
+                        console.log(sum)
+                        data.push([
+                            echarts.format.formatTime('yyyy-MM-dd', time),
+                            Math.floor(sum)
+                        ]);
+                    }
+                    return data;
+                }
+                if (year == 2018 && flag == 0) {
+                    for (var time = date; time < end; time += dayTime) {
+                        var sum = 0;
+                        for (var j = 0; j < 24; j++) {
+                            sum += ret["reality6"][i];
+                            i++;
+                        }
+                        sum /= 24;
+                        console.log(sum)
+                        data.push([
+                            echarts.format.formatTime('yyyy-MM-dd', time),
+                            Math.floor(sum)
+                        ]);
+                    }
+                    return data;
+                }
+                if (year == 2018 && flag == 1) {
+                    for (var time = date; time < end; time += dayTime) {
+                        var sum = 0;
+                        for (var j = 0; j < 24; j++) {
+                            sum += ret["predict"][i];
+                            i++;
+                        }
+                        sum /= 24;
+                        console.log(sum)
+                        data.push([
+                            echarts.format.formatTime('yyyy-MM-dd', time),
+                            Math.floor(sum)
+                        ]);
+                    }
+                    return data;
+                }
+
+            }
+            option2 = {
+                tooltip: {
+                    position: 'top',
+                    formatter: function (p) {
+                        var format = echarts.format.formatTime('yyyy-MM-dd', p.data[0]);
+                        return format + ': ' + p.data[1];
+                    }
+                },
+                visualMap: {
+                    min: 0,
+                    max: 400,
+                    calculable: true,
+                    orient: 'vertical',
+                    top: 'center'
+                },
+
+                calendar: [{
+                    orient: 'vertical',
+                    range: ['2013-01-01', '2013-01-31']
+                },
+                {
+                    top: 225,
+                    orient: 'vertical',
+                    range: ['2014-01-01', '2014-01-31']
+                }, {
+                    top: 400,
+                    orient: 'vertical',
+                    range: ['2015-01-01', '2015-01-31']
+                }, {
+                    top: 575,
+                    orient: 'vertical',
+                    range: ['2016-01-01', '2016-01-31']
+                }, {
+                    top: 760,
+                    orient: 'vertical',
+                    range: ['2017-01-01', '2017-01-31']
+                }, {
+                    yearLabel: {
+                        formatter: function (param) {
+                            console.log(param)
+                            return param.end;
+                        }
+                    },
+                    top: 920,
+                    orient: 'vertical',
+                    range: ['2018-01-01', '2018-01-31']
+                },
+                // {
+                //     yearLabel: {
+                //         formatter: function (param) {
+                //             console.log(param)
+                //             return param.end+' Predict';
+                //         }
+                //     },
+                //     top: 920,
+                //     left: 300,
+                //     orient: 'vertical',
+                //     range: ['2018-01-01', '2018-01-31']
+                // },
+                ],
+
+                series: [{
+                    type: 'heatmap',
+                    coordinateSystem: 'calendar',
+                    calendarIndex: 0,
+                    data: getVirtulData(2013, 0)
+                }, {
+                    type: 'heatmap',
+                    coordinateSystem: 'calendar',
+                    calendarIndex: 1,
+                    data: getVirtulData(2014, 0)
+                }, {
+                    type: 'heatmap',
+                    coordinateSystem: 'calendar',
+                    calendarIndex: 2,
+                    data: getVirtulData(2015, 0)
+                }, {
+                    type: 'heatmap',
+                    coordinateSystem: 'calendar',
+                    calendarIndex: 3,
+                    data: getVirtulData(2016, 0)
+                }, {
+                    type: 'heatmap',
+                    coordinateSystem: 'calendar',
+                    calendarIndex: 4,
+                    data: getVirtulData(2017, 0)
+                }, {
+                    type: 'heatmap',
+                    coordinateSystem: 'calendar',
+                    calendarIndex: 5,
+                    data: getVirtulData(2018, 0)
+                },
+                // {
+                //     type: 'heatmap',
+                //     coordinateSystem: 'calendar',
+                //     calendarIndex: 6,
+                //     data: getVirtulData(2018, 1)
+                // },
+                ]
+            };
+
+            option2 && mCharts2.setOption(option2);
+
+        })
+
+    }
+    dataChange2()
+</script>

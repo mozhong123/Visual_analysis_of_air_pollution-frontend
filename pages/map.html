@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>易视“气”质</title>
+    <script src="../lib/flexible.js"></script>
+    <link href="../styles/common2.css" rel="stylesheet">
+    <script src="../scripts/common.js"></script>
+    <script src="../scripts/trend.js"></script>
+    <script src="../lib/echarts.min.js"></script>
+    <script src="../lib/jquery.min.js"></script>
+    <script src="../lib/echarts-gl.min.js"></script>
+    <script src="../lib/bmap.min.js"></script>
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=wlmlTWodLfDSxDe5KS6kijzY86fk2e69"></script>
+</head>
+
+<body>
+    <!--顶部-->
+    <header class="header left">
+        <div class="left nav">
+            <ul>
+                <li><i class="nav_1"></i><a href="single.html">污染源分析</a> </li>
+                <li><i class="nav_2"></i><a href="cluster.html">聚类对比分析</a> </li>
+            </ul>
+        </div>
+        <div class="header_center left" style="position:relative">
+
+            <h2><strong>大气污染物可视分析系统</strong></h2>
+
+        </div>
+        <div class="right nav text_right">
+            <ul>
+                <li class="nav_active"><i class="nav_3"></i><a href="map.html">传输模式分析</a> </li>
+                <li><i class="nav_4"></i><a href="predict.html">污染预测</a> </li>
+            </ul>
+        </div>
+
+    </header>
+    <div class="total_chose_box" style="width:100%;position: relative;">
+        <span class="chose_tltle">请输入年份：</span>
+        <input class="chose_text_in" id="selectDate1" value=2013>
+        <span class="chose_tltle">请输入月份：</span>
+        <input class="chose_text_in" id="selectDate2" value=1>
+        <span class="chose_tltle">请输入日期：</span>
+        <input class="chose_text_in" id="selectDate3" value=1>
+        <button class="chose_enter" id="selectDate">确定</button>
+        <button class="chose_enter" id="btn1">PM2.5</button>
+        <button class="chose_enter" id="btn2">PM10</button>
+        <button class="chose_enter" id="btn3">SO2</button>
+        <button class="chose_enter" id="btn4">NO2</button>
+        <button class="chose_enter" id="btn5">CO</button>
+        <button class="chose_enter" id="btn6">O3</button>
+        <button class="chose_enter" id="btn7">WIND</button>
+        <button class="chose_enter" id="btn8">TEMP</button>
+        <button class="chose_enter" id="btn9">RH</button>
+        <button class="chose_enter" id="btn10">PSFC</button>
+    </div>
+    <div class="con left" style="width:50%;position:relative;">
+        <!--统计分析图-->
+
+        <div class="div_any">
+            <div class="left div_any01" style="width:100%;">
+                <div class="div_any_child" style="width:98%;position:relative;height: 13.125rem;">
+                    <div class="div_any_title">污染物分布地图</div>
+                    <div id="main" style="width:98%;position:relative;left:1%;height: 12.5rem;top:0.3125rem"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="con right" style="width:50%;position:relative;">
+        <div class="div_any">
+            <div class="left div_any01" style="width:100%;">
+                <div class="div_any_child" style="width:98%;position:relative;height: 13.125rem;">
+                    <div class="div_any_title">气象情况地图</div>
+                    <div id="wind" style="width:98%;position:relative;left:1%;height: 12.5rem;top:0.3125rem"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="total_chose_box" style="width:100%;position: relative;">
+
+        <button class="chose_enter2" id="btn11">前一天</button>
+        <button class="chose_enter2" id="btn22">后一天</button>
+        <button class="chose_enter2" id="btn33">前一月</button>
+        <button class="chose_enter2" id="btn44">后一月</button>
+        <button class="chose_enter2" id="btn55">前一年</button>
+        <button class="chose_enter2" id="btn66">后一年</button>
+    </div>
+</body>
+<script>
+   
+    var colors = ['#20bf6b', '#0fb9b1', '#f7b731', '#fa8231', '#eb3b5a', '#6F1E51', '#1e90ff', '#5352ed', '#3742fa', '#3c40c6'];
+    var arr = ['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3', 'U', 'V', 'TEMP', 'RH', 'PSFC']
+    var mCharts1 = echarts.init(document.getElementById('main'), 'dark');
+    var mCharts4 = echarts.init(document.getElementById('wind'), 'light');
+    var city = '北京'
+    var year = 2013;
+    var month = 1;
+    var day = 1;
+    var pollution = 'PM2.5';
+    var curtain = 0;
+    var url = '../data/map_data/' + year + '/' + month + '/' + day + '.json'
+    var url4 = '../data/everyday/' + year + '/' + month + '/' + day + '.json'
+    function dataChange(url) {
+        $.get('../json/map/china.json', function (ret) {
+            echarts.registerMap('chinaMap', ret)
+            var option = {
+                geo: {
+                    type: 'map',
+                    selectedMode: 'single',
+                    map: 'chinaMap',
+                    roam: true,
+                    label: {
+                        //         show: true
+                    },
+                    zoom: 3,
+                    center: [114.31, 30.52] // 设置地图中心点的坐标(武汉)
+                }
+            }
+        })
+
+
+        var mapData = [];
+        $.get(url, function (ret) {
+            // console.log(ret.data)
+            var obj = ret.data;
+            for (let i in obj) {
+                let flag = arr.indexOf(pollution)
+                var pol = obj[i][flag];
+            }
+            // console.log(min, max)
+            //  console.log(temp)
+            for (let i in obj) {
+                var city = i;
+                let flag = arr.indexOf(pollution)
+                //   console.log(flag)
+                var pol = obj[i][flag];
+                var color = 0;
+                if (flag <= 8) {
+                    if (pol <= 400) color = 5;
+                    if (pol <= 300) color = 4;
+                    if (pol <= 200) color = 3;
+                    if (pol <= 150) color = 2;
+                    if (pol <= 100) color = 1;
+                    if (pol <= 50) color = 0;
+                    if (pol > 400) color = 5;
+                }
+
+
+
+                var lat = obj[i][12];
+                var lon = obj[i][11];
+                var itemArr = [lat, lon, pol, city, color]
+                mapData.push(itemArr)
+            }
+            //         console.log(mapData)
+            mCharts1.setOption({
+                backgroundColor: '#2f3640',
+                title: {
+                    show: true,
+                    text: year + '年' + month + '月' + day + '日' + pollution,
+                },
+                tooltip: {
+                    show: true,
+                    trigger: 'item',
+                    showContent: true,//是否显示提示框浮层，默认显示
+                    alwaysShowContent: false,//是否永远显示提示框内容，默认情况下在移出可触发提示框区域后 一定时间 后隐藏，设置为 true 可以保证一直显示提示框内容
+                    hideDelay: 0,//鼠标移出坐标点时，浮层隐藏的延迟时间，单位为 ms，在 alwaysShowContent 为 true 的时候无效
+                    formatter: function (params) {
+                        //   console.log(params)
+                        return params.data.name + pollution + ':' + params.data.value[3]
+                    }
+                },
+                geo: {
+                    map: 'chinaMap',
+                    roam: true,//是否开启缩放和平移
+                    zoom: 1.24,
+                    center: [108, 36],// 设置地图中心点的坐标(西安)
+                    label: {
+                        normal: {
+                            show: false,//是否显示省份名称
+                            //       fontSize: '10',//字体大小
+                            color: 'white'//字体颜色
+                        },
+                        // emphasis: { //动态展示的样式
+                        //     fontSize: '10',//字体大小
+                        //     color: '#fff'//字体颜色                                            
+                        // },
+                    },
+                    itemStyle: {
+                        normal: {
+                            borderColor: 'rgba(0, 0, 0, 0.2)',
+                            areaColor: '#dcdde1',//静态时各省份区域颜色
+                        },
+                        emphasis: {
+                            areaColor: '#718093',//鼠标选择区域颜色
+                            shadowOffsetX: 0,
+                            shadowOffsetY: 0,
+                            shadowBlur: 20,
+                            borderWidth: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                },
+                series: [
+
+                    {
+                        type: 'effectScatter',
+                        coordinateSystem: 'geo',
+                        animation: false,//坐标点是否显示动画
+                        //       symbol: 'pin',
+                        roam: true,
+                        rippleEffect: {
+                            brushType: 'stroke'// stroke|fill
+                        },
+                        hoverAnimation: true,
+                        symbolSize: function (val, params) {//坐标点大小
+                            //     console.log(val)
+                            if (val[2] == 0) return 3;
+                            if (val[2] == 1) return 5;
+                            if (val[2] == 2) return 9;
+                            if (val[2] == 3) return 13;
+                            if (val[2] == 4) return 17;
+                            if (val[2] == 5) return 19;
+                        },
+                        label: {
+                            show: false,
+                            fontSize: 15,
+                            position: 'right',
+                            formatter: function (val) {
+                                //                console.log(val.data.value)
+                                // if (val.data.name == '武汉') {
+                                //     //                console.log(val.data.value)
+                                //     return val.data.name;
+                                // }
+                                if (val.data.value[2] >= 9) {
+                                    return val.data.name;
+                                }
+                                else if (val.data.value[2] >= 3 && val.data.value[2] <= 4) {
+                                    return val.data.name;
+                                }
+                                else return '';
+                            }
+                        },
+                        data: mapData.map(function (itemOpt) {
+                            // console.log(itemOpt[2]%13)
+                            return {
+                                name: itemOpt[3],
+                                value: [
+                                    parseFloat(itemOpt[1]),//经度
+                                    parseFloat(itemOpt[0]),//维度
+                                    parseFloat(itemOpt[4]),
+                                    parseInt(itemOpt[2]),
+                                ],
+                                itemStyle: {//地图区域的多边形
+
+                                    color: colors[itemOpt[4]],
+                                    emphasis: {
+                                        areaColor: "#0ff",
+                                        color: 'white'
+                                    },
+                                },
+                            };
+                        }),
+
+                        selectedMode: 'single',
+                        select: {
+                            color: 'blue'
+                        }
+                    }
+                ]
+            });
+            setTimeout(function () {
+                window.onresize = function () {
+                    mCharts1.resize();
+                    mCharts4.resize();
+                }
+            }, 200)
+        })
+    }
+    dataChange(url);
+    $('#selectDate').click(function () {//jqury对元素进行获取
+        var flag = 0;
+        var y = jQuery("#selectDate1").val();
+        var m = jQuery("#selectDate2").val();
+        var d = jQuery("#selectDate3").val();
+        console.log(y, m, d);
+        if (year !== y) { year = y; flag = 1 }
+        if (month !== m) { month = m; flag = 1 }
+        if (day !== d) { day = d; flag = 1 }
+        if (flag) {
+            url = '../map_data/' + year + '/' + month + '/' + day + '.json'
+            dataChange(url);
+            url4 = '../everyday/' + year + '/' + month + '/' + day + '.json'
+            if (curtain == 4) dataChange4(url4);
+            if (curtain == 5) dataChange5(url4);
+
+        }
+    })
+    $('#btn1').click(function () {//jqury对元素进行获取
+        pollution = 'PM2.5';
+        dataChange(url);
+    })
+    $('#btn2').click(function () {//jqury对元素进行获取
+        pollution = 'PM10';
+        dataChange(url);
+    })
+    $('#btn3').click(function () {//jqury对元素进行获取
+        pollution = 'SO2';
+        dataChange(url);
+    })
+    $('#btn4').click(function () {//jqury对元素进行获取
+        pollution = 'NO2';
+        dataChange(url);
+    })
+    $('#btn5').click(function () {//jqury对元素进行获取
+        pollution = 'CO';
+        dataChange(url);
+    })
+    $('#btn6').click(function () {//jqury对元素进行获取
+        pollution = 'O3';
+        dataChange(url);
+    })
+    mCharts1.on('click', function (params) {
+        // 控制台打印数据的名称
+        //    console.log(params)
+        if (city != params.name) {
+            city = params.name;
+            mCharts1.setOption({
+                geo: {
+                    type: 'map',
+                    selectedMode: 'single',
+                    map: 'chinaMap',
+                    roam: true,
+                    label: {
+                        //         show: true
+                    },
+                    zoom: 11,
+                    center: [params.value[0], params.value[1]] // 设置地图中心点的坐标
+                },
+                series: [{
+                    label: {
+                        show: true,
+                        fontSize: 15,
+                        position: 'right',
+                        formatter: function (val) {
+                            //     console.log(val.data)
+                            if (params.name == val.data.name) {
+                                //                console.log(val.data.value)
+                                return val.data.name;
+                            }
+                            else return '';
+                        }
+                    },
+
+                }],
+            })
+
+        }
+    });
+    $('#btn11').click(function () {//jqury对元素进行获取
+        day--;
+        if (month == 1 || month == 5 || month == 7 || month == 10 || month == 12) {
+            if (day == 0) {
+                day = 30; month--;
+                if (month == 0) {
+                    month = 1;
+                    day = 1;
+                    year--;
+                    if (year == 2012) year = 2013;
+                }
+            }
+        }
+        if (month == 8) {
+            if (day == 0) {
+                day = 31; month--;
+            }
+        }
+        if (month == 4 || month == 6 || month == 9 || month == 11) {
+            if (day == 0) {
+                day = 31; month--;
+            }
+        }
+        if (month == 3 && year == 2016) {
+            if (day == 0) {
+                day = 29; month--;
+            }
+        }
+        if (month == 3 && year != 2016) {
+            if (day == 0) {
+                day = 28; month--;
+            }
+        }
+        if (day == 0) day = 1;
+        var url = '../map_data/' + year + '/' + month + '/' + day + '.json'
+        dataChange(url);
+        url4 = '../everyday/' + year + '/' + month + '/' + day + '.json'
+        if (curtain == 4) dataChange4(url4);
+        if (curtain == 5) dataChange5(url4);
+
+    })
+    $('#btn22').click(function () {//jqury对元素进行获取
+        day++;
+        if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+            if (day == 32) {
+                day = 1; month++;
+                if (month == 13) {
+                    month = 1;
+                    year++;
+                    if (year == 2019) year = 2013;
+                }
+            }
+        }
+        if (month == 4 || month == 6 || month == 9 || month == 11) {
+            if (day == 31) {
+                day = 1; month++;
+            }
+        }
+        if (month == 2 && year == 2016) {
+            if (day == 30) {
+                day = 1; month++;
+            }
+        }
+        if (month == 2 && year != 2016) {
+            if (day == 29) {
+                day = 1; month++;
+            }
+        }
+        var url = '../map_data/' + year + '/' + month + '/' + day + '.json'
+        dataChange(url);
+        url4 = '../everyday/' + year + '/' + month + '/' + day + '.json'
+        if (curtain == 4) dataChange4(url4);
+        if (curtain == 5) dataChange5(url4);
+
+    })
+    $('#btn33').click(function () {//jqury对元素进行获取
+        month--;
+        if (month == 0) {
+            month = 12;
+            year--;
+            day==31;
+            if(year==2012){
+                year=2013;month=1;day=1;
+            }
+        }
+        var url = '../map_data/' + year + '/' + month + '/' + day + '.json'
+        dataChange(url);
+        url4 = '../everyday/' + year + '/' + month + '/' + day + '.json'
+        if (curtain == 4) dataChange4(url4);
+        if (curtain == 5) dataChange5(url4);
+
+    })
+    $('#btn44').click(function () {//jqury对元素进行获取
+        month++;
+        if(month==13){
+            year++;
+            month=1;
+            day=1;
+            if(year==2019)year=2013;
+        }
+        var url = '../map_data/' + year + '/' + month + '/' + day + '.json'
+        dataChange(url);
+        url4 = '../everyday/' + year + '/' + month + '/' + day + '.json'
+        if (curtain == 4) dataChange4(url4);
+        if (curtain == 5) dataChange5(url4);
+
+    })
+    $('#btn55').click(function () {//jqury对元素进行获取
+        year--;
+        if (year == 2012) year = 2013;
+        var url = '../map_data/' + year + '/' + month + '/' + day + '.json'
+        dataChange(url);
+        url4 = '../everyday/' + year + '/' + month + '/' + day + '.json'
+        if (curtain == 4) dataChange4(url4);
+        if (curtain == 5) dataChange5(url4);
+
+    })
+    $('#btn66').click(function () {//jqury对元素进行获取
+        year++;
+        if(year == 2019) year = 2013;
+        var url = '../map_data/' + year + '/' + month + '/' + day + '.json'
+        dataChange(url);
+        url4 = '../everyday/' + year + '/' + month + '/' + day + '.json'
+        if (curtain == 4) dataChange4(url4);
+        if (curtain == 5) dataChange5(url4);
+
+    })
+
+    function dataChange4(url) {
+        var data = [];
+        var maxMag = 0;
+        var minMag = Infinity;
+        $.get(url, function (ret) {
+            //    console.log(ret.data)
+            var obj = ret.data;
+            // var count = 0;
+            for (var i = 0; i < obj.length; i++) {
+                console.log(12)
+                // count++;
+                // // if (count % 10 == 0) {
+                var u = obj[i][0];//纬向风速
+                var v = obj[i][1];//经向风速
+                var mag = Math.sqrt(u * u + v * v);
+                //     //   console.log(mag);
+                var lat = obj[i][2];//纬度
+                var lon = obj[i][3];//经度
+                var itemArr = [lon, lat, v, u, mag]
+                data.push(itemArr)
+                maxMag = Math.max(mag, maxMag);
+                minMag = Math.min(mag, minMag);
+            }
+            console.log(maxMag, minMag)
+            console.log(data)
+            var trajectory = [];
+            let series2 = [{
+                type: 'flowGL',
+                coordinateSystem: 'bmap',
+                data: data,
+                supersampling: 4,
+                particleType: 'line',
+                particleDensity: 90,
+                particleSpeed: 5,
+                itemStyle: {
+                    opacity: 0.9
+                }
+            },
+                // {
+                //     type: 'scatter',
+                //     coordinateSystem: 'bmap',
+                //     symbol: 'image://./feiting.svg',
+                //     symbolOffset: [0, 0],
+                //     symbolSize: 20,
+                //     symbolRotate: 45,
+                //     hoverAnimation: true,
+                //     data: trajectory,
+                // }
+            ];
+
+            trajectory.forEach(function (element, index) {
+                if (index < trajectory.length - 1) {
+                    let endNum = index + 1;
+                    series2.push({
+                        type: 'lines',
+                        coordinateSystem: 'bmap',  // 线连接，  只需要起点和终点坐标
+                        zlevel: 2,
+                        effect: {
+                            show: true,
+                            period: 6,
+                            trailLength: 0,
+                            symbol: 'image://./feiting.svg',
+                            symbolSize: 20
+                        },
+                        lineStyle: {
+                            normal: {
+                                color: 'red',
+                                width: 3,
+                                opacity: 0.99,
+                                curveness: 0
+                            }
+                        },
+                        data: [{
+                            coords: [[trajectory[index][0], trajectory[index][1]], [trajectory[endNum][0], trajectory[endNum][1]]]
+                        }],
+                    });
+                    //console.log([ [trajectory[index][0], trajectory[index][1]],[trajectory[endNum][0],trajectory[endNum][1]]])
+                }
+            });
+            mCharts4.setOption({
+                title: {
+                    show: true,
+                    text: '全国' + year + '年' + month + '月' + day + '日风向图',
+                    left: 'center',
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
+                visualMap: {
+                    left: 'right',
+                    min: minMag,
+                    max: maxMag,
+                    dimension: 4,
+                    inRange: {
+                        // color: ['green', 'yellow', 'red']
+                        color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+                    },
+                    realtime: false,
+                    calculable: true,
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
+                bmap: {
+                    center: [105, 38],
+                    zoom: 5,
+                    roam: true,
+                    mapStyle: {
+                        styleJson: [
+                            {
+                                featureType: "water",
+                                elementType: "all",
+                                stylers: {
+                                    color: "#273c75"
+                                }
+                            },
+                            {
+                                featureType: "land",
+                                elementType: "all",
+                                stylers: {
+                                    color: "#353b48"
+                                }
+                            },
+                            {
+                                featureType: "railway",
+                                elementType: "all",
+                                stylers: {
+                                    visibility: "off"
+                                }
+                            },
+                            {
+                                featureType: "highway",
+                                elementType: "all",
+                                stylers: {
+                                    color: "#353b48"
+                                }
+                            },
+                            {
+                                featureType: "highway",
+                                elementType: "labels",
+                                stylers: {
+                                    visibility: "off"
+                                }
+                            },
+                            {
+                                featureType: "arterial",
+                                elementType: "geometry",
+                                stylers: {
+                                    color: "off"
+                                }
+                            },
+                            {
+                                featureType: "arterial",
+                                elementType: "geometry.fill",
+                                stylers: {
+                                    color: "off"
+                                }
+                            },
+                            {
+                                featureType: "poi",
+                                elementType: "all",
+                                stylers: {
+                                    visibility: "off"
+                                }
+                            },
+                            {
+                                featureType: "green",
+                                elementType: "all",
+                                stylers: {
+                                    visibility: "off"
+                                }
+                            },
+                            {
+                                featureType: "subway",
+                                elementType: "all",
+                                stylers: {
+                                    visibility: "off"
+                                }
+                            },
+                            {
+                                featureType: "manmade",
+                                elementType: "all",
+                                stylers: {
+                                    color: "#d1d1d1"
+                                }
+                            },
+                            {
+                                featureType: "local",
+                                elementType: "all",
+                                stylers: {
+                                    color: "#d1d1d1"
+                                }
+                            },
+                            {
+                                featureType: "arterial",
+                                elementType: "labels",
+                                stylers: {
+                                    visibility: "off"
+                                }
+                            },
+                            {
+                                featureType: "boundary",
+                                elementType: "all",
+                                stylers: {
+                                    color: "#fefefe"
+                                }
+                            },
+                            {
+                                featureType: "building",
+                                elementType: "all",
+                                stylers: {
+                                    color: "#d1d1d1"
+                                }
+                            },
+                            {
+                                featureType: "label",
+                                elementType: "labels.text.fill",
+                                stylers: {
+                                    color: "#999999"
+                                }
+                            }
+                        ]
+
+
+                    }
+                },
+                series: series2,
+            });
+            console.log(series2)
+        });
+        curtain = 4;
+    }
+    dataChange4(url4)
+
+    var item = '';
+    function dataChange5(url) {
+        var points = [];
+        var minData = 100000;
+        var maxData = -100000;
+        $.get(url, function (data) {
+            //  console.log(data)
+            var obj = data.data;
+            for (var i = 0; i < obj.length; i++) {
+                // console.log(i)    
+                var lat = obj[i][2];//纬度
+                var lon = obj[i][3];//经度
+                //   var value = parseFloat(data[i]["TEMP(K)"]);
+                if (item == 'TEMP') {
+                    var value = obj[i][4];
+                }
+                if (item == 'RH') {
+                    var value = obj[i][5];
+                }
+                if (item == 'PSFC') {
+                    var value = obj[i][6];
+                }
+                if (value > maxData) maxData = value;
+                if (value < minData) minData = value;
+                var itemArr = [lon, lat, value]
+                points.push(itemArr)
+            }
+            console.log(points)
+            mCharts4.setOption(option = {
+                title: {
+                    show: true,
+                    text: '全国' + year + '年' + month + '月' + day + '日' + item,
+                    left: 'center',
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
+                animation: false,
+                bmap: {
+                    center: [105, 38],
+                    zoom: 5,
+                    roam: true
+                },
+                visualMap: {
+                    show: false,
+                    top: 'top',
+                    min: minData,
+                    max: maxData,
+                    seriesIndex: 0,
+                    calculable: true,
+                    inRange: {
+                        color: ['blue', 'blue', 'green', 'yellow', 'red']
+                    }
+                },
+                series: [{
+                    type: 'heatmap',
+                    coordinateSystem: 'bmap',
+                    data: points,
+                    pointSize: 11,
+                    blurSize: 11
+                }]
+            });
+            // 添加百度地图插件
+            var bmap = mCharts4.getModel().getComponent('bmap').getBMap();
+            bmap.addControl(new BMap.MapTypeControl());
+        });
+        curtain = 5;
+    }
+
+
+    $('#btn7').click(function () {//jqury对元素进行获取
+        dataChange4(url4);
+    })
+    $('#btn8').click(function () {//jqury对元素进行获取
+        item = 'TEMP';
+        dataChange5(url4);
+    })
+    $('#btn9').click(function () {//jqury对元素进行获取
+        item = 'RH';
+        dataChange5(url4);
+    })
+    $('#btn10').click(function () {//jqury对元素进行获取
+        item = 'PSFC';
+        dataChange5(url4);
+    })
+
+
+
+</script>
+
+</html>

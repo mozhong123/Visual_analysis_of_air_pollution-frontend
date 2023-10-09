@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>易视“气”质</title>
+    <link href="../styles/common.css" rel="stylesheet">
+    <script src="../lib/flexible.js"></script>
+    <script src="../scripts/common.js"></script>
+    <script src="../scripts/trend.js"></script>
+    <script src="../lib/ecStat.min.js"></script>
+    <script src="../lib/echarts.min.js"></script>
+    <script src="../lib/jquery.min.js"></script>
+    <script src="../lib/echarts-gl.min.js"></script>
+    <script src="../lib/bmap.min.js"></script>
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=wlmlTWodLfDSxDe5KS6kijzY86fk2e69"></script>
+</head>
+
+<body>
+    <!--顶部-->
+    <header class="header left">
+        <div class="left nav">
+            <ul>
+                <li><i class="nav_1"></i><a href="single.html">污染源分析</a> </li>
+                <li class="nav_active"><i class="nav_2"></i><a href="cluster.html">聚类对比分析</a> </li>
+            </ul>
+        </div>
+        <div class="header_center left" style="position:relative">
+
+            <h2><strong>大气污染物可视分析系统</strong></h2>
+
+        </div>
+        <div class="right nav text_right">
+            <ul>
+                <li><i class="nav_3"></i><a href="map.html">传输模式分析</a> </li>
+                <li><i class="nav_4"></i><a href="predict.html">污染预测</a> </li>
+            </ul>
+        </div>
+
+    </header>
+    <div class="total_chose_box" style="width:100%;position: relative;">
+        <span class="chose_tltle">请输入年份：</span>
+        <input class="chose_text_in" id="selectDate1" value=2013>
+        <span class="chose_tltle">请输入月份：</span>
+        <input class="chose_text_in" id="selectDate2" value=1>
+        <span class="chose_tltle">请输入日期：</span>
+        <input class="chose_text_in" id="selectDate3" value=1>
+        <button class="chose_enter" id="selectDate">确定</button>
+        <button class="chose_enter" id="btn1">PM2.5</button>
+        <button class="chose_enter" id="btn2">PM10</button>
+        <button class="chose_enter" id="btn3">SO2</button>
+        <button class="chose_enter" id="btn4">NO2</button>
+        <button class="chose_enter" id="btn5">CO</button>
+        <button class="chose_enter" id="btn6">O3</button>
+    </div>
+    <div class="con left" style="width:50%; position:relative;">
+        <!--统计分析图-->
+
+        <div class="div_any">
+            <div class="left div_any01" style="width:100%;">
+                <div class="div_any_child" style="width:98%;position:relative;height: 6.875rem;">
+                    <div class="div_any_title">散点聚类图</div>
+                    <div id="main" style="width:98%;position:relative;left:1%;height: 6.4375rem;top:0.3125rem"></div>
+                </div>
+            </div>
+            <div class="left div_any01" style="width:100%;">
+                <div class="div_any_child" style="width:98%;position:relative;height: 6.875rem;">
+                    <div class="div_any_title">城市聚类地图</div>
+                    <div id="two" style="width:98%;position:relative;left:1%;height: 6.4375rem;top:0.3125rem"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="con right" style="width:50%;position:relative;">
+        <div class="div_any">
+            <div class="left div_any01" style="width:100%;">
+                <div class="div_any_child" style="width:98%;position:relative;height: 14.0625rem;">
+                    <div class="div_any_title">污染物相似度对比分析</div>
+                    <div id="three" style="width:98%;position:relative;left:1%;height: 13.625rem;top:0.3125rem"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+
+    var myChart = echarts.init(document.getElementById('main'), 'dark');
+    var myCharts = echarts.init(document.getElementById('two'), "dark");
+    var myChartss = echarts.init(document.getElementById('three'), );
+    var option;
+    var optionn;
+    var colors = ['#fc5c65', '#fd9644', '#fed330', '#26de81', '#2bcbba', '#45aaf2', '#4b7bec', '#a55eea', '#a5b1c2', '#778ca3', '#4b6584'];
+    var data = [];
+    var year = 2013;
+    var pollution = 'PM2.5'
+    var url = '../data/cluster_data/' + year + '/' + pollution + '.json'
+    var url2 = '../data/finally/' + year + '.json'
+    function dataChange(url) {
+        var data = [];
+        $.get(url, function (ret) {
+            //             console.log(ret);
+            data = ret['coordinate'];
+            //      console.log(data)
+            var clusterNumber = 11;
+            var step = ecStat.clustering.hierarchicalKMeans(data, clusterNumber, true);
+            var result;
+
+            option = {
+                timeline: {
+                    top: 'center',
+                    right: 35,
+                    height: 300,
+                    width: 10,
+                    inverse: true,
+                    playInterval: 2500,
+                    symbol: 'none',
+                    orient: 'vertical',
+                    axisType: 'category',
+                    autoPlay: true,
+                    label: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data: []
+                },
+                baseOption: {
+                    toolbox: {
+                        right: 10,
+                        feature: {
+                            dataZoom: {
+                                yAxisIndex: 'none'
+                            },
+                            restore: {},
+                            saveAsImage: {}
+                        }
+                    },
+                    tooltip: {
+                        show: true,
+                        trigger: 'axis',
+                        showContent: true,//是否显示提示框浮层，默认显示
+                        alwaysShowContent: false,//是否永远显示提示框内容，默认情况下在移出可触发提示框区域后 一定时间 后隐藏，设置为 true 可以保证一直显示提示框内容
+                        hideDelay: 0,//鼠标移出坐标点时，浮层隐藏的延迟时间，单位为 ms，在 alwaysShowContent 为 true 的时候无效
+                        //     formatter: function (params) {
+                        //        console.log(result["centroids"][i].length);
+                        //  //       console.log(result)
+                        //         for (var i = 0; i < result["centroids"][i].length; i++) {
+                        //             console.log(result["centroids"][i][0])
+                        //             var c = '';
+                        //             if (result["pointsInCluster"][i][j][0] == params[0].value[0] && result["pointsInCluster"][i][j][1] == params[0].value[1]) {
+                        //                 for (var k = 0; k < data.length; k++) {
+                        //                     if (params[0].value[0] == data[k][0]) c = ret["city"][k];
+                        //                 }
+                        //                 return c + pollution + ':第' + i + '类'
+                        //             }
+                        //         }
+                        //         // if (params[0].value[0] == data[i][0])
+                        //         //     return ret["city"][i] + pollution + '分类：' + ret["classify"][i];
+                        //         // return params.data.name+pollution+'分类:'+ params.data.value[2]
+                        //     }
+
+                    },
+                    title: {
+                        text: year + '年' + pollution + '空气质量聚类分析',
+                        left: 'center'
+                    },
+                    xAxis: {
+                        type: 'value'
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        type: 'scatter'
+                    }]
+                },
+                options: []
+            };
+
+            for (var i = 0; !(result = step.next()).isEnd; i++) {
+
+                option.options.push(getOption(result, clusterNumber));
+                option.timeline.data.push(i + '');
+
+            }
+            //      console.log(result);
+
+            function getOption(result, k) {
+                var clusterAssment = result.clusterAssment;
+                var centroids = result.centroids;
+                var ptsInCluster = result.pointsInCluster;
+                var series = [];
+                for (i = 0; i < k; i++) {
+                    series.push({
+                        name: 'scatter' + i,
+                        type: 'scatter',
+                        animation: false,
+                        data: ptsInCluster[i],
+                        markPoint: {
+                            symbolSize: 29,
+                            label: {
+                                normal: {
+                                    show: false
+                                },
+                                emphasis: {
+                                    show: true,
+                                    position: 'top',
+                                    formatter: function (params) {
+                                        return Math.round(params.data.coord[0] * 100) / 100 + '  ' +
+                                            Math.round(params.data.coord[1] * 100) / 100 + ' ';
+                                    },
+                                    textStyle: {
+                                        color: '#000'
+                                    }
+                                }
+                            },
+                            itemStyle: {
+                                normal: {
+                                    opacity: 0.7
+                                }
+                            },
+                            data: [{
+                                coord: centroids[i]
+                            }]
+                        }
+                    });
+                }
+
+                return {
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross'
+                        }
+                    },
+                    series: series,
+                    color: colors
+                };
+            }
+            myChart.setOption(option);
+            //console.log(ret)
+            //   console.log(result);
+            var mapData = [];
+            var curtain=[];
+            for (var i = 0; i < 11; i++) {
+                //     console.log(result.pointsInCluster[i])
+                for (var j = 0; j < result.pointsInCluster[i].length; j++) {
+                    //                  console.log(result.pointsInCluster[i][j][1])
+                    for (var k = 0; k < ret.coordinate.length; k++) {
+                        if (result.pointsInCluster[i][j][0] == ret.coordinate[k][0] && result.pointsInCluster[i][j][1] == ret.coordinate[k][1]) {
+                            var lon = ret.position[k][0];
+                            var lat = ret.position[k][1];
+                            var city = ret.city[k];
+                            var itemArr = [lat, lon, i, city]
+                            var cur=[city,lat,lon]
+                            mapData.push(itemArr)
+                            curtain.push(cur)
+
+                        }
+                    }
+                }
+            }
+               console.log(curtain.toString())
+            $.get('../json/map/china.json', function (ret) {
+                echarts.registerMap('chinaMap', ret)
+                optionn = {
+                    geo: {
+                        type: 'map',
+                        selectedMode: 'single',
+                        map: 'chinaMap',
+                        roam: true,
+                        label: {
+                            show: false
+                        },
+                        zoom: 1.6,
+                        center: [108.948024, 34.263161] // 设置地图中心点的坐标(陕西)
+                    }
+                }
+                optionn = {
+                    title: {
+                        text: year + '年' + pollution + '空气质量聚类分析',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        show: true,
+                        trigger: 'item',
+                        showContent: true,//是否显示提示框浮层，默认显示
+                        alwaysShowContent: false,//是否永远显示提示框内容，默认情况下在移出可触发提示框区域后 一定时间 后隐藏，设置为 true 可以保证一直显示提示框内容
+                        hideDelay: 0,//鼠标移出坐标点时，浮层隐藏的延迟时间，单位为 ms，在 alwaysShowContent 为 true 的时候无效
+                        formatter: function (params) {
+                            //   console.log(params)
+                            return params.data.name + pollution + '分类:' + params.data.value[2]
+                        }
+                    },
+                    geo: {
+                        map: 'chinaMap',
+                        roam: true,//是否开启缩放和平移
+                        zoom: 1.24,//视角缩放比例
+                        label: {
+                            normal: {
+                                show: false,//是否显示省份名称
+                                fontSize: '10',//字体大小
+                                color: 'white'//字体颜色
+                            },
+                            // emphasis: { //动态展示的样式
+                            //     fontSize: '10',//字体大小
+                            //     color: '#fff'//字体颜色                                            
+                            // },
+                        },
+                        itemStyle: {
+                            normal: {
+                                borderColor: 'rgba(0, 0, 0, 0.2)',
+                                areaColor: '#CAD3C8',//静态时各省份区域颜色
+                            },
+                            emphasis: {
+                                areaColor: '#BDC581',//鼠标选择区域颜色
+                                shadowOffsetX: 0,
+                                shadowOffsetY: 0,
+                                shadowBlur: 20,
+                                borderWidth: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            type: 'scatter',
+                            coordinateSystem: 'geo',
+                            animation: false,//坐标点是否显示动画
+                            symbol: 'pin',
+                            roam: true,
+                            rippleEffect: {
+                                brushType: 'fill'// stroke|fill
+                            },
+                            symbolSize: function (val, params) {//坐标点大小
+                                return 15;
+                            },
+                            data: mapData.map(function (itemOpt) {
+                                //  console.log(itemOpt[3]%13)
+                                return {
+                                    name: itemOpt[3],
+                                    value: [
+                                        parseFloat(itemOpt[1]),//经度
+                                        parseFloat(itemOpt[0]),//维度
+                                        parseFloat(itemOpt[2])//分类
+                                    ],
+                                    label: {
+                                        emphasis: {//高亮状态下的样式
+                                            show: false
+
+                                        }
+                                    },
+                                    itemStyle: {//地图区域的多边形
+                                        color: colors[itemOpt[2]],
+                                        emphasis: {
+                                            areaColor: "#0ff",
+                                            color: "#fff",
+                                        }
+                                    },
+                                };
+                            })
+                        }
+                    ]
+                }
+                myCharts.setOption(optionn)
+                setTimeout(function () {
+                    window.onresize = function () {
+                        myChart.resize();
+                        myCharts.resize();
+                        myChartss.resize();
+                    }
+                }, 200)
+            })
+        })
+    }
+    dataChange(url);
+    $('#selectDate').click(function () {//jqury对元素进行获取
+        var flag = 0;
+        var y = jQuery("#selectDate1").val();
+        if (year !== y) { year = y; flag = 1 }
+        if (flag) {
+            url = '../cluster_data/' + year + '/' + pollution + '.json'
+            dataChange(url);
+            url2 = '../finally/' + year + '.json'
+            dataChange3(url2);
+        }
+    })
+    $('#btn1').click(function () {//jqury对元素进行获取
+        pollution = 'PM2.5';
+        url = '../cluster_data/' + year + '/' + pollution + '.json'
+        dataChange(url);
+    })
+    $('#btn2').click(function () {//jqury对元素进行获取
+        pollution = 'PM10';
+        url = '../cluster_data/' + year + '/' + pollution + '.json'
+        dataChange(url);
+    })
+    $('#btn3').click(function () {//jqury对元素进行获取
+        pollution = 'SO2';
+        url = '../cluster_data/' + year + '/' + pollution + '.json'
+        dataChange(url);
+    })
+    $('#btn4').click(function () {//jqury对元素进行获取
+        pollution = 'NO2';
+        url = '../cluster_data/' + year + '/' + pollution + '.json'
+        dataChange(url);
+    })
+    $('#btn5').click(function () {//jqury对元素进行获取
+        pollution = 'CO';
+        url = '../cluster_data/' + year + '/' + pollution + '.json'
+        dataChange(url);
+    })
+    $('#btn6').click(function () {//jqury对元素进行获取
+        pollution = 'O3';
+        url = '../cluster_data/' + year + '/' + pollution + '.json'
+        dataChange(url);
+    })
+    var sx=0;
+    var sy=0;
+    var up1=0;
+    var down1=0;
+    var down2=0;
+    function dataChange3(url) {
+        $.get(url, function (ret) {
+            console.log(ret.data)
+            for(var i=0; i<ret.data.length; i++){
+                sx+=ret.data[i][5];
+                sy+=ret.data[i][4];
+            }
+            sx/=36;
+            sy/=36;
+            for(var i=0; i<ret.data.length; i++){
+               up1+=(ret.data[i][5]-sx)*(ret.data[i][4]-sy)
+               down1+= Math.pow((ret.data[i][5]-sx),2)
+               down2+= Math.pow((ret.data[i][4]-sy),2)
+            }
+            down1=Math.sqrt(down1);
+            down2=Math.sqrt(down2);
+            r=up1/(down1*down2);
+            console.log(r);
+            var optionm;
+            var schema = [
+                { name: 'PM25', index: 1, text: 'PM25' },
+                { name: 'PM10', index: 2, text: 'PM10' },
+                { name: 'SO2', index: 3, text: 'SO2' },
+                { name: 'NO2', index: 4, text: 'NO2' },
+                { name: 'CO', index: 5, text: 'CO' },
+                { name: 'O3', index: 6, text: 'O3' },
+                { name: '污染天数', index: 7, text: '污染天数' }
+            ];
+
+            var rawData = [];
+            rawData = ret.data
+            var CATEGORY_DIM_COUNT = 6;
+            var GAP = 2;
+            var BASE_LEFT = 5;
+            var BASE_TOP = 10;
+            // var GRID_WIDTH = 220;
+            // var GRID_HEIGHT = 220;
+            var GRID_WIDTH = (100 - BASE_LEFT - GAP) / CATEGORY_DIM_COUNT - GAP;
+            var GRID_HEIGHT = (100 - BASE_TOP - GAP) / CATEGORY_DIM_COUNT - GAP;
+            var CATEGORY_DIM = 7;
+            var SYMBOL_SIZE = 4;
+
+            function retrieveScatterData(data, dimX, dimY) {
+                var result = [];
+                for (var i = 0; i < data.length; i++) {
+                    var item = [data[i][dimX], data[i][dimY]];
+                    item[CATEGORY_DIM] = data[i][CATEGORY_DIM];
+                    result.push(item);
+                }
+                return result;
+            }
+
+            function generateGrids(option) {
+                var index = 0;
+
+                for (var i = 0; i < CATEGORY_DIM_COUNT; i++) {
+                    for (var j = 0; j < CATEGORY_DIM_COUNT; j++) {
+                        if (CATEGORY_DIM_COUNT - i + j >= CATEGORY_DIM_COUNT) {
+                            continue;
+                        }
+
+                        option.grid.push({
+                            left: BASE_LEFT + i * (GRID_WIDTH + GAP) + '%',
+                            top: BASE_TOP + j * (GRID_HEIGHT + GAP) + '%',
+                            width: GRID_WIDTH + '%',
+                            height: GRID_HEIGHT + '%',
+
+                        });
+
+                        option.brush.xAxisIndex && option.brush.xAxisIndex.push(index);
+                        option.brush.yAxisIndex && option.brush.yAxisIndex.push(index);
+
+                        option.xAxis.push({
+                            splitNumber: 3,
+                            position: 'top',
+                            axisLine: {
+                                show: j === 0,
+                                onZero: false
+                            },
+                            axisTick: {
+                                show: j === 0,
+                                inside: true
+                            },
+                            axisLabel: {
+                                show: j === 0
+                            },
+                            type: 'value',
+                            gridIndex: index,
+                            scale: true
+                        });
+
+                        option.yAxis.push({
+                            splitNumber: 3,
+                            position: 'right',
+                            axisLine: {
+                                show: i === CATEGORY_DIM_COUNT - 1,
+                                onZero: false
+                            },
+                            axisTick: {
+                                show: i === CATEGORY_DIM_COUNT - 1,
+                                inside: true
+                            },
+                            axisLabel: {
+                                show: i === CATEGORY_DIM_COUNT - 1
+                            },
+                            type: 'value',
+                            gridIndex: index,
+                            scale: true
+                        });
+
+                        option.series.push({
+                            type: 'scatter',
+                            symbolSize: SYMBOL_SIZE,
+                            xAxisIndex: index,
+                            yAxisIndex: index,
+                            data: retrieveScatterData(rawData, i, j)
+                        });
+
+                        option.visualMap.seriesIndex.push(option.series.length - 1);
+
+                        index++;
+                    }
+                }
+            }
+
+
+            var optionm = {
+                tooltip: {
+                    saveAsImage: true
+                },
+                title: {
+                    text: year + '年',
+                    left: 'left'
+                },
+                animation: false,
+                brush: {
+                    brushLink: 'all',
+                    xAxisIndex: [],
+                    yAxisIndex: [],
+                    inBrush: {
+                        opacity: 1
+                    }
+                },
+                visualMap: {
+                    type: 'piecewise',
+                    categories: ["北京", "武汉", "广州"],
+                    dimension: CATEGORY_DIM,
+                    orient: 'horizontal',
+                    top: 0,
+                    left: 'center',
+                    inRange: {
+                        color: ['#ED4C67', '#4cd137', '#00a8ff']
+                    },
+                    outOfRange: {
+                        color: '#353b48'
+                    },
+                    seriesIndex: [0]
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                parallelAxis: [
+                    { dim: 0, name: schema[0].text },
+                    { dim: 1, name: schema[1].text },
+                    { dim: 2, name: schema[2].text },
+                    { dim: 3, name: schema[3].text },
+                    { dim: 4, name: schema[4].text },
+                    { dim: 5, name: schema[5].text },
+                    {
+                        dim: 6, name: schema[6].text,
+                        data: [5, 10, 15, 20, 25, 30]
+                    }
+                ],
+                parallel: {
+                    bottom: '5%',
+                    left: '2%',
+                    height: '30%',
+                    width: '55%',
+                    parallelAxisDefault: {
+                        type: 'value',
+                        // name: 'AQI指数',
+                        nameLocation: 'end',
+                        nameGap: 20,
+                        splitNumber: 3,
+                        nameTextStyle: {
+                            fontSize: 14
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#555'
+                            }
+                        },
+                        axisTick: {
+                            lineStyle: {
+                                color: '#555'
+                            }
+                        },
+                        splitLine: {
+                            show: false
+                        },
+                        axisLabel: {
+                            color: '#555'
+                        }
+                    }
+                },
+                grid: [],
+                xAxis: [],
+                yAxis: [],
+                series: [
+                    {
+                        name: 'parallel',
+                        type: 'parallel',
+                        smooth: true,
+                        lineStyle: {
+                            width: 1,
+                            opacity: 0.3
+                        },
+                        data: rawData
+                    }
+                ]
+            };
+
+            generateGrids(optionm);
+
+            optionm && myChartss.setOption(optionm);
+
+        })
+
+    }
+    dataChange3(url2)
+</script>
+
+</html>
