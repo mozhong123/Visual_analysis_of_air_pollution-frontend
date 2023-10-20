@@ -9,12 +9,14 @@
   },
   "dependencies": {
     "-": "^0.0.1",
+    "chart.js": "^4.4.0",
     "core-js": "^3.33.0",
     "element-plus": "^2.4.0",
     "fund": "^1.0.0",
     "lodash-es": "^4.17.21",
     "no": "^0.0.1",
     "vue": "^3.3.4",
+    "vue-chartjs": "^5.2.0",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
