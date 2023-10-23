@@ -2,6 +2,7 @@
   "name": "visual_analysis_of_air_pollution",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

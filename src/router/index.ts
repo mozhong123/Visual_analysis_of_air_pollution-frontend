@@ -54,12 +54,22 @@ export const constantRoutes = [
     {
         path: '/index',
         name:'index',
-        component: () => import('@/views/index.vue'),
+        component: () => import('@/views/Index.vue'),
     },
     {
         path: '/login',
         name:'login',
         component: () => import('@/views/login.vue'),
+    },
+    {
+        path: '/register',
+        name:'register',
+        component: () => import('@/views/register.vue'),
+    },
+    {
+        path: '/weather',
+        name:'weather',
+        component: () => import('@/views/WeatherMap.vue'),
     }
 ]
 
