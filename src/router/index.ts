@@ -67,9 +67,14 @@ export const constantRoutes = [
         component: () => import('@/views/register.vue'),
     },
     {
-        path: '/weather',
+        path: '/weathermap',
         name:'weather',
         component: () => import('@/views/WeatherMap.vue'),
+    },
+    {
+        path: '/pollutionmap',
+        name:'pollution',
+        component: () => import('@/views/PollutionMap.vue'),
     }
 ]
 
