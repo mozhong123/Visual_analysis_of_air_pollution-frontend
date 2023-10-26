@@ -5,6 +5,11 @@
         src="/src/assets/html/WeatherMap.html"
         ref="iframeDom"
     ></iframe>
+    <iframe
+        class="background-iframe2"
+        src="/src/assets/html/CountryWind.html"
+        ref="iframeDom"
+    ></iframe>
     <!-- Your main content goes here -->
   </div>
   <div>
@@ -19,7 +24,8 @@ import HeaderMenu from "@/components/HeaderMenu.vue"; // 此路径应根据你�
 import Starry from "@/components/Starry.vue"; // 此路径应根据你的项目结构来修改
 export default {
   components: {
-    HeaderMenu,Starry
+    HeaderMenu,
+    Starry
   }
 };
 </script>
@@ -27,12 +33,11 @@ export default {
 <style>
 .background-container1 {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 50px;
+  left: -10px;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  z-index: 1;
+  z-index: 2;
 }
 
 .background-iframe1 {
@@ -42,5 +47,16 @@ export default {
   width: 100%;
   height: 100%;
   border: none;
+}
+
+
+.background-iframe2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+
 }
 </style>
