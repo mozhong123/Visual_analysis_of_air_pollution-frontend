@@ -1,4 +1,5 @@
-import { createWebHistory, createRouter } from 'vue-router'
+import {createWebHistory, createRouter} from 'vue-router'
+
 /** 动态路由配置 */
 interface RouteSettings {
     /**
@@ -53,29 +54,49 @@ const routeSettings: RouteSettings = {
 export const constantRoutes = [
     {
         path: '/index',
-        name:'index',
-        component: () => import('@/views/Index.vue'),
+        name: 'index',
+        component: () => import('@/views/index.vue'),
     },
     {
         path: '/login',
-        name:'login',
-        component: () => import('@/views/login.vue'),
-    },
-    {
-        path: '/register',
-        name:'register',
-        component: () => import('@/views/register.vue'),
+        name: 'login',
+        component: () => import('@/views/Login.vue'),
     },
     {
         path: '/weathermap',
-        name:'weather',
+        name: 'weather',
         component: () => import('@/views/WeatherMap.vue'),
     },
     {
         path: '/pollutionmap',
-        name:'pollution',
+        name: 'pollution',
         component: () => import('@/views/PollutionMap.vue'),
+    },
+    {
+        path: '/register',
+        name: 'register',
+        component: () => import('@/views/Register.vue'),
+    },
+    {
+        path: '/profile',
+        name: 'profile',
+        component: () => import('@/views/Profile.vue'),
+    },
+    {
+        path: '/logout',
+        name: 'logout',
+        component: () => import('@/views/Logout.vue'),
+    },
+    {
+        path: "/404",
+        name: 'not-found',
+        component: () => import('@/views/Not-fund.vue'),
+    },
+    {
+        path: "/:pathMatch(.*)*",
+        redirect: "404"
     }
+
 ]
 
 const router = createRouter({
@@ -85,7 +106,7 @@ const router = createRouter({
         if (savedPosition) {
             return savedPosition
         } else {
-            return { top: 0 }
+            return {top: 0}
         }
     },
 });
