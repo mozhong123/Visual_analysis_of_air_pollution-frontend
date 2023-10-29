@@ -124,7 +124,7 @@
             mCharts1.setOption({
                 title: {
                     show: true,
-                    text: year + '年' + month + '月' + day + '日' + pollution,
+                    text: year + '年' + month + '月' + day + '日' + 'AQI',
                 },
                 tooltip: {
                     show: true,
@@ -238,7 +238,6 @@
                 window.onresize = function () {
                     mCharts1.resize();
                     mCharts2.resize();
-                    mCharts3.resize();
                 }
             }, 200)
         })
@@ -370,7 +369,7 @@
             }
             mCharts2.setOption(option2 = {
                 title: {
-                    text: city + pollution,
+                    text: city + 'AQI',
                     left: '1%'
                 },
                 tooltip: {
@@ -439,7 +438,7 @@
                     }
                 },
                 series: {
-                    name: city + pollution,
+                    name: city + 'AQI',
                     type: 'line',
                     data: data.map(function (item) {
                         return item[1];

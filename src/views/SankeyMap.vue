@@ -2,7 +2,7 @@
   <div class="background-container1">
     <iframe
         class="background-iframe1"
-        src="/src/assets/html/PollutionMap.html"
+        src="/src/assets/html/SankeyMap.html"
         ref="iframeDom"
     ></iframe>
     <!-- Your main content goes here -->
@@ -10,7 +10,6 @@
   <div>
     <HeaderMenu></HeaderMenu>
     <Starry></Starry>
-    <MapChart></MapChart>
     <!-- 其他页面内容 -->
   </div>
 </template>
@@ -18,10 +17,9 @@
 <script>
 import HeaderMenu from "@/components/HeaderMenu.vue"; // 此路径应根据你的项目结构来修改
 import Starry from "@/components/Starry.vue"; // 此路径应根据你的项目结构来修改
-import MapChart from "@/components/MapChart.vue";
 export default {
   components: {
-    HeaderMenu,Starry,MapChart
+    HeaderMenu,Starry
   }
 };
 </script>

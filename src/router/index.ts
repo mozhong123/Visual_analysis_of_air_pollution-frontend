@@ -73,6 +73,11 @@ export const constantRoutes = [
         component: () => import('@/views/PollutionMap.vue'),
     },
     {
+        path: '/sankeymap',
+        name: 'sankey',
+        component: () => import('@/views/SankeyMap.vue'),
+    },
+    {
         path: '/register',
         name: 'register',
         component: () => import('@/views/Register.vue'),
