@@ -95,7 +95,7 @@ export const constantRoutes = [
     {
         path: "/404",
         name: 'not-found',
-        component: () => import('@/views/Not-fund.vue'),
+        component: () => import('@/views/NotFound.vue'),
     },
     {
         path: "/:pathMatch(.*)*",
