@@ -9,7 +9,7 @@
   </div>
   <div>
     <HeaderMenu></HeaderMenu>
-    <Starry></Starry>
+    <BackGround></BackGround>
     <MapChart></MapChart>
     <!-- 其他页面内容 -->
   </div>
@@ -17,11 +17,12 @@
 
 <script>
 import HeaderMenu from "@/components/HeaderMenu.vue"; // 此路径应根据你的项目结构来修改
-import Starry from "@/components/Starry.vue"; // 此路径应根据你的项目结构来修改
 import MapChart from "@/components/MapChart.vue";
+import BackGround from "@/components/BackGround.vue";
 export default {
   components: {
-    HeaderMenu,Starry,MapChart
+    BackGround,
+    HeaderMenu,MapChart
   }
 };
 </script>
