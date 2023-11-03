@@ -78,6 +78,11 @@ export const constantRoutes = [
         component: () => import('@/views/SankeyMap.vue'),
     },
     {
+        path: '/clustermap',
+        name: 'cluster',
+        component: () => import('@/views/ClusterMap.vue'),
+    },
+    {
         path: '/register',
         name: 'register',
         component: () => import('@/views/Register.vue'),
