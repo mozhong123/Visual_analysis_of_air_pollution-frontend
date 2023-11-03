@@ -43,7 +43,7 @@ export default {
       },
       dropdownMenu: [
         {id: 0, content: [{id: 0, val: 'logout', viewable: true}], viewable: false},
-        {id: 1, content: [{id: 0, val: '污染物图',to: '/pollutionmap', viewable: true},{id: 1, val: '气象图', to: '/weathermap',viewable: true},{id: 2, val: '桑基图',to: '/sankeymap', viewable: true}], viewable: false},
+        {id: 1, content: [{id: 0, val: '污染物图',to: '/pollutionmap', viewable: true},{id: 1, val: '气象图', to: '/weathermap',viewable: true},{id: 2, val: '桑基图',to: '/sankeymap', viewable: true},{id: 3, val: '聚类图', to: '/clustermap',viewable: true}], viewable: false},
         {id: 2, content: [{id: 0, val: 'logout', viewable: true}], viewable: false},
         {id: 3, content: [{id: 0, val: 'logout', viewable: true}], viewable: false},
         {id: 4, content: [{id: 0, val: 'logout', to: '/logout', viewable: false}], viewable: false},
