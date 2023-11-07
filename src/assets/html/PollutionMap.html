@@ -125,6 +125,9 @@
                 title: {
                     show: true,
                     text: year + '年' + month + '月' + day + '日' + 'AQI',
+                    textStyle: {
+                            color: 'rgba(0, 0, 0, 1)'// 设置文本颜色为黑色
+                    }
                 },
                 tooltip: {
                     show: true,
@@ -137,6 +140,7 @@
                         return params.data.name + pollution + ':' + params.data.value[3]
                     }
                 },
+                backgroundColor: 'rgba(0, 0, 0, 0)', // 设置背景颜色为无色透明
                 geo: {
                     map: 'chinaMap',
                     roam: true,//是否开启缩放和平移
@@ -150,12 +154,13 @@
                         },
                         emphasis: { //动态展示的样式
                             fontSize: '10',//字体大小
-                            color: '#485460f'//字体颜色                                            
+                            color: 'rgba(0,0,0,1)'
+                            //color: '#485460f'//字体颜色                                            
                         },
                     },
                     itemStyle: {
                         normal: {
-                            borderColor: 'rgba(0, 0, 0, 0.2)',
+                            borderColor: 'rgba(0, 0, 0, 0.5)',
                             areaColor: '#dcdde1',//静态时各省份区域颜色
                         },
                         emphasis: {

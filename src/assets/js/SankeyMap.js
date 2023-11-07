@@ -72,13 +72,13 @@ function pcp_whole(wholelist, match_list, wholename_list, prov){
     			show:true,               
 		        interval:"auto",
 		        inside:true,             
-		        color: 'white',
+		        color: 'rgba(0,0,0,1)',
 		        rotate:0, 
 		        fontWeight: 'normal'
     }
 
 	var mytextStyle={
-	    color:"white",       
+	    color:'rgba(0,0,0,1)',       
 	    fontStyle:"normal",        
 	    fontWeight:'normal',        
 	    fontFamily:"Times New Roman",    
@@ -124,7 +124,7 @@ function pcp_whole(wholelist, match_list, wholename_list, prov){
 		            show:true,              
 		            interval:"auto",
 		            inside:true,            
-		            color: 'rgba(0,0,0,0)',
+		            color: 'rgba(0,0,0,1)',
 		            fontWeight: 'normal',
 		            fontSize:10, 
 		            rotate:90,     
@@ -167,7 +167,7 @@ function pcp_whole(wholelist, match_list, wholename_list, prov){
 		            show:true, 
 		            interval:0,       
 		            inside:true,    
-		            color: 'white',
+		            color: 'rgba(0,0,0,1)',
 		            fontWeight: 'normal',
 		            fontSize:12, 
 		            rotate:0,     
@@ -252,7 +252,7 @@ function pcp_make(data, match_list, wholename_list,prov){
     }
 
 	var mytextStyle={
-	    color:"white",       
+	    color:'rgba(0,0,0,1)',       
 	    fontStyle:"normal",        
 	    fontWeight:'normal',        
 	    fontFamily:"Times New Roman",    
@@ -316,7 +316,7 @@ function pcp_make(data, match_list, wholename_list,prov){
 		            show:true, 
 		            interval:"auto",        
 		            inside:true,   
-		            color: 'white',
+		            color: 'rgba(0,0,0,1)',
 		            fontWeight: 'normal',
 		            rotate:0,     
 		        },
@@ -342,7 +342,7 @@ function pcp_make(data, match_list, wholename_list,prov){
 		            show:true, 
 		            interval:0,        
 		            inside:true,            
-		            color: 'white',
+		            color: 'rgba(0,0,0,1)',
 		            fontWeight: 'normal',
 		            fontSize:12,
 		            rotate:0,     
@@ -414,7 +414,7 @@ function time_whole_AQI(datalist, yearlist){
         },title: {
           display: true,
           text: 'Annual Average AQI Volatility',
-          color: 'white'
+          color: 'rgba(0,0,0,1)'
         },
       },
       interaction: {
@@ -423,14 +423,14 @@ function time_whole_AQI(datalist, yearlist){
       scales: {
         x: {
           display: true,
-          ticks: { color:'white' },
+          ticks: { color:'rgba(0,0,0,1)' },
         },
         y: {
           display: true,
           title: {
             display: true,
             text: 'AQI Value',
-            color: 'white'
+            color: 'rgba(0,0,0,1)'
           },
           
           suggestedMin: 50,
