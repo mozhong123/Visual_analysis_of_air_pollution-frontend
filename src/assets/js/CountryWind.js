@@ -53,7 +53,7 @@
                         },
                         calculable: true,
                         textStyle: {
-                            color:'black'
+                            color:'rgba(0,0,0,1)'
                         },
                         orient: 'horizontal'
                     },
@@ -66,7 +66,8 @@
                         roam: true,
                         itemStyle: {
                             areaColor: '#323c48',
-                            borderColor: '#111'
+                            borderColor: 'rgba(0,0,0,1)'
+                            //borderColor: '#111'
                         }
                     },
                     series: {
