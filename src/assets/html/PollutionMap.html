@@ -15,51 +15,49 @@
 </head>
 
 <body>
-    <!--顶部-->
-    <div class="total_chose_box" style="width:100%;position: relative; margin-top: 40px;">
-        <span class="chose_tltle">请输入年份：</span>
-        <input class="chose_text_in" id="selectDate1" value=2013>
-        <span class="chose_tltle">请输入月份：</span>
-        <input class="chose_text_in" id="selectDate2" value=1>
-        <span class="chose_tltle">请输入日期：</span>
-        <input class="chose_text_in" id="selectDate3" value=1>
-        <button class="chose_enter" id="selectDate">确定</button>
-        <button class="chose_enter" id="btn1">PM2.5</button>
-        <button class="chose_enter" id="btn2">PM10</button>
-        <button class="chose_enter" id="btn3">SO2</button>
-        <button class="chose_enter" id="btn4">NO2</button>
-        <button class="chose_enter" id="btn5">CO</button>
-        <button class="chose_enter" id="btn6">O3</button>
+<!--顶部-->
+<div class="pollution-chart-container">
+    <div class="options">
+        <div class="city-location">城市定位</div>
+        <div class="pollution-view">污染情况概览</div>
+        <div class="chart-options">
+            <div class="total_chose_box">
+                <span class="chose_tltle">请输入年份：</span>
+                <input class="chose_text_in" id="selectDate1" value=2013>
+                <span class="chose_tltle">请输入月份：</span>
+                <input class="chose_text_in" id="selectDate2" value=1>
+                <span class="chose_tltle">请输入日期：</span>
+                <input class="chose_text_in" id="selectDate3" value=1>
+                <button class="chose_enter" id="selectDate">确定</button>
+                <button class="chose_enter" id="btn1">PM2.5</button>
+                <button class="chose_enter" id="btn2">PM10</button>
+                <button class="chose_enter" id="btn3">SO2</button>
+                <button class="chose_enter" id="btn4">NO2</button>
+                <button class="chose_enter" id="btn5">CO</button>
+                <button class="chose_enter" id="btn6">O3</button>
+            </div>
+            <button class="toggleButton"></button>
+        </div>
     </div>
 
     <!--内容部分-->
     <!-- Content Part -->
-    <div class="con" style="display: flex;">
+    <div class="con">
         <!-- Chart 1 -->
-        <div class="left" style="flex: 1;">
-            <div class="div_any">
-                <div class="div_any01" style="width: 100%;">
-                    <div class="div_any_child" style="width: 98%; position: relative; height: 6.875rem;">
-                        <div class="div_any_title">城市定位</div>
-                        <div id="main" style="width: 98%; position: relative; left: 1%; height: 6.4375rem; top: 0.3125rem"></div>
-                    </div>
-                </div>
+        <div class="left-chart">
+            <div class="chart-child-01" id="main"
+                 style="width: 100%;position: absolute;left: 0;height: 100%;top: 0; ">
             </div>
         </div>
 
         <!-- Chart 2 -->
-        <div class="right" style="flex: 1;">
-            <div class="div_any">
-                <div class="div_any01" style="width: 100%;">
-                    <div class="div_any_child" style="width: 98%; position: relative; height: 6.875rem;">
-                        <div class="div_any_title">污染情况概览</div>
-                        <div id="line" style="width: 98%; position: relative; left: 1%; height: 6.4375rem; top: 0.3125rem"></div>
-                    </div>
-                </div>
+        <div class="right-chart">
+            <div class="chart-child-02" id="line"
+                 style="width: 100%;position: absolute;left: 0;height: 100%;top: 0;">
             </div>
         </div>
     </div>
-
+</div>
 </body>
 <script>
 
@@ -74,6 +72,7 @@
     var pollution = 'PM2.5';
     var url = '/data/2.json'
     var url3 = '/data/CO.json'
+
     function dataChange(url) {
         $.get('/data/china.json', function (ret) {
             echarts.registerMap('chinaMap', ret)
@@ -200,11 +199,9 @@
                                 // }
                                 if (val.data.value[2] >= 9) {
                                     return val.data.name;
-                                }
-                                else if (val.data.value[2] >= 3 && val.data.value[2] <= 4) {
+                                } else if (val.data.value[2] >= 3 && val.data.value[2] <= 4) {
                                     return val.data.name;
-                                }
-                                else return '';
+                                } else return '';
                             }
                         },
                         data: mapData.map(function (itemOpt) {
@@ -242,6 +239,7 @@
             }, 200)
         })
     }
+
     dataChange(url);
     $('#selectDate').click(function () {//jqury对元素进行获取
         var flag = 0;
@@ -249,9 +247,18 @@
         var m = jQuery("#selectDate2").val();
         var d = jQuery("#selectDate3").val();
         console.log(y, m, d);
-        if (year !== y) { year = y; flag = 1 }
-        if (month !== m) { month = m; flag = 1 }
-        if (day !== d) { day = d; flag = 1 }
+        if (year !== y) {
+            year = y;
+            flag = 1
+        }
+        if (month !== m) {
+            month = m;
+            flag = 1
+        }
+        if (day !== d) {
+            day = d;
+            flag = 1
+        }
         if (flag) {
             url = '../map_data/' + year + '/' + month + '/' + day + '.json'
             //        console.log(url);
@@ -319,8 +326,7 @@
                         formatter: function (val) {
                             if (params.name == val.data.name) {
                                 return val.data.name;
-                            }
-                            else return '';
+                            } else return '';
                         }
                     },
 
@@ -340,6 +346,7 @@
         //    console.log(date);
         return date;
     }
+
     var start = "2013-01-01";
     var end = "2018-12-31";
     var startTime = getDate(start);
@@ -470,7 +477,221 @@
 
         option2 && mCharts2.setOption(option2);
     }
+
     dataChange2(url3);
+
+    const toggleButton = document.querySelector('.toggleButton');
+    const content = document.querySelector(".total_chose_box");
+    const chartOptionBox = document.querySelector(".chart-options");
+    const cityLocationBtn = document.querySelector(".city-location");
+    const pollutionViewBtn = document.querySelector(".pollution-view");
+    const cityLocationChart = document.querySelector(".left-chart");
+    const pollutionViewChart = document.querySelector(".right-chart");
+    const chartContainer = document.querySelector(".pollution-chart-container")
+
+    window.addEventListener('resize', () => {
+        chartContainer.style.top = window.innerHeight * 0.11 + 'px';
+        chartOptionBox.style.top="12.5%"
+        chartOptionBox.style.left="22%"
+    })
+
+
+    toggleButton.addEventListener("click", () => {
+        if (chartOptionBox.style.width === '2%') {
+            chartOptionBox.style.width = '67%'
+            chartOptionBox.style.justifyContent = "space-between"
+            content.style.display = 'block'
+        } else {
+            chartOptionBox.style.width = '2%'
+            chartOptionBox.style.justifyContent = "center"
+            content.style.display = "none"; // 折叠时将最大高度设为0，实现过渡效果
+
+        }
+        toggleButton.classList.toggle('toggleButtonExpand')
+        toggleButton.classList.toggle('toggleButton')
+    });
+
+    cityLocationBtn.addEventListener('click', function () {
+        cityLocationChart.style.display = "block";
+        pollutionViewChart.style.display = "none"
+        mCharts1.resize();
+    });
+
+    pollutionViewBtn.addEventListener('click', function () {
+        cityLocationChart.style.display = "none";
+        pollutionViewChart.style.display = "block"
+        mCharts2.resize();
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        chartContainer.style.top = window.innerHeight * 0.11 + 'px';
+        chartOptionBox.style.top="12.5%"
+        chartOptionBox.style.left="22%"
+        chartOptionBox.style.maxHeight = window.innerHeight * 0.03 + 'px';
+        content.style.top = -window.innerHeight * 0.0085 + 'px'
+        chartOptionBox.style.width = '2%'
+        chartOptionBox.style.height = '120%'
+        mCharts1.resize();
+        mCharts2.resize();
+    });
 </script>
+
+
+<style>
+
+    .pollution-chart-container {
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        left: 7%;
+        height: 85%;
+        width: 85%;
+    }
+
+    .options {
+        position: relative;
+        background-color: #f0f0f0;
+        border: 2px solid #c4c7ce; /* 分隔线 */
+        border-bottom: 2px solid #ccc; /* 分隔线 */;
+        font-size: 80%;
+        width: 100%;
+        height: 9%;
+        border-radius: 10px 10px 0 0; /* 10px 圆角，底部为直角 */
+    }
+
+
+    .total_chose_box {
+        display: none;
+        position: relative;
+        transition: height 0.7s ease; /* 添加过渡效果，使显示和隐藏平滑 */
+        max-height: 0; /* 默认最大高度为0，即折叠状态 */
+    }
+
+    .chart-options {
+        display: flex;
+        transition: width 0.5s ease; /* 添加过渡效果，使显示和隐藏平滑 */
+        justify-content: center; /* 将内容水平居中 */
+        border-radius: 20px;
+        border: 2px solid #ccc;
+        padding: 5px;
+        position: fixed;
+        overflow: hidden;
+        max-height: 20px;
+        font-size: 20px;
+        top:500px;
+        left: 500px;
+    }
+
+    .city-location,
+    .pollution-view {
+        height: 100%;
+        display: flex;
+        float: left;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        transition: background 0.5s; /* 添加过渡效果 */
+    }
+
+    .city-location {
+        width: 7%;
+    }
+
+    .pollution-view {
+        width: 10%;
+    }
+
+    .chose_text_in {
+        width: 7%;
+    }
+
+    .toggleButton,
+    .toggleButtonExpand {
+        position: relative;
+        align-items: center;
+        width: 70px;
+        height: 40px;
+        margin: -10px;
+        display: flex;
+        justify-content: center;
+        background-color: transparent;
+        transition: background 0.7s; /* 添加过渡效果 */
+        border: none;
+
+    }
+
+    .city-location:hover,
+    .pollution-view:hover {
+        background: #ffffff;
+    }
+
+    .toggleButton:hover,
+    .toggleButtonExpand:hover {
+        background-color: #f0f0f0;
+    }
+
+    .toggleButton::before,
+    .toggleButton::after {
+        content: "";
+        position: absolute;
+        width: 3px;
+        height: 15px;
+        background-color: #989898; /* 图标颜色 */
+    }
+
+    .toggleButtonExpand::before,
+    .toggleButtonExpand::after {
+        content: "";
+        position: absolute;
+        width: 3px;
+        height: 15px;
+        background-color: #989898; /* 图标颜色 */
+    }
+
+    .toggleButton::before {
+        transform: translate(0, 31%) rotate(45deg);
+    }
+
+    .toggleButton::after {
+        transform: translate(0, -31%) rotate(-45deg);
+    }
+
+    .toggleButtonExpand::before {
+        transform: translate(0, 31%) rotate(-45deg);
+    }
+
+    .toggleButtonExpand::after {
+        transform: translate(0, -31%) rotate(45deg);
+    }
+
+    .con {
+        position: relative;
+        background-color: transparent;
+        border: 2px solid #c4c7ce; /* 分隔线 */
+        border-top: none; /* 分隔线 */;
+        border-radius: 0 0 10px 10px; /* 10px 圆角，底部为直角 */
+        font-size: 70%;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .left-chart,
+    .right-chart {
+        flex: 1;
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .left-chart {
+        display: block;
+    }
+
+    .right-chart {
+        display: none;
+    }
+
+</style>
 
 </html>
