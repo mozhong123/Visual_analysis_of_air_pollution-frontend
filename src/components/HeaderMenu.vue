@@ -1,115 +1,204 @@
 <template>
-  <div>
+  <header class="navbar-header">
     <div class="navbar">
-      <ul>
-        <li v-for="item in headerMenu" :key="item.id" class="nav-item">
-          <div @mouseover="showDropdown(item.id)" @mouseleave="hideDropdown(item.id)">
-            <router-link v-if="item.id!==4" :to="item.path">{{ item.title }}</router-link>
-            <div v-if="item.id===4" class="auth-buttons">
-              <router-link v-if="!loginStatus.loggedIn" :to="'/login'">Login</router-link>
-              <router-link v-if="loginStatus.loggedIn" :to="'/profile'">
-                {{ loginStatus.username }}
-              </router-link>
-            </div>
-            <div v-show="filteredViewable(item.id)" class="dropdown">
-              <ul v-for="subItem in filteredSubItems(item.id)" :key="subItem.id">
-                <li v-if="subItem.to&&subItem.viewable">
-                  <router-link :to=subItem.to>{{ subItem.val }}</router-link>
-                </li>
-                <li v-if="!subItem.to&&subItem.viewable">{{ subItem.val }}</li>
-              </ul>
-            </div>
-          </div>
-        </li>
-      </ul>
+      <img src="static/logo_sdu.webp" class="logo" alt="Logo">
+      <div class=navbar-left>
+        <router-link to="/index" class="navbar-left-button-home">
+          <p>主页</p>
+        </router-link>
+        <router-link to="/index" class="navbar-left-button-time">
+          <p>时空动态变化趋势</p>
+        </router-link>
+        <router-link to="/index" class="navbar-left-button-health">
+          <p>健康效应</p>
+        </router-link>
+        <router-link to="/index" class="navbar-left-button-commercial">
+          <p>经济效益</p>
+        </router-link>
+      </div>
     </div>
-  </div>
+    <div class="navbar-dropdown">
+      <div class="navbar-left-dropdown-home">
+        <ul>
+        </ul>
+      </div>
+      <div class="navbar-left-dropdown-time">
+        <ul>
+          <router-link to="/pollutionmap">
+            <li>污染物图</li>
+          </router-link>
+          <router-link to="/weathermap">
+            <li>气象图</li>
+          </router-link>
+          <router-link to="/sankeymap">
+            <li>桑基图</li>
+          </router-link>
+        </ul>
+      </div>
+      <div class="navbar-left-dropdown-health">
+        <ul>
+          <li>tmp-health</li>
+          <li>tmp-health</li>
+          <li>tmp-health</li>
+          <li>tmp-health</li>
+        </ul>
+      </div>
+      <div class="navbar-left-dropdown-commercial">
+        <ul>
+          <li>tmp-commercial</li>
+          <li>tmp-commercial</li>
+          <li>tmp-commercial</li>
+          <li>tmp-commercial</li>
+        </ul>
+      </div>
+    </div>
+  </header>
 </template>
 
 <script>
 export default {
   data() {
-    return {
-      headerMenu: [
-        {id: 0, title: "主页", path: "/c/home"},
-        {id: 1, title: "时空动态变化趋势", path: "/c/experiment"},
-        {id: 2, title: "健康效应", path: "/c/resources"},
-        {id: 3, title: "经济效益", path: "/c/course"},
-        {id: 4, title: "user", path: ""}
-      ],
-      loginStatus: {
-        loggedIn: false,
-        username: ""
-      },
-      dropdownMenu: [
-        {id: 0, content: [{id: 0, val: 'logout', viewable: true}], viewable: false},
-        {id: 1, content: [{id: 0, val: '污染物图',to: '/pollutionmap', viewable: true},{id: 1, val: '气象图', to: '/weathermap',viewable: true},{id: 2, val: '桑基图',to: '/sankeymap', viewable: true},{id: 3, val: '聚类图', to: '/clustermap',viewable: true}], viewable: false},
-        {id: 2, content: [{id: 0, val: 'logout', viewable: true}], viewable: false},
-        {id: 3, content: [{id: 0, val: 'logout', viewable: true}], viewable: false},
-        {id: 4, content: [{id: 0, val: 'logout', to: '/logout', viewable: false}], viewable: false},
-      ],
-    };
   },
   mounted() {
     // 在Vue组件的mounted生命周期钩子中执行加载外部HTML的操作
+
+    const buttonHome = document.querySelector('.navbar-left-button-home');
+    const dropdownHome = document.querySelector('.navbar-left-dropdown-home');
+    const buttonTime = document.querySelector('.navbar-left-button-time');
+    const dropdownTime = document.querySelector('.navbar-left-dropdown-time');
+    const buttonHealth = document.querySelector('.navbar-left-button-health');
+    const dropdownHealth = document.querySelector('.navbar-left-dropdown-health');
+    const buttonCommercial = document.querySelector('.navbar-left-button-commercial');
+    const dropdownCommercial = document.querySelector('.navbar-left-dropdown-commercial');
+    const navbar = document.querySelector('.navbar');
+
+    navbar.addEventListener('mouseover', this.setDropdownPosition);
+
+    buttonHome.addEventListener('mouseover', () => {
+      dropdownHome.style.display = 'block';
+    });
+    dropdownHome.addEventListener('mouseover', () => {
+      dropdownHome.style.display = 'block';
+    });
+    buttonHome.addEventListener('mouseout', () => {
+      dropdownHome.style.display = 'none';
+    });
+    dropdownHome.addEventListener('mouseout', () => {
+      dropdownHome.style.display = 'none';
+    });
+
+    buttonTime.addEventListener('mouseover', () => {
+      dropdownTime.style.display = 'block';
+    });
+    dropdownTime.addEventListener('mouseover', () => {
+      dropdownTime.style.display = 'block';
+    });
+    buttonTime.addEventListener('mouseout', () => {
+      dropdownTime.style.display = 'none';
+    });
+    dropdownTime.addEventListener('mouseout', () => {
+      dropdownTime.style.display = 'none';
+    });
+
+    buttonHealth.addEventListener('mouseover', () => {
+      dropdownHealth.style.display = 'block';
+    });
+    dropdownHealth.addEventListener('mouseover', () => {
+      dropdownHealth.style.display = 'block';
+    });
+    buttonHealth.addEventListener('mouseout', () => {
+      dropdownHealth.style.display = 'none';
+    });
+    dropdownHealth.addEventListener('mouseout', () => {
+      dropdownHealth.style.display = 'none';
+    });
+
+    buttonCommercial.addEventListener('mouseover', () => {
+      dropdownCommercial.style.display = 'block';
+    });
+    dropdownCommercial.addEventListener('mouseover', () => {
+      dropdownCommercial.style.display = 'block';
+    });
+    buttonCommercial.addEventListener('mouseout', () => {
+      dropdownCommercial.style.display = 'none';
+    });
+    dropdownCommercial.addEventListener('mouseout', () => {
+      dropdownCommercial.style.display = 'none';
+    });
+
+
   },
   created() {
-    // 在这里可以添加逻辑来检查用户是否已登录，如果已登录则设置 this.isLoggedIn 为 true
-    // 如果用户已登录，还可以获取用户的用户名，然后设置 this.username
-    // 从本地浏览器缓存中获取登录状态和用户名
-    const isLoggedIn = localStorage.getItem('loggedIn');
-    const username = localStorage.getItem('userName');
-    console.log(isLoggedIn)
-    console.log(username)
-    // 检查本地浏览器缓存中是否存在登录状态和用户名
-    if (isLoggedIn === 'true' && username) {
-      // 如果存在，设置isLoggedIn为true，并将用户名赋值给this.username
-      this.loginStatus.loggedIn = true;
-      this.loginStatus.username = username;
-    } else {
-      // 如果不存在，isLoggedIn为false，用户名为空字符串
-      this.loginStatus.loggedIn = false;
-      this.loginStatus.loggedIn = '';
-    }
-    this.dropdownMenu.find(item => item.id === 4).content.
-    find(item => item.id === 0).viewable = this.loginStatus.loggedIn;
+
   },
   methods: {
-    showDropdown(route) {
-      this.dropdownMenu.find(item => item.id === route).viewable = true;
-    },
-    hideDropdown(route) {
-      this.dropdownMenu.find(item => item.id === route).viewable = false;
+    setDropdownPosition() {
+      const buttonHome = document.querySelector('.navbar-left-button-home');
+      const dropdownHome = document.querySelector('.navbar-left-dropdown-home');
+      const buttonTime = document.querySelector('.navbar-left-button-time');
+      const dropdownTime = document.querySelector('.navbar-left-dropdown-time');
+      const buttonHealth = document.querySelector('.navbar-left-button-health');
+      const dropdownHealth = document.querySelector('.navbar-left-dropdown-health');
+      const buttonCommercial = document.querySelector('.navbar-left-button-commercial');
+      const dropdownCommercial = document.querySelector('.navbar-left-dropdown-commercial');
+
+      const rect_home = buttonHome.getBoundingClientRect();
+      const rect_time = buttonTime.getBoundingClientRect();
+      const rect_health = buttonHealth.getBoundingClientRect()
+      const rect_commercial = buttonCommercial.getBoundingClientRect()
+
+      dropdownHome.style.top = `${rect_home.height}px`
+      dropdownTime.style.top = `${rect_time.height}px`
+      dropdownHealth.style.top = `${rect_health.height}px`
+      dropdownCommercial.style.top = `${rect_commercial.height}px`
+      dropdownHome.style.left = `${rect_home.left}px`
+      dropdownTime.style.left = `${rect_time.left}px`
+      dropdownHealth.style.left = `${rect_health.left}px`
+      dropdownCommercial.style.left = `${rect_commercial.left}px`
+      dropdownHome.style.width = `${rect_home.width}px`
+      dropdownTime.style.width = `${rect_time.width}px`
+      dropdownHealth.style.width = `${rect_health.width}px`
+      dropdownCommercial.style.width = `${rect_commercial.width}px`
     },
   },
-  computed: {
-    filteredSubItems() {
-      return (selectedItemId) => {
-        return this.dropdownMenu.find(item => item.id === selectedItemId).content;
-      };
-    },
-    filteredViewable() {
-      return (selectedItemId) => {
-        return this.dropdownMenu.find(item => item.id === selectedItemId).viewable;
-      };
-    },
-  },
+
+
 };
 </script>
 
 <style scoped>
+
+a {
+  color: inherit; /* 继承父元素的文本颜色 */
+  text-decoration: none; /* 移除下划线 */
+  cursor: pointer; /* 设置鼠标指针为指针样式，表示可以点击 */
+}
+
+a:hover {
+  background-color: #f0f0f0;
+}
+
+li {
+  position: relative;
+  height: 35px;
+  transition: background 0.5s; /* 添加过渡效果 */
+  color: inherit;
+}
+
+li:hover {
+  background: #f0f0f0;
+}
+
 .navbar {
-  display: inline-block; /* 添加display属性 */
+  display: flex; /* 添加display属性 */
   position: fixed;
-  justify-content: space-evenly; /* 元素之间的空间平均分配 */
-  align-items: center; /* 垂直居中对齐 */
+  align-items: flex-start; /* 垂直居中对齐 */
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  height: 5%;
-  font-size: 25px;
-  background-color: rgba(10, 0, 20, 0.8); /* 更深的颜色 */
+  height: 7%;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 }
 
 .navbar::before {
@@ -119,65 +208,68 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(-225deg, #231557 0%, #43107a 29%, #FF1361 100%);
   z-index: 99;
 }
 
-.nav-item {
+.logo {
+  float: left;
+  height: 100%;
+}
+
+.navbar-left {
+  width: 70%;
   z-index: 100;
+  font-size: 20px;
+  height: 100%;
+}
+
+.navbar-left-button-home,
+.navbar-left-button-time,
+.navbar-left-button-health,
+.navbar-left-button-commercial {
+  height: 100%;
+  display: flex;
+  float: left;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+
+.navbar-left-button-home {
+  width: 11%;
+}
+
+.navbar-left-button-time {
+  width: 17%;
+}
+
+.navbar-left-button-health {
+  width: 13%;
+}
+
+.navbar-left-button-commercial {
+  width: 13%;
 }
 
 ul {
   list-style: none;
-  display: flex;
-  justify-content: space-around;
-//height: 100%; padding: 0; margin: 0;
-}
-
-li {
-  display: inline-block;
-  min-width: 130px;
-  height: 100%;
-  font-size: 1em;
-  margin: 0;
-}
-
-/* 为活动链接添加样式 */
-li.active {
-  font-weight: bold;
-}
-
-.auth-buttons {
-  display: flex;
-  justify-content: space-around;
-  align-items: center; /* 垂直居中对齐 */
-  position: relative;
-  cursor: pointer;
-  min-width: 130px;
+  text-align: center; /* 让列表项中的文本内容水平居中显示 */
   padding: 0;
   margin: 0;
 }
 
-.dropdown {
-  display: block;
-  position: relative;
-  justify-content: space-between;
-  top: 100%;
-  height: 100%;
-  left: 0;
-  background-color: #FF1361;
-  min-width: 130px;
-  width: 100%;
+.navbar-left-dropdown-home,
+.navbar-left-dropdown-time,
+.navbar-left-dropdown-health,
+.navbar-left-dropdown-commercial {
+  display: none;
+  position: fixed;
+  text-align: center;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.5);
+  z-index: 100;
 }
 
-.dropdown div {
-  color: white;
-  padding: 8px 0;
-  cursor: pointer;
-  z-index: 98;
-}
-
-.menu-item:hover .dropdown {
-  display: block;
-}
 </style>
