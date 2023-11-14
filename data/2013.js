@@ -38028,3 +38028,4 @@ var data2018 = [
     }
 ];
 
+export {data2013,data2014,data2015,data2016,data2017,data2018};
