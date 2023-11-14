@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "-": "^0.0.1",
+    "axios": "^1.6.0",
     "chart.js": "^4.4.0",
     "core-js": "^3.33.0",
     "element-plus": "^2.4.0",
