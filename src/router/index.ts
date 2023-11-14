@@ -103,10 +103,14 @@ export const constantRoutes = [
         component: () => import('@/views/NotFound.vue'),
     },
     {
+        path: "/temps",
+        name: 'not-found1',
+        component: () => import('@/views/temps.vue'),
+    },
+    {
         path: "/:pathMatch(.*)*",
         redirect: "404"
     }
-
 ]
 
 const router = createRouter({
