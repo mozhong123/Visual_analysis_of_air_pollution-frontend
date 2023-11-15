@@ -59,7 +59,9 @@ export default {
       loading: true,
       type: 'AQI',
       AQIState: '良好',
-      time: 2013,
+      year: 2013,
+      month: 1,
+      day: 1,
       level: 1,
       PM25: 74.27,
       PM10: 92.39,
@@ -74,21 +76,24 @@ export default {
   },
   mounted() {
     const mapChartContainer = document.getElementById("container");
-    const containerButton=document.querySelector(".map-chart-button");
-    /*
+    const containerButton = document.querySelector(".map-chart-button");
+    let intervalId = 0;
+
     //如果想要点击展开的话就用这一段
     containerButton.addEventListener('click', () => {
-       if (mapChartContainer.style.left === '86%') {
-         mapChartContainer.style.left = '100%';
-       } else {
-         mapChartContainer.style.left = '86%';
-       }
-     }) */
+      if (mapChartContainer.style.left === '86%') {
+        this.hideSideMenu();
+      } else {
+        this.expandSideMenu();
+      }
+    })
 
+    /*
     containerButton.addEventListener('mouseover', this.expandSideMenu);
     mapChartContainer.addEventListener('mouseover', this.expandSideMenu);
     containerButton.addEventListener('mouseout', this.hideSideMenu);
     mapChartContainer.addEventListener('mouseout', this.hideSideMenu);
+     */
   },
   computed: {},
   watch: {},
@@ -96,10 +101,57 @@ export default {
     expandSideMenu() {
       const mapChartContainer = document.getElementById("container");
       mapChartContainer.style.left = '86%';
+      this.intervalId = setInterval(this.dataReset, 100);
     },
     hideSideMenu() {
       const mapChartContainer = document.getElementById("container");
       mapChartContainer.style.left = '100%';
+      clearInterval(this.intervalId);
+    },
+    dataReset() {
+      // 前端代码
+      // 使用fetch或其他HTTP请求库获取数据
+      // 2. 获取特定日期、城市的污染数据
+      const cityCur = localStorage.getItem('selectCity');
+      const DateCur = JSON.parse(localStorage.getItem("selectDate"));
+      if ((cityCur+'市' === this.city) && (DateCur[0] === this.year)
+          && (DateCur[1] === this.month) && (DateCur[2] === this.day)) {
+        return;
+      }
+      //需要更改
+      const backendURL = "127.0.0.1:8000/";
+      const queryRoute = "datas/";
+      const queryMethod = "pollution?"
+      const queryURL = 'http://' + backendURL + queryRoute + queryMethod
+          + 'year=' + DateCur[0]
+          + '&month=' + DateCur[1]
+          + '&day=' + DateCur[2]
+          + '&city=' + cityCur+'市';
+      fetch(queryURL, {
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data.data); // 在控制台查看获取的污染数据
+            // 在这里处理你的数据，更新前端界面
+            this.AQIState = data.data.AQIState;
+            this.AQI = data.data.AQI.toFixed(2);
+            this.PM25 = data.data.PM2_5.toFixed(2);
+            this.PM10 = data.data.PM10.toFixed(2);
+            this.SO2 = data.data.SO2.toFixed(2);
+            this.NO2 = data.data.NO2.toFixed(2);
+            this.CO = data.data.CO.toFixed(2);
+            this.O3 = data.data.O3.toFixed(2);
+
+          })
+          .catch(error => console.error('Error:', error));
+      this.year = DateCur[0];
+      this.month = DateCur[1];
+      this.day = DateCur[2];
+      this.city = cityCur+'市';
     },
   }
 }
