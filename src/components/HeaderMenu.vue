@@ -3,16 +3,16 @@
     <div class="navbar">
       <img src="static/logo_sdu.webp" class="logo" alt="Logo">
       <div class=navbar-left>
-        <router-link to="/index" class="navbar-left-button-home">
+        <router-link to="/index" class="navbar-left-button-home" @click="refreshAndNavigate('/index')">
           <p>主页</p>
         </router-link>
-        <router-link to="/index" class="navbar-left-button-time">
+        <router-link to="/index" class="navbar-left-button-time" @click="refreshAndNavigate('/index')">
           <p>时空动态变化趋势</p>
         </router-link>
-        <router-link to="/index" class="navbar-left-button-health">
+        <router-link to="/index" class="navbar-left-button-health" @click="refreshAndNavigate('/index')">
           <p>健康效应</p>
         </router-link>
-        <router-link to="/index" class="navbar-left-button-commercial">
+        <router-link to="/index" class="navbar-left-button-commercial" @click="refreshAndNavigate('/index')">
           <p>经济效益</p>
         </router-link>
       </div>
@@ -24,14 +24,17 @@
       </div>
       <div class="navbar-left-dropdown-time">
         <ul>
-          <router-link to="/pollutionmap">
+          <router-link to="/pollutionmap" @click="refreshAndNavigate('/pollutionmap')">
             <li>污染物图</li>
           </router-link>
-          <router-link to="/weathermap">
+          <router-link to="/weathermap" @click="refreshAndNavigate('/weathermap')">
             <li>气象图</li>
           </router-link>
-          <router-link to="/sankeymap">
+          <router-link to="/sankeymap" @click="refreshAndNavigate('/sankeymap')">
             <li>桑基图</li>
+          </router-link>
+          <router-link to="/clustermap" @click="refreshAndNavigate('/clustermap')">
+            <li>聚类图</li>
           </router-link>
         </ul>
       </div>
@@ -159,6 +162,14 @@ export default {
       dropdownTime.style.width = `${rect_time.width}px`
       dropdownHealth.style.width = `${rect_health.width}px`
       dropdownCommercial.style.width = `${rect_commercial.width}px`
+    },
+    refreshAndNavigate(route) {
+      // 刷新页面
+      const fullPath = this.$router.resolve(route).href;
+      // 刷新页面并导航到指定路由
+      window.location.href = fullPath;
+      // 导航到指定路由
+
     },
   },
 

@@ -2,7 +2,7 @@
   <div class="background-container1">
     <iframe
         class="background-iframe1"
-        src="/src/assets/html/WeatherMap.html"
+        src="/src/assets/html/SankeyMap.html"
         ref="iframeDom"
     ></iframe>
     <!-- Your main content goes here -->
@@ -28,11 +28,12 @@ export default {
 <style>
 .background-container1 {
   position: fixed;
-  top: 50px;
-  left: -10px;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  z-index: 2;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .background-iframe1 {

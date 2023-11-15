@@ -564,3 +564,5 @@ function time_AQI(data2018, city, year){
 
   return timeseries;
 }
+
+export {pcp_whole,pcp_make,time_AQI,time_year_AQI,time_whole_AQI};
