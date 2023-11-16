@@ -72,6 +72,8 @@
     var pollution = 'PM2.5';
     var url = '/data/2.json'
     var url3 = '/data/CO.json'
+    localStorage.setItem("selectCity", '北京');
+    localStorage.setItem('selectDate',JSON.stringify([2013,1,1]))
 
     function dataChange(url) {
         $.get('/data/china.json', function (ret) {
@@ -125,7 +127,7 @@
                     show: true,
                     text: year + '年' + month + '月' + day + '日' + 'AQI',
                     textStyle: {
-                            color: 'rgba(0, 0, 0, 1)'// 设置文本颜色为黑色
+                        color: 'rgba(0, 0, 0, 1)'// 设置文本颜色为黑色
                     }
                 },
                 tooltip: {
@@ -135,7 +137,7 @@
                     alwaysShowContent: false,//是否永远显示提示框内容，默认情况下在移出可触发提示框区域后 一定时间 后隐藏，设置为 true 可以保证一直显示提示框内容
                     hideDelay: 0,//鼠标移出坐标点时，浮层隐藏的延迟时间，单位为 ms，在 alwaysShowContent 为 true 的时候无效
                     formatter: function (params) {
-                        //   console.log(params)
+                        localStorage.setItem("selectCity", params.data.name);
                         return params.data.name + pollution + ':' + params.data.value[3]
                     }
                 },
@@ -266,7 +268,9 @@
         }
         if (flag) {
             url = '../map_data/' + year + '/' + month + '/' + day + '.json'
+            localStorage.setItem('selectDate',JSON.stringify([y,m,d]))
             //        console.log(url);
+            //console.log([y,m,d]);
             dataChange(url);
         }
     })
@@ -496,8 +500,8 @@
 
     window.addEventListener('resize', () => {
         chartContainer.style.top = window.innerHeight * 0.11 + 'px';
-        chartOptionBox.style.top="12.5%"
-        chartOptionBox.style.left="22%"
+        chartOptionBox.style.top = "12.5%"
+        chartOptionBox.style.left = "22%"
     })
 
 
@@ -530,8 +534,8 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         chartContainer.style.top = window.innerHeight * 0.11 + 'px';
-        chartOptionBox.style.top="12.5%"
-        chartOptionBox.style.left="22%"
+        chartOptionBox.style.top = "12.5%"
+        chartOptionBox.style.left = "22%"
         chartOptionBox.style.maxHeight = window.innerHeight * 0.03 + 'px';
         content.style.top = -window.innerHeight * 0.0085 + 'px'
         chartOptionBox.style.width = '2%'
@@ -583,7 +587,7 @@
         overflow: hidden;
         max-height: 20px;
         font-size: 20px;
-        top:500px;
+        top: 500px;
         left: 500px;
     }
 
