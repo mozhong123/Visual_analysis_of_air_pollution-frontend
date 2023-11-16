@@ -1,6 +1,5 @@
 <script>
 import HeaderMenu from "@/components/HeaderMenu.vue";
-import Starry from "@/components/Starry.vue";
 
 export default {
   data() {
@@ -11,7 +10,6 @@ export default {
     };
   },
   components: {
-    Starry,
     HeaderMenu
   },
   methods: {
@@ -24,7 +22,6 @@ export default {
         localStorage.setItem("loggedIn", "true");
         localStorage.setItem("userName", this.username);
         // 跳转到首页
-        alert("Login successful");
         this.$router.push("/index")
       } else {
         alert("Invalid username or password");
@@ -36,19 +33,17 @@ export default {
 
 <template>
   <header-menu></header-menu>
-  <starry></starry>
+  <iframe
+      class="background-iframe"
+      src="../../static/html/starry.html"
+      ref="iframeDom"
+  ></iframe>
   <!-- Your main content goes here -->
   <div class="login">
     <h2>Login</h2>
-    <form @submit.prevent="login">
-      <div class="user-bar">
-        <input type="text" id="username" v-model="username"  placeholder="Username" required>
-      </div>
-      <input type="password" id="password" v-model="password" placeholder="Password" required>
-      <button type="submit">Register</button>
-      <router-link to="/register" class="register">Register</router-link>
-    </form>
-
+    <input v-model="username" placeholder="Username"/>
+    <input v-model="password" type="password" placeholder="Password"/>
+    <button @click="Login">Login</button>
   </div>
 </template>
 
@@ -79,15 +74,5 @@ button {
   border-radius: 5px;
   z-index: 1;
   transform: translate(-50%, -50%);
-}
-
-h2{
-  color:#FF1361;
-}
-
-.register {
-  display: inline-block;
-  float: right;
-  transform: translate(-50%, 0);
 }
 </style>
