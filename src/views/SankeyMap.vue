@@ -37,7 +37,7 @@ export default {
         height: "820px",
       },
       graphStyle: {
-        backgroundColor: "rgba(0,0,0,1)",
+        backgroundColor: "rgba(0,0,0,0)",
         border: "solid",
         borderColor: "rgba(0,0,0,0)",
         transform: "rotate(0deg)",
