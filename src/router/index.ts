@@ -83,6 +83,11 @@ export const constantRoutes = [
         component: () => import('@/views/ClusterMap.vue'),
     },
     {
+        path: '/predict',
+        name: 'predict',
+        component: () => import('@/views/Predict.vue'),
+    },
+    {
         path: '/register',
         name: 'register',
         component: () => import('@/views/Register.vue'),
