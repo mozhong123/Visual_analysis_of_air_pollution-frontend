@@ -36,6 +36,9 @@
           <router-link to="/clustermap" @click="refreshAndNavigate('/clustermap')">
             <li>聚类图</li>
           </router-link>
+          <router-link to="/predict" @click="refreshAndNavigate('/predict')">
+            <li>预测图</li>
+          </router-link>
         </ul>
       </div>
       <div class="navbar-left-dropdown-health">
