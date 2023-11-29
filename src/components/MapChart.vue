@@ -55,21 +55,21 @@ export default {
   name: 'mapChart',
   data() {
     return {
-      city: "北京市",
+      city: "请选择城市",
       loading: true,
       type: 'AQI',
-      AQIState: '良好',
+      AQIState: '无',
       year: 2013,
       month: 1,
       day: 1,
-      level: 1,
-      PM25: 74.27,
-      PM10: 92.39,
-      SO2: 33.9,
-      NO2: 58.38,
-      CO: 2.37,
-      O3: 26.97,
-      AQI: 94.72
+      level: 0,
+      PM25: 0,
+      PM10: 0,
+      SO2: 0,
+      NO2: 0,
+      CO: 0,
+      O3: 0,
+      AQI: 0
     }
   },
   created() {
@@ -114,44 +114,28 @@ export default {
       // 2. 获取特定日期、城市的污染数据
       const cityCur = localStorage.getItem('selectCity');
       const DateCur = JSON.parse(localStorage.getItem("selectDate"));
-      if ((cityCur+'市' === this.city) && (DateCur[0] === this.year)
+      if ((cityCur === this.city) && (DateCur[0] === this.year)
           && (DateCur[1] === this.month) && (DateCur[2] === this.day)) {
         return;
       }
-      //需要更改
-      const backendURL = "127.0.0.1:8000/";
-      const queryRoute = "datas/";
-      const queryMethod = "pollution?"
-      const queryURL = 'http://' + backendURL + queryRoute + queryMethod
-          + 'year=' + DateCur[0]
-          + '&month=' + DateCur[1]
-          + '&day=' + DateCur[2]
-          + '&city=' + cityCur+'市';
-      fetch(queryURL, {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      })
-          .then(response => response.json())
-          .then(data => {
-            console.log(data.data); // 在控制台查看获取的污染数据
-            // 在这里处理你的数据，更新前端界面
-            this.AQIState = data.data.AQIState;
-            this.AQI = data.data.AQI.toFixed(2);
-            this.PM25 = data.data.PM2_5.toFixed(2);
-            this.PM10 = data.data.PM10.toFixed(2);
-            this.SO2 = data.data.SO2.toFixed(2);
-            this.NO2 = data.data.NO2.toFixed(2);
-            this.CO = data.data.CO.toFixed(2);
-            this.O3 = data.data.O3.toFixed(2);
+      //console.log(data.data); // 在控制台查看获取的污染数据
+      // 在这里处理你的数据，更新前端界面
 
-          })
-          .catch(error => console.error('Error:', error));
+      const Data = JSON.parse(localStorage.getItem("MapCur"));
+      const cityData = Data.find(record => record.name === cityCur);
+      //console.log(cityData);
+      this.AQIState = cityData.AQIState;
+      this.AQI = cityData.AQI.toFixed(2);
+      this.PM25 = cityData.PM2_5.toFixed(2);
+      this.PM10 = cityData.PM10.toFixed(2);
+      this.SO2 = cityData.SO2.toFixed(2);
+      this.NO2 = cityData.NO2.toFixed(2);
+      this.CO = cityData.CO.toFixed(2);
+      this.O3 = cityData.O3.toFixed(2);
       this.year = DateCur[0];
       this.month = DateCur[1];
       this.day = DateCur[2];
-      this.city = cityCur+'市';
+      this.city = cityCur;
     },
   }
 }
@@ -246,7 +230,7 @@ export default {
   height: 40%;
   left: 3%;
   top: 80%;
-  font-size: 18px;
+  font-size: 50%;
   border-radius: 5px;
   text-align: center;
   line-height: 150%;
@@ -320,7 +304,7 @@ export default {
   text-align: center;
   color: rgb(58, 60, 179);
   font-weight: 700;
-  font-size: 90%;
+  font-size: 60%;
 }
 
 #PM25Name, #PM10Name {
@@ -340,5 +324,6 @@ export default {
   font-weight: 800;
   border-radius: 10px;
   line-height: 300%;
+  font-size: 65%;
 }
 </style>
