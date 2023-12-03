@@ -58,6 +58,7 @@ import * as echarts from "echarts";
 import $ from "jquery";
 import 'echarts/extension/bmap/bmap';
 import 'echarts-gl';
+import {backendURL,queryRoute,method,headers} from "@/config/const.ts";
 import ecStat from 'echarts-stat';
 
 
@@ -91,17 +92,17 @@ export default {
       // 2. 获取特定日期、城市的污染数据
       const DateCur = JSON.parse(localStorage.getItem("selectDate"));
       //需要更改
-      const backendURL = "127.0.0.1:8000/";
-      const queryRoute = "datas/";
-      const queryMethod = "map?"
+      const queryMethod = "pollution_map?"
       const queryURL = 'http://' + backendURL + queryRoute + queryMethod
           + 'year=' + DateCur[0]
           + '&month=' + DateCur[1]
           + '&day=' + DateCur[2]
       fetch(queryURL, {
-        method: "GET",
+        method: method,
         headers: {
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
         }
       })
           .then(response => response.json())

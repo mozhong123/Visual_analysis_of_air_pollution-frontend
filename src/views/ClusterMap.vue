@@ -3,10 +3,6 @@
     <div class="total_chose_box" style="width:1500px;position: relative;margin-top: 80px;">
         <span class="chose_tltle">请输入年份：</span>
         <input class="chose_text_in" id="selectDate1" value=2013>
-        <span class="chose_tltle">请输入月份：</span>
-        <input class="chose_text_in" id="selectDate2" value=1>
-        <span class="chose_tltle">请输入日期：</span>
-        <input class="chose_text_in" id="selectDate3" value=1>
         <button class="chose_enter" id="selectDate">确定</button>
         <button class="chose_enter" id="btn1">PM2.5</button>
         <button class="chose_enter" id="btn2">PM10</button>
@@ -83,7 +79,6 @@
         $.get(url, function (ret) {
             //             console.log(ret);
             data = ret['coordinate'];
-            //      console.log(data)
             var clusterNumber = 11;
             var step = ecStat.clustering.hierarchicalKMeans(data, clusterNumber, true);
             var result;
@@ -420,7 +415,6 @@
     var r=0;
     function dataChange3(url) {//计算六种污染物之间的皮尔逊相关系数
         $.get(url, function (ret) {
-            console.log(ret.data)
             for(var i=0; i<ret.data.length; i++){
                 sx+=ret.data[i][5];
                 sy+=ret.data[i][4];
@@ -435,7 +429,6 @@
             down1=Math.sqrt(down1);
             down2=Math.sqrt(down2);
             r=up1/(down1*down2);//计算皮尔逊相关系数
-            console.log(r);
             var optionm;
             var schema = [
                 { name: 'PM25', index: 1, text: 'PM25' },
@@ -449,6 +442,7 @@
 
             var rawData = [];
             rawData = ret.data
+          console.log(rawData)
             var CATEGORY_DIM_COUNT = 6;
             var GAP = 2;
             var BASE_LEFT = 5;
@@ -653,21 +647,4 @@
   </script>
   
   <style>
-  .background-container1 {
-    position: fixed;
-    top: 50px;
-    left: -10px;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-  }
-  
-  .background-iframe1 {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
   </style>

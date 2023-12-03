@@ -30,18 +30,18 @@ export default {
     return {
       containerStyle: {
         backgroundColor: "rgba(0,0,0,0)",
-        height: "1200px",
-        width: "820px",
+        height: "calc(78vh)", // 根据需要调整额外的边距
+        width: "800px",
       },
       rowStyle: {
-        height: "820px",
+        height: "200px",
       },
       graphStyle: {
         backgroundColor: "rgba(0,0,0,0)",
         border: "solid",
         borderColor: "rgba(0,0,0,0)",
         transform: "rotate(0deg)",
-        height: "1200px",
+        height: "720px",
       }
     };
   },
@@ -127,22 +127,4 @@ export default {
 </script>
 
 <style>
-.background-container1 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.background-iframe1 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-}
 </style>

@@ -607,21 +607,4 @@ export default {
 </script>
 
 <style>
-.background-container1 {
-  position: fixed;
-  top: 50px;
-  left: -10px;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-}
-
-.background-iframe1 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-}
 </style>
