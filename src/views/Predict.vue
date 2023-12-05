@@ -1,23 +1,36 @@
 <template>
+  <div class="total_chose_box" style="width:1200px;left:100px;position: relative;margin-top: 80px;">
+        <span class="chose_tltle">请输入年份：</span>
+        <input class="chose_text_in" id="selectDate1" value=2013>
+        <span class="chose_tltle">请输入月份：</span>
+        <input class="chose_text_in" id="selectDate3" value=1>
+        <span class="chose_tltle">请输入城市：</span>
+        <input class="chose_text_in" id="selectDate2" value=北京市>
+        <button class="chose_enter" id="selectDate">确定</button>
+        <button class="chose_enter" id="btn7">前一年</button>
+        <button class="chose_enter" id="btn8">后一年</button>
+        <button class="chose_enter" id="btn9">前一月</button>
+        <button class="chose_enter" id="btn10">后一月</button>
+  </div>
   <div class="con" style="display: flex;">
-    <div class="con left" style="width:250px;position:relative;top:80px;background-color: rgba(0,0,0,0);flex: 1;">
+    <div class="con left" style="width:250px;position:relative;top:0px;background-color: rgba(0,0,0,0);flex: 1;">
       <!--统计分析�?-->
       <div class="div_any">
         <div class="left div_any01" style="width:250px;">
           <div class="div_any_child"
-               style="width:248px;position:relative;height: 1150px;background-color: rgba(0,0,0,0);">
-            <div class="div_any_title">日历图对比</div>
+               style="width:248px;position:relative;height: 1150px;;background-color: rgba(0,0,0,0);">
+            <div class="div_any_title">———————日历图对比</div>
             <div id="calander"
                  style="width:248px;position:relative;left:2px;height: 1050px;top:50px;background-color: rgba(0,0,0,0);"></div>
           </div>
         </div>
       </div>
     </div>
-    <div class="con right" style="width:950px;position:relative;top:50px;flex: 1;">
+    <div class="con right" style="width:950px;position:relative;top:0px;flex: 1;">
       <div class="div_any">
         <div class="left div_any01" style="width:950px;">
-          <div class="div_any_child" style="width:948px;position:relative;height: 1150px;top:30px;">
-            <div class="div_any_title">预测情况</div>
+          <div class="div_any_child" style="width:948px;position:relative;height: 1150px;top:0px;">
+            <div class="div_any_title">———————预测情况</div>
             <div id="line" style="width:948px;position:relative;left:2px;height: 1050px;top:50px"></div>
           </div>
         </div>
@@ -49,18 +62,25 @@ export default {
   data() {
   },
   mounted() {
+    var year = 2013
+    var city = '北京市'
+    var month = 1
+    var day1 = 31
     function loadData(type) {
       // const DateCur = JSON.parse(localStorage.getItem("selectDate"));
       let queryURL;
       if (type === 0) {
         queryURL = 'http://' + backendURL + queryRoute + "reality_predict_AQI?"
-            + 'year=' + '2016'
+            + 'year=' + year
+            //'2016'
 
       } else {
         queryURL = 'http://' + backendURL + queryRoute + "predict_AQI?"
-            + 'month=' + '1'
+            + 'month=' + month
+            //'1'
       }
-      queryURL = queryURL + '&city=' + '北京市'
+      queryURL = queryURL + '&city=' + city
+      //'北京市'
 
       fetch(queryURL, {
         method: method,
@@ -95,7 +115,7 @@ export default {
           if (day > maxDays) {
             break;
           }
-          var time = '2013' + '年' + month + '月' + day + '日';
+          var time = year + '年' + month + '月' + day + '日';
           var temp1 = [time, storedData[sum]['predict_AQI']];
           var temp2 = [time, storedData[sum]['AQI']];
           data1.push(temp1)
@@ -106,10 +126,11 @@ export default {
 
       mCharts.setOption(option = {
         legend: {
-          data: ['2018年实际值', '2018年预测值']
+          data: [year + '年实际值', year + '年预测值']
         },
         title: {
           // text: city + pollution,
+          text: city + 'AQI',
           left: '1%'
         },
         tooltip: {
@@ -175,7 +196,7 @@ export default {
         },
         series: [
           {
-            name: '2018年实际值',
+            name: year + '年实际值',
             type: 'line',
             data: data2.map(function (item) {
               return item[1];
@@ -204,7 +225,7 @@ export default {
           },
           {
             // name: city + pollution,
-            name: '2018年预测值',
+            name: year + '年预测值',
             type: 'line',
             lineStyle: {
               color: '#34e7e4',
@@ -248,7 +269,16 @@ export default {
     }
 
     dataChange();
-
+    function generateRange(year, month) {
+      // 构建日期对象的方法，月份是从 0 开始计数的，所以需要减去 1
+      var startDate = new Date(year, month - 1, 1);
+      var endDate = new Date(year, month, 0); // 0 表示上一个月的最后一天
+      // 将日期对象转换为字符串，格式为 'YYYY-MM-DD'
+      var startStr = echarts.format.formatTime('yyyy-MM-dd', startDate)
+      var endStr = echarts.format.formatTime('yyyy-MM-dd', endDate)
+      //console.log([startStr, endStr]);
+      return [startStr, endStr];
+    }
     function dataChange2() {
       loadData(1);
       var storedData = JSON.parse(localStorage.getItem("AQI"));
@@ -258,7 +288,8 @@ export default {
       var sixteen_data = [];
       var seventeen_data = [];
       var eighteen_data = [];
-      let month = 1;
+      //let month = 1;
+      //month=1;
       let sum = 0;
       for (var year = 2013; year <= 2018; year++) {
         var maxDays = new Date(year, month, 0).getDate();
@@ -318,24 +349,24 @@ export default {
 
         calendar: [{
           orient: 'vertical',
-          range: ['2013-01-01', '2013-01-31']
+          range: generateRange(2013, month)
         },
           {
             top: 225,
             orient: 'vertical',
-            range: ['2014-01-01', '2014-01-31']
+            range: generateRange(2014, month)
           }, {
             top: 400,
             orient: 'vertical',
-            range: ['2015-01-01', '2015-01-31']
+            range: generateRange(2015, month)
           }, {
             top: 575,
             orient: 'vertical',
-            range: ['2016-01-01', '2016-01-31']
+            range: generateRange(2016, month)
           }, {
             top: 760,
             orient: 'vertical',
-            range: ['2017-01-01', '2017-01-31']
+            range: generateRange(2017, month)
           }, {
             yearLabel: {
               formatter: function (param) {
@@ -344,7 +375,7 @@ export default {
             },
             top: 920,
             orient: 'vertical',
-            range: ['2018-01-01', '2018-01-31']
+            range: generateRange(2018, month)
           },
         ],
 
@@ -388,6 +419,46 @@ export default {
     }
 
     dataChange2()
+    $('#selectDate').click(function () {//jqury对元素进行获�?
+        var flag = 0;
+        var y = jQuery("#selectDate1").val();
+        var c = jQuery("#selectDate2").val();
+        var m = jQuery("#selectDate3").val();
+        if (year !== y || city !== c || month !==m) { year = y; city = c; month = m; flag = 1;}
+        if (flag) {
+          dataChange()
+          dataChange2()
+        }
+    })
+    $('#btn7').click(function () {//jqury对元素进行获�?
+        if(year == 2013)
+            year = 2018
+        else year -= 1
+        dataChange()
+        dataChange2()
+    })
+    $('#btn8').click(function () {//jqury对元素进行获�?
+        if(year == 2018)
+            year = 2013
+        else year += 1
+        dataChange()
+        dataChange2()
+    })
+    $('#btn9').click(function () {//jqury对元素进行获�?
+        if(month == 1)
+            month = 12
+        else month -= 1
+        dataChange()
+        dataChange2()
+    })
+    $('#btn10').click(function () {//jqury对元素进行获�?
+        if(month == 12)
+            month = 1
+        else month += 1
+        
+        dataChange()
+        dataChange2()
+    })
   }
 }
 ;
