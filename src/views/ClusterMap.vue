@@ -10,6 +10,8 @@
         <button class="chose_enter" id="btn4">NO2</button>
         <button class="chose_enter" id="btn5">CO</button>
         <button class="chose_enter" id="btn6">O3</button>
+        <button class="chose_enter" id="btn7">前一年</button>
+        <button class="chose_enter" id="btn8">后一年</button>
     </div>
     <div class = "con" style="display: flex;">
         <div class="con_left" style="flex: 1;">
@@ -404,6 +406,20 @@
     })
     $('#btn6').click(function () {//jqury对元素进行获�?
         pollution = 'O3';
+        url = '/data/cluster_data/' + year + '/' + pollution + '.json'
+        dataChange(url);
+    })
+    $('#btn7').click(function () {//jqury对元素进行获�?
+        if(year == 2013)
+            year = 2018
+        else year -= 1
+        url = '/data/cluster_data/' + year + '/' + pollution + '.json'
+        dataChange(url);
+    })
+    $('#btn8').click(function () {//jqury对元素进行获�?
+        if(year == 2018)
+            year = 2013
+        else year += 1
         url = '/data/cluster_data/' + year + '/' + pollution + '.json'
         dataChange(url);
     })
