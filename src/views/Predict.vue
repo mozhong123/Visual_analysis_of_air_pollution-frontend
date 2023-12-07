@@ -1,16 +1,16 @@
 <template>
   <div class="total_chose_box" style="width:1200px;left:100px;position: relative;margin-top: 80px;">
-        <span class="chose_tltle">请输入年份：</span>
-        <input class="chose_text_in" id="selectDate1" value=2013>
-        <span class="chose_tltle">请输入月份：</span>
-        <input class="chose_text_in" id="selectDate3" value=1>
-        <span class="chose_tltle">请输入城市：</span>
-        <input class="chose_text_in" id="selectDate2" value=北京市>
-        <button class="chose_enter" id="selectDate">确定</button>
-        <button class="chose_enter" id="btn7">前一年</button>
-        <button class="chose_enter" id="btn8">后一年</button>
-        <button class="chose_enter" id="btn9">前一月</button>
-        <button class="chose_enter" id="btn10">后一月</button>
+    <span class="chose_tltle">请输入年份：</span>
+    <input class="chose_text_in" id="selectDate1" value=2013>
+    <span class="chose_tltle">请输入月份：</span>
+    <input class="chose_text_in" id="selectDate3" value=1>
+    <span class="chose_tltle">请输入城市：</span>
+    <input class="chose_text_in" id="selectDate2" value=北京市>
+    <button class="chose_enter" id="selectDate">确定</button>
+    <button class="chose_enter" id="btn7">前一年</button>
+    <button class="chose_enter" id="btn8">后一年</button>
+    <button class="chose_enter" id="btn9">前一月</button>
+    <button class="chose_enter" id="btn10">后一月</button>
   </div>
   <div class="con" style="display: flex;">
     <div class="con left" style="width:250px;position:relative;top:0px;background-color: rgba(0,0,0,0);flex: 1;">
@@ -53,7 +53,8 @@ import $ from "jquery";
 import HeaderMenu from "@/components/HeaderMenu.vue"; // 此路径应根据你的项目结构来修改
 import BackGround from "@/components/BackGround.vue"; // 此路径应根据你的项目结构来修改
 import {backendURL, headers, method, queryRoute} from "@/config/const.ts";
-import { defineComponent, reactive, ref } from 'vue';
+import {defineComponent, reactive, ref} from 'vue';
+
 export default {
   components: {
     BackGround,
@@ -66,35 +67,46 @@ export default {
     var city = '北京市'
     var month = 1
     var day1 = 31
+    var yearInput = $("#selectDate1");
+    var cityInput = $("#selectDate2");
+    var monthInput = $("#selectDate3");
     function loadData(type) {
       // const DateCur = JSON.parse(localStorage.getItem("selectDate"));
       let queryURL;
       if (type === 0) {
         queryURL = 'http://' + backendURL + queryRoute + "reality_predict_AQI?"
-            + 'year=' + year
-            //'2016'
+            + 'year=' + year + '&city=' + city
+        fetch(queryURL, {
+          method: method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+          }
+        })
+            .then(response => response.json())
+            .then(data => {
+              localStorage.setItem("TWO_AQI", JSON.stringify(data.data));
+            })
+            .catch(error => console.error('Error:', error));
 
       } else {
         queryURL = 'http://' + backendURL + queryRoute + "predict_AQI?"
-            + 'month=' + month
-            //'1'
+            + 'month=' + month + '&city=' + city
+        fetch(queryURL, {
+          method: method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+          }
+        })
+            .then(response => response.json())
+            .then(data => {
+              localStorage.setItem("AQI", JSON.stringify(data.data));
+            })
+            .catch(error => console.error('Error:', error));
       }
-      queryURL = queryURL + '&city=' + city
-      //'北京市'
-
-      fetch(queryURL, {
-        method: method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
-        }
-      })
-          .then(response => response.json())
-          .then(data => {
-            localStorage.setItem("AQI", JSON.stringify(data.data));
-          })
-          .catch(error => console.error('Error:', error));
     }
 
     var mCharts = echarts.init(document.getElementById('line'),);
@@ -104,7 +116,7 @@ export default {
 
     function dataChange() {
       loadData(0)
-      var storedData = JSON.parse(localStorage.getItem("AQI"));
+      var storedData = JSON.parse(localStorage.getItem("TWO_AQI"));
       var data1 = [];
       var data2 = [];
       var sum = 0;
@@ -269,6 +281,7 @@ export default {
     }
 
     dataChange();
+
     function generateRange(year, month) {
       // 构建日期对象的方法，月份是从 0 开始计数的，所以需要减去 1
       var startDate = new Date(year, month - 1, 1);
@@ -276,11 +289,12 @@ export default {
       // 将日期对象转换为字符串，格式为 'YYYY-MM-DD'
       var startStr = echarts.format.formatTime('yyyy-MM-dd', startDate)
       var endStr = echarts.format.formatTime('yyyy-MM-dd', endDate)
-      //console.log([startStr, endStr]);
       return [startStr, endStr];
     }
-    function dataChange2() {
+
+    async function dataChange2() {
       loadData(1);
+      await new Promise(resolve => setTimeout(resolve, 100));
       var storedData = JSON.parse(localStorage.getItem("AQI"));
       var thirteen_data = [];
       var fourteen_data = [];
@@ -288,42 +302,40 @@ export default {
       var sixteen_data = [];
       var seventeen_data = [];
       var eighteen_data = [];
-      //let month = 1;
-      //month=1;
       let sum = 0;
       for (var year = 2013; year <= 2018; year++) {
         var maxDays = new Date(year, month, 0).getDate();
-        for (var day = 0; day <= maxDays; day++) {
+        for (var day = 1; day <= maxDays; day++) {
           var time = new Date(year, month - 1, day); // 月份是从 0 开始的，所以要减去 1
           if (year === 2013) {
             thirteen_data.push([
               echarts.format.formatTime('yyyy-MM-dd', time),
-              Math.floor(storedData[sum]['predict_AQI'])
+              Math.floor(storedData[sum]['AQI'])
             ]);
           } else if (year === 2014) {
             fourteen_data.push([
               echarts.format.formatTime('yyyy-MM-dd', time),
-              Math.floor(storedData[sum]['predict_AQI'])
+              Math.floor(storedData[sum]['AQI'])
             ]);
           } else if (year === 2015) {
             fifteen_data.push([
               echarts.format.formatTime('yyyy-MM-dd', time),
-              Math.floor(storedData[sum]['predict_AQI'])
+              Math.floor(storedData[sum]['AQI'])
             ]);
           } else if (year === 2016) {
             sixteen_data.push([
               echarts.format.formatTime('yyyy-MM-dd', time),
-              Math.floor(storedData[sum]['predict_AQI'])
+              Math.floor(storedData[sum]['AQI'])
             ]);
           } else if (year === 2017) {
             seventeen_data.push([
               echarts.format.formatTime('yyyy-MM-dd', time),
-              Math.floor(storedData[sum]['predict_AQI'])
+              Math.floor(storedData[sum]['AQI'])
             ]);
           } else if (year === 2018) {
             eighteen_data.push([
               echarts.format.formatTime('yyyy-MM-dd', time),
-              Math.floor(storedData[sum]['predict_AQI'])
+              Math.floor(storedData[sum]['AQI'])
             ]);
           }
           sum++;
@@ -341,7 +353,7 @@ export default {
         },
         visualMap: {
           min: 0,
-          max: 400,
+          max: 150,
           calculable: true,
           orient: 'vertical',
           top: '465px'
@@ -420,44 +432,58 @@ export default {
 
     dataChange2()
     $('#selectDate').click(function () {//jqury对元素进行获�?
-        var flag = 0;
-        var y = jQuery("#selectDate1").val();
-        var c = jQuery("#selectDate2").val();
-        var m = jQuery("#selectDate3").val();
-        if (year !== y || city !== c || month !==m) { year = y; city = c; month = m; flag = 1;}
-        if (flag) {
-          dataChange()
-          dataChange2()
-        }
+      var flag = 0;
+      var y = yearInput.val();
+      var c = cityInput.val();
+      var m = monthInput.val();
+      if (year !== y || city !== c) {
+        year = y;
+        city = c;
+        month = m;
+        dataChange()
+        dataChange2()
+      } else if (month !== m) {
+        year = y;
+        city = c;
+        month = m;
+        dataChange2()
+      }
+      yearInput.val(y);
+      cityInput.val(c);
+      monthInput.val(m);
+
     })
     $('#btn7').click(function () {//jqury对元素进行获�?
-        if(year == 2013)
-            year = 2018
-        else year -= 1
-        dataChange()
-        dataChange2()
+      year = parseInt(year)
+      if (year === 2013)
+        year = 2018
+      else year -= 1
+      dataChange()
+      yearInput.val(year);
     })
     $('#btn8').click(function () {//jqury对元素进行获�?
-        if(year == 2018)
-            year = 2013
-        else year += 1
-        dataChange()
-        dataChange2()
+      year = parseInt(year)
+      if (year === 2018)
+        year = 2013
+      else year += 1
+      dataChange()
+      yearInput.val(year);
     })
     $('#btn9').click(function () {//jqury对元素进行获�?
-        if(month == 1)
-            month = 12
-        else month -= 1
-        dataChange()
-        dataChange2()
+      month = parseInt(month)
+      if (month === 1)
+        month = 12
+      else month -= 1
+      dataChange2()
+      monthInput.val(month);
     })
     $('#btn10').click(function () {//jqury对元素进行获�?
-        if(month == 12)
-            month = 1
-        else month += 1
-        
-        dataChange()
-        dataChange2()
+      month = parseInt(month)
+      if (month === 12)
+        month = 1
+      else month += 1
+      dataChange2()
+      monthInput.val(month);
     })
   }
 }

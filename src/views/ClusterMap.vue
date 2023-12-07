@@ -65,6 +65,7 @@
     },
     mounted()
     {
+      var yearInput = $("#selectDate1");
     let myChart = echarts.init(document.getElementById('main'), 'dark');
     let myCharts = echarts.init(document.getElementById('two'), "dark");
     let myChartss = echarts.init(document.getElementById('three'), );
@@ -79,7 +80,6 @@
     function dataChange(url) {
         var data = [];
         $.get(url, function (ret) {
-            //             console.log(ret);
             data = ret['coordinate'];
             var clusterNumber = 11;
             var step = ecStat.clustering.hierarchicalKMeans(data, clusterNumber, true);
@@ -250,7 +250,6 @@
                     }
                 }
             }
-               console.log(curtain.toString())
             $.get('/src/assets/js/ClusterChina.json', function (ret) {
                 echarts.registerMap('chinaMap', ret)
                 optionn = {
@@ -410,18 +409,26 @@
         dataChange(url);
     })
     $('#btn7').click(function () {//jqury对元素进行获�?
-        if(year == 2013)
+      year = parseInt(year)
+        if(year === 2013)
             year = 2018
         else year -= 1
         url = '/data/cluster_data/' + year + '/' + pollution + '.json'
+        url2 = '/data/finally/' + year + '.json'
         dataChange(url);
+        dataChange3(url2);
+        yearInput.val(year);
     })
     $('#btn8').click(function () {//jqury对元素进行获�?
-        if(year == 2018)
+      year = parseInt(year)
+        if(year === 2018)
             year = 2013
         else year += 1
         url = '/data/cluster_data/' + year + '/' + pollution + '.json'
+      url2 = '/data/finally/' + year + '.json'
         dataChange(url);
+        dataChange3(url2);
+        yearInput.val(year);
     })
     var sx=0;
     var sy=0;
@@ -458,7 +465,6 @@
 
             var rawData = [];
             rawData = ret.data
-          console.log(rawData)
             var CATEGORY_DIM_COUNT = 6;
             var GAP = 2;
             var BASE_LEFT = 5;

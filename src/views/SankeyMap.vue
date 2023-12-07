@@ -120,7 +120,15 @@ export default {
         	var wholedata = [data2013, data2014, data2015, data2016, data2017, data2018];
         	var yeartext = ["2013", "2014", "2015", "2016", "2017", "2018"];
 	    	  let pcpchart = echarts.init(document.getElementById("pcp_graph"));
-	        pcpchart.setOption(pcp_whole(wholedata, match_list, wholename_list, 'whole'), true);        
+	        pcpchart.setOption(pcp_whole(wholedata, match_list, wholename_list, 'whole'), true);
+          pcpchart.on('mouseover', function (params) {
+            if (params.componentType === 'series' && params.seriesType === 'parallel') {
+              console.log('点击的线的数据:', params.data);
+
+
+
+            }
+          });
     	});
   }
 };

@@ -31,7 +31,7 @@
             <li>气象图</li>
           </router-link>
           <router-link to="/sankeymap" @click="refreshAndNavigate('/sankeymap')">
-            <li>桑基图</li>
+            <li>平行坐标图</li>
           </router-link>
           <router-link to="/clustermap" @click="refreshAndNavigate('/clustermap')">
             <li>聚类图</li>
