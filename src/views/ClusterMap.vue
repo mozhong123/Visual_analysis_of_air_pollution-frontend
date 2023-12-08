@@ -1,6 +1,6 @@
 <template>
         <!--顶部-->
-    <div class="total_chose_box" style="width:1500px;position: relative;margin-top: 80px;">
+    <div class="total_chose_box" style="position: fixed;top:10%">
         <span class="chose_tltle">请输入年份：</span>
         <input class="chose_text_in" id="selectDate1" value=2013>
         <button class="chose_enter" id="selectDate">确定</button>
@@ -19,14 +19,14 @@
     
             <div class="div_any" >
                 <div class="left div_any01" style="width:600px;">
-                    <div class="div_any_child" style="width:598px;position:relative;height: 500px;">
-                        <div class="div_any_title">~散点聚类</div>
+                    <div class="div_any_child" style="width:598px;position:fixed;top:18%;left:15%;">
+                        <div class="div_any_title" style="font-size:large;">~散点聚类</div>
                         <div id="main" style="width:598px;position:relative;left:2px;height: 450px;top:50px"></div>
                     </div>
                 </div>
                 <div class="left div_any01" style="width:600px;">
-                    <div class="div_any_child" style="width:598px;position:relative;height: 500px;">
-                        <div class="div_any_title">~城市聚类地图</div>
+                    <div class="div_any_child" style="width:598px;position:fixed;top:58%;left:15%;">
+                        <div class="div_any_title" style="font-size:large;">~城市聚类地图</div>
                         <div id="two" style="width:598px;position:relative;left:2px;height: 450px;top:50px"></div>
                     </div>
                 </div>
@@ -35,8 +35,8 @@
         <div class="con_right" style="flex: 1;">
             <div class="div_any">
                 <div class="left div_any01" style="width:800px;">
-                    <div class="div_any_child" style="width:798px;position:relative;height: 1000px;">
-                        <div class="div_any_title">污染物相似度对比分析</div>
+                    <div class="div_any_child" style="width:798px;position:fixed;top:18%;right:10%">
+                        <div class="div_any_title" style="font-size:large;">污染物相似度对比分析</div>
                         <div id="three" style="width:798px;position:relative;left:2px;height: 950px;top:50px"></div>
                     </div>
                 </div>
