@@ -13,6 +13,8 @@
           <span class="chose_tltle">请输入日期：</span>
           <input class="chose_text_in" id="selectDate3" value=1>
           <button class="chose_enter" id="selectDate">确定</button>
+          <button class="chose_enter" id="dayPrev">前一天</button>
+          <button class="chose_enter" id="dayNext">下一天</button>
           <button class="chose_enter" id="btn1">PM2.5</button>
           <button class="chose_enter" id="btn2">PM10</button>
           <button class="chose_enter" id="btn3">SO2</button>
@@ -31,6 +33,10 @@
       <div class="left-chart">
         <div class="chart-child-01" id="main"
              style="width: 100%;position: absolute;left: 0;height: 100%;top: 0; ">
+        </div>
+        <div class="playBar">
+          <button class="play" id="playMain">play</button>
+          <button class="stop" id="stopMain">stop</button>
         </div>
       </div>
 
@@ -58,8 +64,9 @@ import * as echarts from "echarts";
 import $ from "jquery";
 import 'echarts/extension/bmap/bmap';
 import 'echarts-gl';
-import {backendURL,queryRoute,method,headers} from "@/config/const.ts";
+import {backendURL, queryRoute, method, headers} from "@/config/const.ts";
 import ecStat from 'echarts-stat';
+import {result} from "lodash-es";
 
 
 export default {
@@ -70,23 +77,60 @@ export default {
   created() {
   },
   mounted() {
-    var colors = ['#20bf6b', '#0fb9b1', '#f7b731', '#fa8231', '#eb3b5a', '#6F1E51', '#1e90ff', '#5352ed', '#3742fa', '#3c40c6'];
-    var arr = ['AQI', 'PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3', 'U', 'V', 'TEMP', 'RH', 'PSFC']
-    var arrFiltered = ['AQI', 'PM2_5', 'PM10', 'SO2', 'NO2', 'CO', 'O3', 'U', 'V', 'TEMP', 'RH', 'PSFC']
+    const colors = ['#20bf6b', '#0fb9b1', '#f7b731', '#fa8231', '#eb3b5a', '#6F1E51', '#1e90ff', '#5352ed', '#3742fa', '#3c40c6'];
+    const arr = ['AQI', 'PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3', 'U', 'V', 'TEMP', 'RH', 'PSFC']
+    const arrFiltered = ['AQI', 'PM2_5', 'PM10', 'SO2', 'NO2', 'CO', 'O3', 'U', 'V', 'TEMP', 'RH', 'PSFC']
     var mCharts1 = echarts.init(document.getElementById('main'), 'dark');
     var mCharts2 = echarts.init(document.getElementById('line'),);
-    var city = '北京'
+    var city = '北京市'
     var year = 2013;
     var month = 1;
     var day = 1;
     var pollution = 'PM2.5';
-    var url = '/data/2.json'
-    var url3 = '/data/CO.json'
-    localStorage.setItem("selectCity", '北京');
+    var url = '';
+    var url3 = '';
+    var playInterval = -1;
+    localStorage.setItem("selectCity", '北京市');
     localStorage.setItem('selectDate', JSON.stringify([2013, 1, 1]))
 
 
-    function setMap() {
+    async function fetchData(url) {
+      let result;
+      try {
+        const response = await fetch(url, {
+          method: method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        result = data.data;
+        // 在这里处理你的数据，更新前端界面
+      } catch (error) {
+        console.error('Error:', error);
+      }
+      return result;
+    }
+
+    function isDateOutOfRange(date) {
+      if (date[1] > 12) {
+        return true;
+      }
+      if (date[2] > new Date(date[0], date[1], 0).getDate()) {
+        return true;
+      }
+      return false;
+    }
+
+
+    async function setMap() {
       // 前端代码
       // 使用fetch或其他HTTP请求库获取数据
       // 2. 获取特定日期、城市的污染数据
@@ -96,23 +140,98 @@ export default {
       const queryURL = 'http://' + backendURL + queryRoute + queryMethod
           + 'year=' + DateCur[0]
           + '&month=' + DateCur[1]
-          + '&day=' + DateCur[2]
-      fetch(queryURL, {
-        method: method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
-        }
+          + '&day=' + DateCur[2];
+
+      await fetchData(queryURL).then(data => {
+        localStorage.setItem("MapCur", JSON.stringify(data));
       })
-          .then(response => response.json())
-          .then(data => {
-            //console.log(data.data); // 在控制台查看获取的污染数据
-            // 在这里处理你的数据，更新前端界面
-            localStorage.setItem("MapCur", JSON.stringify(data.data));
-            //console.log(localStorage.getItem('MapCur'));
-          })
-          .catch(error => console.error('Error:', error));
+    }
+
+    async function setMapLineChart() {
+      const cityCur = localStorage.getItem("selectCity");
+      const queryMethod = "all_AQI?"
+      const queryURL = 'http://' + backendURL + queryRoute + queryMethod
+          + 'city=' + cityCur;
+      await fetchData(queryURL).then(data => {
+        localStorage.setItem("lineChartCur", JSON.stringify(data));
+      })
+    }
+
+    function showDate() {
+      const yearD = document.getElementById("selectDate1");
+      const monthD = document.getElementById("selectDate2");
+      const dayD = document.getElementById("selectDate3");
+      const DateCur = JSON.parse(localStorage.getItem("selectDate"));
+      yearD.value = DateCur[0];
+      monthD.value = DateCur[1];
+      dayD.value = DateCur[2];
+      year = yearD.value;
+      month = monthD.value;
+      day = dayD.value;
+    }
+
+    async function nextDay() {
+      // 前端代码
+      // 使用fetch或其他HTTP请求库获取数据
+      // 2. 获取特定日期、城市的污染数据
+      let DateCur = JSON.parse(localStorage.getItem("selectDate"));
+      if ((DateCur[0] === 2018) && (DateCur[1] === 12) && (DateCur[2] === 31)) {
+        return;
+      }
+      DateCur[2] += 1;
+      if (isDateOutOfRange(DateCur)) {
+        if (DateCur[1] === 12) {
+          DateCur[1] = 1;
+          DateCur[2] = 1;
+          DateCur[0] = DateCur[0] + 1;
+        } else {
+          DateCur[1] = DateCur[1] + 1;
+          DateCur[2] = 1;
+        }
+      }
+      localStorage.setItem('selectDate', JSON.stringify(DateCur));
+      await setMap();
+      showDate();
+    }
+
+    async function prevDay() {
+      // 前端代码
+      // 使用fetch或其他HTTP请求库获取数据
+      // 2. 获取特定日期、城市的污染数据
+      let DateCur = JSON.parse(localStorage.getItem("selectDate"));
+      let result = '';
+      //需要更改
+      const queryMethod = "pollution_map?"
+      let queryURL;
+      console.log(DateCur);
+      if ((DateCur[0] === 2013) && (DateCur[1] === 1) && (DateCur[2] === 1)) {
+        return;
+      }
+      DateCur[2] = DateCur[2] - 1;
+      while (true) {
+        if (DateCur[2] === 0) {
+          DateCur[1] = DateCur[1] - 1;
+          DateCur[2] = 31;
+        }
+        if (DateCur[1] === 0) {
+          DateCur[0] = DateCur[0] - 1;
+          DateCur[1] = 12;
+        }
+        if (isDateOutOfRange(DateCur) === false) {
+          break;
+        }
+        DateCur[2] = DateCur[2] - 1;
+      }
+      queryURL = 'http://' + backendURL + queryRoute + queryMethod
+          + 'year=' + DateCur[0]
+          + '&month=' + DateCur[1]
+          + '&day=' + DateCur[2];
+      await fetchData(queryURL).then(data => {
+        result = data;
+      });
+      localStorage.setItem("MapCur", JSON.stringify(result));
+      localStorage.setItem('selectDate', JSON.stringify(DateCur));
+      showDate();
     }
 
     function colorChange(pollution) {
@@ -126,6 +245,10 @@ export default {
       })
     }
 
+    async function play() {
+      await nextDay();
+      dataChange(url);
+    }
 
     function dataChange(url) {
       $.get('/data/china.json', function (ret) {
@@ -191,6 +314,7 @@ export default {
             hideDelay: 0,//鼠标移出坐标点时，浮层隐藏的延迟时间，单位为 ms，在 alwaysShowContent 为 true 的时候无效
             formatter: function (params) {
               localStorage.setItem("selectCity", params.data.name);
+              city = params.data.name;
               return params.data.name + pollution + ':' + params.data.value[3]
             }
           },
@@ -300,15 +424,20 @@ export default {
       })
     }
 
-    setMap();
-    dataChange();
+    setMap().then(() => {
+      dataChange(url);
+    });
 
-    $('#selectDate').click(function () {//jqury对元素进行获取
+    $('#selectDate').click(async function () {//jqury对元素进行获取
       var flag = 0;
       var y = jQuery("#selectDate1").val();
       var m = jQuery("#selectDate2").val();
       var d = jQuery("#selectDate3").val();
-      console.log(y, m, d);
+      if ((parseInt(y) < 2013) || (parseInt(m) < 1) || (parseInt(d) < 1) ||
+          (parseInt(y) > 2018) || (parseInt(m) > 12) || (parseInt(d) > 31)) {
+        alert('invalid date!');
+        return;
+      }
       if (year !== y) {
         year = y;
         flag = 1
@@ -323,54 +452,75 @@ export default {
       }
       if (flag) {
         //url = '../map_data/' + year + '/' + month + '/' + day + '.json'
-        localStorage.setItem('selectDate', JSON.stringify([y, m, d]))
+        localStorage.setItem('selectDate', JSON.stringify([parseInt(y), parseInt(m), parseInt(d)]))
+        console.log(JSON.parse(localStorage.getItem('selectDate')));
         //        console.log(url);
         //console.log([y,m,d]);
-        setMap();
+        await setMap();
         dataChange(url);
       }
+    })
+    $('#dayPrev').click(async function () {//jqury对元素进行获取
+      await prevDay();
+      dataChange(url);
+    })
+    $('#dayNext').click(async function () {//jqury对元素进行获取
+      await nextDay();
+      dataChange(url);
     })
     $('#btn1').click(function () {//jqury对元素进行获取
       pollution = 'PM2.5';
       dataChange(url);
       url3 = 'line/' + city + '/' + pollution + '.json'
-      dataChange2(url3);
       colorChange(pollution);
     })
     $('#btn2').click(function () {//jqury对元素进行获取
       pollution = 'PM10';
       dataChange(url);
       url3 = 'line/' + city + '/' + pollution + '.json'
-      dataChange2(url3);
       colorChange(pollution);
     })
     $('#btn3').click(function () {//jqury对元素进行获取
       pollution = 'SO2';
       dataChange(url);
       url3 = 'line/' + city + '/' + pollution + '.json'
-      dataChange2(url3);
       colorChange(pollution);
     })
     $('#btn4').click(function () {//jqury对元素进行获取
       pollution = 'NO2';
       dataChange(url);
       url3 = 'line/' + city + '/' + pollution + '.json'
-      dataChange2(url3);
       colorChange(pollution);
     })
     $('#btn5').click(function () {//jqury对元素进行获取
       pollution = 'CO';
       dataChange(url);
       url3 = 'line/' + city + '/' + pollution + '.json'
-      dataChange2(url3);
       colorChange(pollution);
     })
     $('#btn6').click(function () {//jqury对元素进行获取
       pollution = 'O3';
       dataChange(url);
       url3 = 'line/' + city + '/' + pollution + '.json'
-      dataChange2(url3);
       colorChange(pollution);
+    })
+    $('#playMain').click(function () {
+      if ($(this).text() === 'play') {
+        playInterval = setInterval(play, 200);
+        $(this).text('pause');
+      } else if ($(this).text() === 'pause') {
+        clearInterval(playInterval);
+        playInterval = -1;
+        $(this).text('play');
+      }
+    })
+    $('#stopMain').click(async function () {
+      clearInterval(playInterval);
+      playInterval = -1;
+      localStorage.setItem('selectDate', JSON.stringify([2013, 1, 1]));
+      await setMap();
+      showDate();
+      dataChange(url);
     })
     mCharts1.on('click', function (params) {
       if (city != params.name) {
@@ -437,17 +587,18 @@ export default {
       var max = 0;
       var lop = 0;
       $.get(url, function (ret) {
+        const lineData = JSON.parse(localStorage.getItem('lineChartCur'));
         for (var i = 2013; i <= 2018; i++) {
           var temp = [];
           for (var j = 0; j < 365; j++) {
             var cur = parseInt(i % 2013);
-            temp = [date_all[cur * 365 + j], ret.data[i][j]]
+            temp = [date_all[cur * 365 + j], lineData[i][j]]
             data.push(temp)
           }
         }
         mCharts2.setOption(option2 = {
           title: {
-            text: city + 'AQI',
+            text: localStorage.getItem('selectCity') + 'AQI',
             left: '1%'
           },
           tooltip: {
@@ -549,8 +700,6 @@ export default {
       option2 && mCharts2.setOption(option2);
     }
 
-    dataChange2(url3);
-
     const toggleButton = document.querySelector('.toggleButton');
     const content = document.querySelector(".total_chose_box");
     const chartOptionBox = document.querySelector(".chart-options");
@@ -609,11 +758,18 @@ export default {
     pollutionViewBtn.addEventListener('click', function () {
       cityLocationChart.style.display = "none";
       pollutionViewChart.style.display = "block"
+      setMapLineChart().then(() => {
+        dataChange2(url);
+      });
       mCharts2.resize();
     });
-  },
-  methods: {},
-};
+  }
+
+  ,
+  methods: {}
+  ,
+}
+;
 </script>
 
 <style>
@@ -700,7 +856,7 @@ export default {
   width: 5%;
 }
 
-#btn1{
+#btn1 {
   background-color: #ffffff;
 }
 
@@ -796,6 +952,35 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
+}
+
+.playBar {
+  position: fixed;
+  width: 7%;
+  border: 2px solid #c4c7ce; /* 分隔线 */
+  top: 19%;
+  left: 85%;
+  height: 5%;
+  background-color: #f0f0f0;
+}
+
+.play,
+.stop {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  float: left;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border: none;
+  margin: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.play {
+  border-right: 2px solid #c4c7ce; /* 分隔线 */
 }
 
 .left-chart,
