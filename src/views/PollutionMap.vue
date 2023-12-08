@@ -14,7 +14,7 @@
           <input class="chose_text_in" id="selectDate3" value=1>
           <button class="chose_enter" id="selectDate">确定</button>
           <button class="chose_enter" id="dayPrev">前一天</button>
-          <button class="chose_enter" id="dayNext">下一天</button>
+          <button class="chose_enter" id="dayNext">后一天</button>
           <button class="chose_enter" id="btn1">PM2.5</button>
           <button class="chose_enter" id="btn2">PM10</button>
           <button class="chose_enter" id="btn3">SO2</button>

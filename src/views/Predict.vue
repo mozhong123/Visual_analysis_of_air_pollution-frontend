@@ -1,9 +1,9 @@
 <template>
   <div class="total_chose_box" style="width:1200px;left:100px;position: relative;margin-top: 80px;">
     <span class="chose_tltle">请输入年份：</span>
-    <input class="chose_text_in" id="selectDate1" value=2013>
+    <input class="chose_text_in" id="selectDate1"  type="number" value=2013>
     <span class="chose_tltle">请输入月份：</span>
-    <input class="chose_text_in" id="selectDate3" value=1>
+    <input class="chose_text_in" id="selectDate3" type="number" value=1>
     <span class="chose_tltle">请输入城市：</span>
     <input class="chose_text_in" id="selectDate2" value=北京市>
     <button class="chose_enter" id="selectDate">确定</button>
@@ -71,7 +71,6 @@ export default {
     var cityInput = $("#selectDate2");
     var monthInput = $("#selectDate3");
     function loadData(type) {
-      // const DateCur = JSON.parse(localStorage.getItem("selectDate"));
       let queryURL;
       if (type === 0) {
         queryURL = 'http://' + backendURL + queryRoute + "reality_predict_AQI?"
