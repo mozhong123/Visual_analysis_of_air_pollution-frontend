@@ -669,4 +669,30 @@
   </script>
   
   <style>
+          .chose_enter {background-color: #1795bb;
+            border-radius: 12px;
+            border: none;color: white;
+            padding: 16px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+            cursor: pointer;}
+        .chose_enter:hover {background-color: #fff;
+            color: #1795bb;
+            border: 1px solid #ccc;}
+        .chose_text_in {
+            width: 200px; 
+            height: 50px; 
+            padding: 5px; 
+            border: 1px solid rgb(147, 160, 231); 
+            border-radius: 4px; 
+            font-size: 16px; 
+        }
+        .chose_tltle{
+            font-size:x-large;
+        }
   </style>
