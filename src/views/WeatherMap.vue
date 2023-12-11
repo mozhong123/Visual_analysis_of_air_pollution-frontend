@@ -1,5 +1,5 @@
 <template>
-  <div class="total_chose_box" style="width:1200px;left:100px;position: relative;margin-top: 80px;">
+  <div class="total_chose_box" style="position: absolute;top:10%;left:5%;z-index: 99;">
     <span class="chose_tltle">请输入年份：</span>
     <input class="chose_text_in" id="hope_year" type="number" value=2013>
     <span class="chose_tltle">请输入月份：</span>
@@ -14,21 +14,21 @@
     <button class="chose_enter" id="btn4">RH</button>
     <button class="chose_enter" id="btn5">PSFC</button>
   </div>
-  <div style="float: right; position: relative; width: 750px; height: 845px; margin-top: 55px; background-color: rgba(0,0,0,0)">
+  <div style="float: right; position: absolute;top:8%;right: 0%; width: 900px; height:0px; background-color: rgb(255, 255, 255)">
     <div style="float: left; width: 100%; height: 100px;">
-      <div id="map_chart01" style="width: 100%; height: 100%; background-color: rgba(0,0,0,0)"></div>
+      <div id="map_chart01" style="width: 100%; height: 50%; background-color: rgb(255, 255, 255)"></div>
     </div>
     <div style="float: left; width: 100%; height: 1200px;">
-      <div id="wind_echart_01" style="width: 100%; height: 200%"></div>
+      <div id="wind_echart_01" style="width: 100%; height: 65%"></div>
     </div>
   </div>
 
-  <div class="con left" style="width:750px;position:relative;background-color: rgba(0,0,0,0)">
+  <div class="con left" style="width:750px;position:absolute;top:13%;left:0%;background-color: rgb(255, 255, 255)">
     <div class="div_any">
       <div class="left div_any01" style="width:750px;">
         <div class="div_any_child" style="width:748px;position:relative;height: 1000px;">
           <div class="div_any_title"></div>
-          <div id="wind" style="width:748px;position:relative;left:2px;height: 950px;top:50px"></div>
+          <div id="wind" style="width:731x;height: 750px;position:relative;left:2px;top:50px;background-color: rgb(255, 255, 255)"></div>
         </div>
       </div>
     </div>
@@ -626,4 +626,30 @@ export default {
 </script>
 
 <style>
+          .chose_enter {background-color: #1795bb;
+            border-radius: 12px;
+            border: none;color: white;
+            padding: 16px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 13px;
+            margin: 4px 2px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+            cursor: pointer;}
+        .chose_enter:hover {background-color: #fff;
+            color: #1795bb;
+            border: 1px solid #ccc;}
+        .chose_text_in {
+            width: 100px; 
+            height: 40px; 
+            padding: 5px; 
+            border: 1px solid rgb(147, 160, 231); 
+            border-radius: 4px; 
+            font-size: 16px; 
+        }
+        .chose_tltle{
+            font-size:large;
+        }
 </style>
