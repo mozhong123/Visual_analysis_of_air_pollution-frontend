@@ -1,5 +1,5 @@
 <template>
-  <div class="total_chose_box" style="position: fixed;top:8%;left:20%;">
+  <div class="total_chose_box" style="position: absolute;top:8%;left:10%;">
     <span class="chose_tltle">请输入年份：</span>
     <input class="chose_text_in" id="selectDate1"  type="number" value=2013>
     <span class="chose_tltle">请输入月份：</span>
@@ -13,7 +13,7 @@
     <button class="chose_enter" id="btn10">后一月</button>
   </div>
   <div class="con" style="display: flex;">
-    <div class="con left" style="position:fixed;top:15%;left:15%;background-color: rgba(0,0,0,0);flex: 1;">
+    <div class="con left" style="position:absolute;top:15%;left:10%;background-color: rgba(0,0,0,0);flex: 1;">
       <!--统计分析�?-->
       <div class="div_any">
         <div class="left div_any01" style="width:250px;">
@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <div class="con right" style="position:fixed;top:15%;right:10%;">
+    <div class="con right" style="position:absolute;top:15%;right:7%;">
       <div class="div_any">
         <div class="left div_any01" style="width:950px;">
           <div class="div_any_child" style="width:948px;position:relative;height: 1150px;top:0px;">
@@ -498,7 +498,7 @@ export default {
             text-align: center;
             text-decoration: none;
             display: inline-block;
-            font-size: 16px;
+            font-size: 13px;
             margin: 4px 2px;
             -webkit-transition-duration: 0.4s;
             transition-duration: 0.4s;
@@ -508,13 +508,13 @@ export default {
             border: 1px solid #ccc;}
         .chose_text_in {
             width: 200px; 
-            height: 50px; 
+            height: 40px; 
             padding: 5px; 
             border: 1px solid rgb(147, 160, 231); 
             border-radius: 4px; 
             font-size: 16px; 
         }
         .chose_tltle{
-            font-size:x-large;
+            font-size:large;
         }
 </style>
