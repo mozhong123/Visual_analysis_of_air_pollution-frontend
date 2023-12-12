@@ -2,14 +2,12 @@
     <div class = 'Pie-chart-container' >
       <div class = 'con' >
           <div class = 'con_left' >
-              <div class = 'left-chart' id="pie1" 
-                  style="position: absolute;width: 50%;left: 0;height: 92%;top: 8%;">
-              </div>
+            <h3 style="position: absolute;top:10%;left:10%; font-weight: bold;">各污染物健康经济损失价值占天津GDP比重与变化趋势</h3>
+            <div class = 'left-chart' id="pie1" style="position: absolute;width: 50%;left: 0;height: 83%;top: 17%;"></div>
           </div>
           <div class = 'con_right' >
-              <div class = 'right-chart' id="pie2"
-                  style="position: absolute;width: 50%;left: 0;height: 92%;top: 8%;transform:translate(100%, 0);">
-              </div>
+            <h3 style="position: absolute;top:10%;right:10%; font-weight: bold;">PM10与NO2健康经济损失价值与工业发展指标的相关性分析</h3>
+            <div class = 'right-chart' id="pie2" style="position: absolute;width: 50%;left: 0;height: 83%;top: 17%;transform:translate(100%, 0);"></div>
           </div>
       </div>
     </div>
