@@ -1,14 +1,5 @@
 function pcp_whole(wholelist, match_list, wholename_list, prov) {
-    const colorMap = new Map();
-    const evaluations = ['Good', 'Moderate', 'Lightly\nPolluted', 'Moderately\nPolluted', 'Heavily\nPolluted', 'Serverly\nPolluted'];
-    const colorValues = ['#008000', '#00FF00', '#FFFF00', '#FFA500', '#FF7F50', '#8B0000'];
-    evaluations.forEach((evaluation, index) => {
-        const color = colorValues[index];
-        colorMap.set(evaluation, color);
-    });
-
     const yearlist = ['2013', '2014', '2015', '2016', '2017', '2018'];
-
     var data_list = [];
     for (var i = 0; i < wholelist.length; i++) {
         var yeardata = wholelist[i];
@@ -72,7 +63,6 @@ function pcp_whole(wholelist, match_list, wholename_list, prov) {
             small_list.push(count_temp / 12);
             small_list.push(count_velo / 12);
             small_list.push(level);
-            small_list.push(colorMap.get(level));
             data_list.push(small_list);
         }
 
@@ -241,14 +231,21 @@ function pcp_whole(wholelist, match_list, wholename_list, prov) {
                 data: ['Good', 'Moderate', 'Lightly\nPolluted', 'Moderately\nPolluted', 'Heavily\nPolluted', 'Serverly\nPolluted']
             }
         ],
+        visualMap: {
+            show: true,
+            min: 0,
+            max: 300,
+            dimension: 2,
+            inRange: {
+                color:  ['#f53535', '#ffd403', '#009810'].reverse()
 
+                // colorAlpha: [0, 1]
+            }
+        },
         series: {
             type: 'parallel',
             lineStyle: {
-                width: 2,
-                color: function (params) {
-                    return params.data[12]; // 获取颜色属性
-                }
+                width: 2
             },
             data: data_list,
 

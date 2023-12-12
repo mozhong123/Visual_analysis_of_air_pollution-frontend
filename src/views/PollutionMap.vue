@@ -1007,12 +1007,12 @@ export default {
 
 .playBar {
   position: fixed;
-  width: 9%;
+  width: 7%;
   border: 2px solid #c4c7ce; /* 分隔线 */
-  top: 19%;
-  left: 83%;
+  top:90%;
+  left: 10%;
   height: 5%;
-  border-radius: 12px;
+  border-radius: 5px 0 0 5px;
   background-color: #1795bb;
 }
 

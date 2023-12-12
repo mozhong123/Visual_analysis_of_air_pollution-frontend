@@ -10,10 +10,10 @@
           <p>时空动态变化趋势</p>
         </router-link>
         <router-link to="/index" class="navbar-left-button-health" @click="refreshAndNavigate('/index')">
-          <p>健康效应</p>
+          <p>健康效应与经济效益</p>
         </router-link>
         <router-link to="/index" class="navbar-left-button-commercial" @click="refreshAndNavigate('/index')">
-          <p>经济效益</p>
+          <p>当前天气污染状况</p>
         </router-link>
       </div>
     </div>
@@ -49,7 +49,9 @@
           <router-link to="/economy" @click="refreshAndNavigate('/economy')">
             <li>经济效益</li>
           </router-link>
-          <li>tmp-health</li>
+          <router-link to="/economy" @click="refreshAndNavigate('/economy')">
+            <li>天津污染情况概览</li>
+          </router-link>
           <li>tmp-health</li>
         </ul>
       </div>
@@ -259,15 +261,15 @@ li:hover {
 }
 
 .navbar-left-button-time {
-  width: 17%;
+  width: 20%;
 }
 
 .navbar-left-button-health {
-  width: 13%;
+  width: 20%;
 }
 
 .navbar-left-button-commercial {
-  width: 13%;
+  width: 20%;
 }
 
 ul {
