@@ -43,8 +43,12 @@
       </div>
       <div class="navbar-left-dropdown-health">
         <ul>
-          <li>tmp-health</li>
-          <li>tmp-health</li>
+          <router-link to="/health" @click="refreshAndNavigate('/health')">
+            <li>健康效应</li>
+          </router-link>
+          <router-link to="/economy" @click="refreshAndNavigate('/economy')">
+            <li>经济效益</li>
+          </router-link>
           <li>tmp-health</li>
           <li>tmp-health</li>
         </ul>

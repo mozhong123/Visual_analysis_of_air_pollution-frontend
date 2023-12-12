@@ -88,6 +88,16 @@ export const constantRoutes = [
         component: () => import('@/views/Predict.vue'),
     },
     {
+        path: '/health',
+        name: 'health',
+        component: () => import('@/views/Health.vue'),
+    },
+    {
+        path: '/economy',
+        name: 'economy',
+        component: () => import('@/views/Economy.vue'),
+    },
+    {
         path: '/register',
         name: 'register',
         component: () => import('@/views/Register.vue'),
