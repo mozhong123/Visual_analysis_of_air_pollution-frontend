@@ -153,7 +153,7 @@ export default {
 
 <style>
 .pollution-content {
-  position: fixed;
+  position: absolute;
   width: 25%;
   border: 2px solid #c4c7ce; /* 分隔线 */
   border-color: rgb(106, 161, 228);
