@@ -77,7 +77,6 @@ export default {
   mounted() {
     const mapChartContainer = document.getElementById("container");
     const containerButton = document.querySelector(".map-chart-button");
-    let intervalId = 0;
 
     //如果想要点击展开的话就用这一段
     containerButton.addEventListener('click', () => {

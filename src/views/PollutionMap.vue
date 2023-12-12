@@ -37,6 +37,9 @@
         <div class="playBar">
           <button class="play" id="playMain">play</button>
           <button class="stop" id="stopMain">stop</button>
+          <div class="progress-bar">
+            <div class="progress-bar-content"></div>
+          </div>
         </div>
       </div>
 
@@ -90,6 +93,9 @@ export default {
     var url = '';
     var url3 = '';
     var playInterval = -1;
+    const totalDays = 1810;
+    var DayCur = 0;
+    var playBarLen = 0;
     localStorage.setItem("selectCity", '北京市');
     localStorage.setItem('selectDate', JSON.stringify([2013, 1, 1]))
 
@@ -170,6 +176,11 @@ export default {
       day = dayD.value;
     }
 
+    function progressBarUpdate() {
+      const playBar = document.querySelector(".progress-bar-content");
+      playBar.style.width = playBarLen * (DayCur / totalDays) + 'px';
+    }
+
     async function nextDay() {
       // 前端代码
       // 使用fetch或其他HTTP请求库获取数据
@@ -178,7 +189,9 @@ export default {
       if ((DateCur[0] === 2018) && (DateCur[1] === 12) && (DateCur[2] === 31)) {
         return;
       }
+
       DateCur[2] += 1;
+      DayCur = DayCur + 1;
       if (isDateOutOfRange(DateCur)) {
         if (DateCur[1] === 12) {
           DateCur[1] = 1;
@@ -190,6 +203,7 @@ export default {
         }
       }
       localStorage.setItem('selectDate', JSON.stringify(DateCur));
+      progressBarUpdate();
       await setMap();
       showDate();
     }
@@ -207,6 +221,7 @@ export default {
       if ((DateCur[0] === 2013) && (DateCur[1] === 1) && (DateCur[2] === 1)) {
         return;
       }
+      DayCur = DayCur - 1;
       DateCur[2] = DateCur[2] - 1;
       while (true) {
         if (DateCur[2] === 0) {
@@ -232,6 +247,7 @@ export default {
       localStorage.setItem("MapCur", JSON.stringify(result));
       localStorage.setItem('selectDate', JSON.stringify(DateCur));
       showDate();
+      progressBarUpdate();
     }
 
     function colorChange(pollution) {
@@ -456,7 +472,15 @@ export default {
         console.log(JSON.parse(localStorage.getItem('selectDate')));
         //        console.log(url);
         //console.log([y,m,d]);
+        // 给定的日期
+        const givenDate = new Date('2013-01-01'); // 这里的日期是示例，你需要替换为实际的日期
+        const targetDate = new Date(y, m, d); // 这里的日期是示例，你需要替换为实际的日期
+        const givenTime = givenDate.getTime();
+        const targetTime = targetDate.getTime();
+        const timeDifference = targetTime - givenTime;
+        DayCur = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
         await setMap();
+        progressBarUpdate();
         dataChange(url);
       }
     })
@@ -520,6 +544,8 @@ export default {
       localStorage.setItem('selectDate', JSON.stringify([2013, 1, 1]));
       await setMap();
       showDate();
+      DayCur = 0;
+      progressBarUpdate();
       dataChange(url);
     })
     mCharts1.on('click', function (params) {
@@ -709,6 +735,7 @@ export default {
     const pollutionViewChart = document.querySelector(".right-chart");
     const chartContainer = document.querySelector(".pollution-chart-container");
     const choseEnterAll = document.querySelectorAll(".chose_enter");
+    const playBar = document.querySelector(".progress-bar-content");
 
     chartContainer.style.top = window.innerHeight * 0.11 + 'px';
     chartOptionBox.style.top = "12.5%"
@@ -717,6 +744,8 @@ export default {
     content.style.top = -window.innerHeight * 0.0085 + 'px'
     chartOptionBox.style.width = '2%'
     chartOptionBox.style.height = '120%'
+    playBarLen = window.innerHeight * 0.15;
+    playBar.style.width = '0px';
     choseEnterAll.forEach(choseEnter => {
       choseEnter.style.height = window.innerHeight * 0.04 + 'px';
     });
@@ -731,6 +760,7 @@ export default {
       });
       chartOptionBox.style.top = "12.5%"
       chartOptionBox.style.left = "22%"
+      playBarLen = window.innerHeight * 0.15;
     })
 
 
@@ -958,10 +988,11 @@ export default {
   position: fixed;
   width: 7%;
   border: 2px solid #c4c7ce; /* 分隔线 */
-  top: 19%;
-  left: 85%;
+  top: 90%;
+  left: 10%;
   height: 5%;
   background-color: #f0f0f0;
+  border-radius: 5px 0 0 5px; /* 10px 圆角，底部为直角 */
 }
 
 .play,
@@ -981,6 +1012,25 @@ export default {
 
 .play {
   border-right: 2px solid #c4c7ce; /* 分隔线 */
+}
+
+.progress-bar {
+  left: 17%;
+  width: 15%;
+  height: 5%;
+  top: 90%;
+  position: fixed;
+  border: 2px solid #c4c7ce; /* 分隔线 */
+  border-radius: 0 5px 5px 0; /* 10px 圆角，底部为直角 */
+  border-left: none;
+  overflow: hidden;
+}
+
+.progress-bar-content {
+  position: relative;
+  background-color: #FFC90E;
+  width: 0;
+  height: 100%;
 }
 
 .left-chart,
