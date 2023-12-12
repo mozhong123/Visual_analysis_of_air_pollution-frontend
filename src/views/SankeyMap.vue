@@ -7,7 +7,7 @@
     </div>
   </div>
   <div class="pollution-container">
-    <div class="pollution-content" id="prov">Prov:</div>
+    <div class="pollution-content" id="prov" style="">Prov:</div>
     <div class="pollution-content" id="year">Year:</div>
     <div class="pollution-content" id="AQI">AQI:</div>
     <div class="pollution-content" id="PM10">PM10:</div>
@@ -156,6 +156,7 @@ export default {
   position: fixed;
   width: 25%;
   border: 2px solid #c4c7ce; /* 分隔线 */
+  border-color: rgb(106, 161, 228);
   padding-left: 5px;
   top: 19%;
   left: 60%;
@@ -164,51 +165,51 @@ export default {
 }
 
 #prov {
-  top: 19%;
+  top: 10%;
 }
 
 #year {
-  top: 24%;
+  top: 17%;
 }
 
 #AQI {
-  top: 29%;
+  top: 24%;
 }
 
 #PM10 {
-  top: 34%;
+  top: 31%;
 }
 
 #PM25 {
-  top: 39%;
+  top: 38%;
 }
 
 #SO2 {
-  top: 44%;
+  top: 45%;
 }
 
 #NO2 {
-  top: 49%;
+  top: 52%;
 }
 
 #CO {
-  top: 54%;
-}
-
-#O3 {
   top: 59%;
 }
 
+#O3 {
+  top: 66%;
+}
+
 #Temp {
-  top: 64%;
+  top: 73%;
 }
 
 #Wind {
-  top: 69%;
+  top: 80%;
 }
 
 #Level {
-  top: 74%;
+  top: 87%;
   height: 10%;
 }
 
