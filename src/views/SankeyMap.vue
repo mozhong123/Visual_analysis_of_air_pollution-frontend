@@ -1,5 +1,4 @@
 <template>
-  <h1 class="title">SankeyMap</h1>
   <div class="container-fluid" :style="containerStyle">
     <div class="row" :style="rowStyle">
       <div id="pcpaddr" class="col-4">
@@ -45,8 +44,8 @@ export default {
     return {
       containerStyle: {
         backgroundColor: "rgba(0,0,0,0)",
-        height: "calc(50vh)", // 根据需要调整额外的边距
-        width: "800px",
+        height: "calc(75vh)", // 根据需要调整额外的边距
+        width: "1000px",
       },
       rowStyle: {
         height: "200px",
@@ -56,7 +55,7 @@ export default {
         border: "solid",
         borderColor: "rgba(0,0,0,0)",
         transform: "rotate(0deg)",
-        height: "720px",
+        height: "930px",
       }
     };
   },
