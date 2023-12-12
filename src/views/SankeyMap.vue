@@ -1,5 +1,7 @@
 <template>
+  <div style="position:absolute;top:10%;left:5%;">
   <h1>SankeyMap</h1>
+</div>
   <div class="container-fluid" :style="containerStyle">
     <div class="row" :style="rowStyle">
       <div id="pcpaddr" class="col-4">
@@ -31,8 +33,8 @@ export default {
     return {
       containerStyle: {
         backgroundColor: "rgba(0,0,0,0)",
-        height: "calc(50vh)", // 根据需要调整额外的边距
-        width: "800px",
+        height: "calc(75vh)", // 根据需要调整额外的边距
+        width: "1000px",
       },
       rowStyle: {
         height: "200px",
@@ -42,7 +44,7 @@ export default {
         border: "solid",
         borderColor: "rgba(0,0,0,0)",
         transform: "rotate(0deg)",
-        height: "720px",
+        height: "930px",
       }
     };
   },
@@ -125,9 +127,6 @@ export default {
           pcpchart.on('mouseover', function (params) {
             if (params.componentType === 'series' && params.seriesType === 'parallel') {
               console.log('点击的线的数据:', params.data);
-
-
-
             }
           });
     	});

@@ -842,23 +842,34 @@ export default {
 }
 
 .chose_text_in {
-  margin-top: 0.5%;
+  position:relative;
+  top:20%;
+  width: 50px; 
+  height: 30px; 
+  padding: 5px; 
+  border: 1px solid rgb(147, 160, 231); 
+  border-radius: 4px; 
+  font-size: 16px; 
+
 }
 
 .chose_enter {
   border: none;
   padding: 0;
-  background-color: #f0f0f0;
   cursor: pointer;
   float: left;
   justify-content: center;
   align-items: center;
   width: 5%;
+  border-radius: 4px;
 }
 
-#btn1 {
-  background-color: #ffffff;
+.chose_enter:hover {
+  background-color: #8fc3f4;
+  color: #f48f8f;
+  border: 1px solid #ccc;
 }
+
 
 .city-location,
 .pollution-view {
@@ -956,12 +967,13 @@ export default {
 
 .playBar {
   position: fixed;
-  width: 7%;
+  width: 9%;
   border: 2px solid #c4c7ce; /* 分隔线 */
   top: 19%;
-  left: 85%;
+  left: 83%;
   height: 5%;
-  background-color: #f0f0f0;
+  border-radius: 12px;
+  background-color: #1795bb;
 }
 
 .play,
@@ -974,9 +986,18 @@ export default {
   align-items: center;
   position: relative;
   border: none;
+  border-radius: 12px;
+  background-color: #1795bb;
+  text-decoration-color:#ffffff;
   margin: 0;
   background: none;
   cursor: pointer;
+}
+.play:hover,
+.stop:hover {
+  background-color: rgb(174, 193, 244);
+  color: #1795bb;
+  border: 1px solid #ccc;
 }
 
 .play {
