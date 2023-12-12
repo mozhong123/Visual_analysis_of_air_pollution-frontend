@@ -241,7 +241,7 @@ export default {
   //   }
   // ]),
   title: {
-    text: '各污染物各年份造成的GDP损失',
+    text: '2013-2018年大气污染造成的GDP损失',
     left: '10%',
     top: '3%'
   },
@@ -279,7 +279,7 @@ export default {
       data: data[0],
       type: 'scatter',
       symbolSize: function (data) {
-        return Math.sqrt(data[2]) * 3;
+        return Math.sqrt(data[2]);
       },
       emphasis: {
         focus: 'series',
@@ -298,11 +298,11 @@ export default {
         color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [
           {
             offset: 0,
-            color: 'rgb(251, 118, 123)'
+            color: 'rgb(183,183,183)'
           },
           {
             offset: 1,
-            color: 'rgb(204, 46, 72)'
+            color: 'rgb(107,107,107)'
           }
         ])
       }
@@ -312,7 +312,7 @@ export default {
       data: data[1],
       type: 'scatter',
       symbolSize: function (data) {
-        return Math.sqrt(data[2]) * 3;
+        return Math.sqrt(data[2]);
       },
       emphasis: {
         focus: 'series',
@@ -331,11 +331,11 @@ export default {
         color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [
           {
             offset: 0,
-            color: 'rgb(201, 198, 203)'
+            color: 'rgb(107,107,107)'
           },
           {
             offset: 1,
-            color: 'rgb(24, 46, 172)'
+            color: 'rgb(80,80,80)'
           }
         ])
       }
@@ -345,7 +345,7 @@ export default {
       data: data[2],
       type: 'scatter',
       symbolSize: function (data) {
-        return Math.sqrt(data[2]) * 3;
+        return Math.sqrt(data[2]);
       },
       emphasis: {
         focus: 'series',
@@ -364,7 +364,7 @@ export default {
         color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [
           {
             offset: 0,
-            color: 'rgb(151, 218, 23)'
+            color: 'rgb(147,222,0)'
           },
           {
             offset: 1,
@@ -378,7 +378,7 @@ export default {
       data: data[3],
       type: 'scatter',
       symbolSize: function (data) {
-        return Math.sqrt(data[2]) * 3;
+        return Math.sqrt(data[2]);
       },
       emphasis: {
         focus: 'series',
@@ -397,11 +397,11 @@ export default {
         color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [
           {
             offset: 0,
-            color: 'rgb(211, 139, 100)'
+            color: 'rgb(157,0,0)'
           },
           {
             offset: 1,
-            color: 'rgb(250, 199, 72)'
+            color: 'rgb(185,65,0)'
           }
         ])
       }
@@ -411,7 +411,7 @@ export default {
       data: data[4],
       type: 'scatter',
       symbolSize: function (data) {
-        return Math.sqrt(data[2]) * 3;
+        return Math.sqrt(data[2]);
       },
       emphasis: {
         focus: 'series',
@@ -430,11 +430,11 @@ export default {
         color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [
           {
             offset: 0,
-            color: 'rgb(200, 68, 73)'
+            color: 'rgb(115,48,53)'
           },
           {
             offset: 1,
-            color: 'rgb(104, 46, 79)'
+            color: 'rgb(213,0,117)'
           }
         ])
       }
@@ -444,7 +444,7 @@ export default {
       data: data[5],
       type: 'scatter',
       symbolSize: function (data) {
-        return Math.sqrt(data[2]) * 3;
+        return Math.sqrt(data[2]);
       },
       emphasis: {
         focus: 'series',
@@ -467,7 +467,7 @@ export default {
           },
           {
             offset: 1,
-            color: 'rgb(204, 46, 70)'
+            color: 'rgb(140,140,140)'
           }
         ])
       }

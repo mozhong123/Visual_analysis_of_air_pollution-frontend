@@ -38,17 +38,17 @@ function pcp_whole(wholelist, match_list, wholename_list, prov) {
             }
 
             if (count_aqi / 12 <= 50) {
-                var level = 'Good';
+                var level = '优秀';
             } else if (count_aqi / 12 <= 100) {
-                var level = 'Moderate';
+                var level = '良好';
             } else if (count_aqi / 12 <= 150) {
-                var level = 'Lightly\nPolluted';
+                var level = '轻度污染';
             } else if (count_aqi / 12 <= 200) {
-                var level = 'Moderately\nPolluted';
+                var level = '中度污染';
             } else if (count_aqi / 12 <= 300) {
-                var level = 'Heavily\nPolluted';
+                var level = '重度污染';
             } else {
-                var level = 'Serverly\nPolluted';
+                var level = '严重污染';
             }
 
             small_list.push(province);
@@ -113,7 +113,7 @@ function pcp_whole(wholelist, match_list, wholename_list, prov) {
                     opacity: 0.4,
                 },
 
-                name: 'Prov',
+                name: '省份',
                 type: 'category',
                 nameLocation: "start",
                 nameRotate: 0,
@@ -139,7 +139,7 @@ function pcp_whole(wholelist, match_list, wholename_list, prov) {
             },
             {
                 dim: 1,
-                name: 'Year',
+                name: '年份',
                 type: 'category',
                 nameRotate: 0,
                 nameLocation: "start",
@@ -206,7 +206,7 @@ function pcp_whole(wholelist, match_list, wholename_list, prov) {
             },
             {
                 dim: 10,
-                name: 'Wind\nSpeed',
+                name: '风力强度',
                 nameRotate: 0,
                 nameLocation: "start",
                 nameTextStyle: mytextStyle,
@@ -214,7 +214,7 @@ function pcp_whole(wholelist, match_list, wholename_list, prov) {
             },
             {
                 dim: 11,
-                name: 'Level',
+                name: '质量等级',
                 type: 'category',
                 nameRotate: 0,
                 nameLocation: "start",
@@ -228,11 +228,12 @@ function pcp_whole(wholelist, match_list, wholename_list, prov) {
                     fontSize: 12,
                     rotate: 0,
                 },
-                data: ['Good', 'Moderate', 'Lightly\nPolluted', 'Moderately\nPolluted', 'Heavily\nPolluted', 'Serverly\nPolluted']
+                data: ['优秀', '良好', '轻度污染', '中度污染', '重度污染', '严重污染']
             }
         ],
         visualMap: {
             show: true,
+            left: '0%',
             min: 0,
             max: 300,
             dimension: 2,

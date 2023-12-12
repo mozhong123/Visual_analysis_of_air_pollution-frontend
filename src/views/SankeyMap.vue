@@ -130,7 +130,7 @@ export default {
       "云南省",
       "浙江省"
     ];
-    const line_list = ["Prov", "Year", "AQI", "PM10", "PM2.5", "SO2", "NO2", "CO", "O3", "Temp", "Wind Speed", "Level"];
+    const line_list = ["省份", "年份", "AQI", "PM10(μg/m³)", "PM2.5(μg/m³)", "SO2(μg/m³)", "NO2(μg/m³)", "CO(μg/m³)", "O3(mg/m³)", "Temp(°C)", "风力强度", "质量等级"];
     $(document).ready(function () {
       var wholedata = [data2013, data2014, data2015, data2016, data2017, data2018];
       var yeartext = ["2013", "2014", "2015", "2016", "2017", "2018"];
@@ -138,7 +138,6 @@ export default {
       pcpchart.setOption(pcp_whole(wholedata, match_list, wholename_list, 'whole'), true);
       pcpchart.on('mouseover', function (params) {
         if (params.componentType === 'series' && params.seriesType === 'parallel') {
-          console.log('点击的线的数据:', params.data);
           const contents = document.querySelectorAll('.pollution-content');
           let i = 0;
           contents.forEach(content => {
@@ -169,48 +168,47 @@ export default {
 }
 
 #year {
-  top: 17%;
+  top: 20%;
 }
 
 #AQI {
-  top: 24%;
+  top: 30%;
 }
 
 #PM10 {
-  top: 31%;
+  top: 40%;
 }
 
 #PM25 {
-  top: 38%;
+  top: 50%;
 }
 
 #SO2 {
-  top: 45%;
+  top: 60%;
 }
 
 #NO2 {
-  top: 52%;
+  top: 70%;
 }
 
 #CO {
-  top: 59%;
-}
-
-#O3 {
-  top: 66%;
-}
-
-#Temp {
-  top: 73%;
-}
-
-#Wind {
   top: 80%;
 }
 
+#O3 {
+  top: 90%;
+}
+
+#Temp {
+  top: 100%;
+}
+
+#Wind {
+  top: 110%;
+}
+
 #Level {
-  top: 87%;
-  height: 10%;
+  top: 120%;
 }
 
 </style>

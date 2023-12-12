@@ -44,10 +44,10 @@
       <div class="navbar-left-dropdown-health">
         <ul>
           <router-link to="/health" @click="refreshAndNavigate('/health')">
-            <li>健康效应</li>
+            <li>污染物健康经济损失价值概览</li>
           </router-link>
           <router-link to="/economy" @click="refreshAndNavigate('/economy')">
-            <li>经济效益</li>
+            <li>污染物与经济效益的关系</li>
           </router-link>
           <router-link to="/economy" @click="refreshAndNavigate('/economy')">
             <li>天津污染情况概览</li>
