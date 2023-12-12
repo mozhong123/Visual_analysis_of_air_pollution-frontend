@@ -15,6 +15,7 @@
           <button class="chose_enter" id="selectDate">确定</button>
           <button class="chose_enter" id="dayPrev">前一天</button>
           <button class="chose_enter" id="dayNext">后一天</button>
+          <button class="chose_enter" id="btnAQI">AQI</button>
           <button class="chose_enter" id="btn1">PM2.5</button>
           <button class="chose_enter" id="btn2">PM10</button>
           <button class="chose_enter" id="btn3">SO2</button>
@@ -89,7 +90,7 @@ export default {
     var year = 2013;
     var month = 1;
     var day = 1;
-    var pollution = 'PM2.5';
+    var pollution = 'AQI';
     var url = '';
     var url3 = '';
     var playInterval = -1;
@@ -492,6 +493,11 @@ export default {
       await nextDay();
       dataChange(url);
     })
+    $('#btnAQI').click(function () {
+      pollution = 'AQI';
+      dataChange(url);
+      colorChange(pollution);
+    })
     $('#btn1').click(function () {//jqury对元素进行获取
       pollution = 'PM2.5';
       dataChange(url);
@@ -766,7 +772,7 @@ export default {
 
     toggleButton.addEventListener("click", () => {
       if (chartOptionBox.style.width === '2%') {
-        chartOptionBox.style.width = '67%'
+        chartOptionBox.style.width = '69%'
         chartOptionBox.style.justifyContent = "space-between"
         content.style.display = 'block'
       } else {
@@ -883,10 +889,10 @@ export default {
   float: left;
   justify-content: center;
   align-items: center;
-  width: 5%;
+  width: 4.5%;
 }
 
-#btn1 {
+#btnAQI {
   background-color: #ffffff;
 }
 
@@ -910,7 +916,7 @@ export default {
 }
 
 .chose_text_in {
-  width: 7%;
+  width: 6%;
 }
 
 .toggleButton,
