@@ -117,6 +117,11 @@ export const constantRoutes = [
         name: 'logout',
         component: () => import('@/views/temps.vue'),
     },
+    {
+        path: '/cluster',
+        name: 'logout',
+        component: () => import('@/views/cluster_1.vue'),
+    },
 
     {
         path: "/404",
