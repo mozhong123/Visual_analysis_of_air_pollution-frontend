@@ -112,6 +112,11 @@ export const constantRoutes = [
         name: 'logout',
         component: () => import('@/views/Logout.vue'),
     },
+    {
+        path: '/temps',
+        name: 'logout',
+        component: () => import('@/views/temps.vue'),
+    },
 
     {
         path: "/404",

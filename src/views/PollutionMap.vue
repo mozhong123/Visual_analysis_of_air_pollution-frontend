@@ -94,7 +94,7 @@ export default {
     var url = '';
     var url3 = '';
     var playInterval = -1;
-    const totalDays = 1810;
+    const totalDays = 2191;
     var DayCur = 0;
     var playBarLen = 0;
     localStorage.setItem("selectCity", '北京市');
