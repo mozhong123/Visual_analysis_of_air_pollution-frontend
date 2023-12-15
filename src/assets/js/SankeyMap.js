@@ -72,13 +72,13 @@ function pcp_whole(wholelist, match_list, wholename_list, prov) {
         show: true,
         interval: "auto",
         inside: true,
-        color: 'rgba(0,0,0,1)',
+        color: 'white',
         rotate: 0,
         fontWeight: 'normal'
     }
 
     var mytextStyle = {
-        color: 'rgba(0,0,0,1)',
+        color: 'white',
         fontStyle: "normal",
         fontWeight: 'normal',
         fontFamily: "Times New Roman",
@@ -101,7 +101,7 @@ function pcp_whole(wholelist, match_list, wholename_list, prov) {
 
 
     var pcp_gene = {
-        parallel: [{width: 500, layout: "vertical"}],
+        parallel: [{width: '50%', layout: "vertical"}],
 
         parallelAxis: [
             {
@@ -124,7 +124,7 @@ function pcp_whole(wholelist, match_list, wholename_list, prov) {
                     show: true,
                     interval: "auto",
                     inside: true,
-                    color: 'rgba(0,0,0,1)',
+                    color: 'white',
                     fontWeight: 'normal',
                     fontSize: 10,
                     rotate: 90,
@@ -223,7 +223,7 @@ function pcp_whole(wholelist, match_list, wholename_list, prov) {
                     show: true,
                     interval: 0,
                     inside: true,
-                    color: 'rgba(0,0,0,1)',
+                    color: 'white',
                     fontWeight: 'normal',
                     fontSize: 12,
                     rotate: 0,
@@ -234,11 +234,12 @@ function pcp_whole(wholelist, match_list, wholename_list, prov) {
         visualMap: {
             show: true,
             left: '0%',
+            top:'68.9%',
             min: 0,
             max: 300,
             dimension: 2,
             inRange: {
-                color:  ['#f53535', '#ffd403', '#009810'].reverse()
+                color:  ['#8f0000', '#ffd403', '#009810'].reverse()
 
                 // colorAlpha: [0, 1]
             }
