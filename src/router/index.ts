@@ -98,6 +98,11 @@ export const constantRoutes = [
         component: () => import('@/views/Economy.vue'),
     },
     {
+        path: '/tianjin',
+        name: 'tianjin',
+        component: () => import('@/views/Tianjin.vue'),
+    },
+    {
         path: '/register',
         name: 'register',
         component: () => import('@/views/Register.vue'),
@@ -114,7 +119,7 @@ export const constantRoutes = [
     },
     {
         path: '/temps',
-        name: 'logout',
+        name: 'temps',
         component: () => import('@/views/temps.vue'),
     },
     {

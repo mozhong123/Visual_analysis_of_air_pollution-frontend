@@ -243,7 +243,8 @@ export default {
   title: {
     text: '2013-2018年大气污染造成的GDP损失',
     left: '10%',
-    top: '3%'
+    top: '3%',
+    color: 'white'
   },
   legend: {
     right: '10%',
