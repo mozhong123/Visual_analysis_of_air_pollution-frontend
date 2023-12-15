@@ -31,6 +31,7 @@
         <div class="div_any_title" style="position: relative;left:100px;font-size:large;color:aliceblue;">污染物相似度对比分析</div>
         <div id="three" style="width:700px;position:relative;height: 750px;top:10px"></div>
     </div>
+    
 
 </template>
 <script>
