@@ -17,20 +17,21 @@
     
 
 
-    <div class="div_1" style="position:fixed;top:7%;left:10%;width:500px;height:500px;background:url(/src/assets/image/aleftboxtbott.jpg);background-size: 100% 100%;">
-        <div class="div_any_title" style="font-size:large;color:aliceblue">~散点聚类</div>
+    <div class="div_1" style="position:fixed;top:5%;left:3%;width:500px;height:450px;background:url(/src/assets/image/aleftboxtbott.png);background-size: 100% 100%;">
+        <div class="div_any_title" style="position: relative;left:20px;top:10px;font-size:large;color:aliceblue">~散点聚类</div>
         <div id="main" style="width:450px;height: 450px;position: relative;top:15px;"></div>
     </div>
 
-    <div class="div_any_child" style="width:400px;height:400px;position:fixed;bottom:0%;left:10%;">
-        <div class="div_any_title" style="font-size:large;color:aliceblue">~城市聚类地图</div>
-        <div id="two" style="width:400px;position:relative;height: 400px;top:10px"></div>
+    <div class="div_any_child" style="width:500px;height:400px;position:fixed;bottom:2%;left:10%;background:url(/src/assets/image/aleftboxtbott.png);background-size: 100% 100%;">
+        <div class="div_any_title" style="position: relative;left:20px;font-size:large;color:aliceblue">~城市聚类地图</div>
+        <div id="two" style="width:500px;position:relative;height: 400px;top:10px"></div>
     </div>
 
-    <div class="div_any_child" style="width:700px;position:fixed;bottom:0%;right:10%">
-        <div class="div_any_title" style="font-size:large;color:aliceblue;position: center;">污染物相似度对比分析</div>
-        <div id="three" style="width:700px;position:relative;left:2px;height: 750px;top:10px"></div>
+    <div class="div_any_child" style="width:750px;position:fixed;bottom:0%;right:8%;background:url(/src/assets/image/aleftboxtbott.png);background-size: 100% 100%;">
+        <div class="div_any_title" style="position: relative;left:100px;font-size:large;color:aliceblue;">污染物相似度对比分析</div>
+        <div id="three" style="width:700px;position:relative;height: 750px;top:10px"></div>
     </div>
+    
 
 </template>
 <script>
