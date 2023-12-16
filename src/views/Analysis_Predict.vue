@@ -45,16 +45,18 @@
             <div id="calander"
                  style="position:relative;height: 100%;transform: scale(0.8);background-color: rgba(0,0,0,0);"></div>
         </div>
-        <div class="con right" style="position:absolute;left:-32%;top:20%;width:168%;height:100%;">
-                <div id="line" style="position:relative;height: 100%;transform: scale(0.6);"></div>
+        <div class="con right" style="position:absolute;left:-32%;top:40%;width:168%;height:88%;">
+                <div id="line" style="position:relative;top:-20%;height: 110%;transform: scale(0.6);"></div>
         </div>
       </div>
-
-
     </div>
-
-
+    <div>
+      <HeaderMenu></HeaderMenu>
+      <!-- 其他页面内容 -->
+    </div>
   </div>
+
+
 </template>
 
 <script>
@@ -62,10 +64,13 @@ import * as echarts from "echarts";
 import $ from "jquery";
 import {data2013, data2014, data2015, data2016, data2017, data2018} from "@/../data/2013.js"; // 根据你的项目结构修改路径
 import {pcp_whole} from "@/./assets/js/SankeyMap.js";
-import {backendURL, method, queryRoute} from "@/config/const.ts"; // 根据你的项目结构修改路径
+import {backendURL, method, queryRoute} from "@/config/const.ts";
+import HeaderMenu from "@/components/NewHeaderMenu.vue"; // 根据你的项目结构修改路径
 
 export default {
-  components: {},
+  components: {
+    HeaderMenu
+  },
   data() {
     return {
       containerStyle: {

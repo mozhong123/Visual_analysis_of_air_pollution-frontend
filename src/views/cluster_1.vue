@@ -1,5 +1,5 @@
 <template>
-    <div class="app"></div>
+    <div class="app">
     <h1 style="position:fixed;color: aliceblue;top:0%;left:47%;">聚类图</h1>
     <div class="total_chose_box" style="position: fixed;top:10%;right:2%;">
         <span class="chose_tltle" style="color:aquamarine;">请输入年份：</span>
@@ -31,11 +31,14 @@
         <div class="div_any_title" style="position: relative;left:100px;font-size:large;color:aliceblue;">污染物相似度对比分析</div>
         <div id="three" style="width:700px;position:relative;height: 750px;top:10px"></div>
     </div>
-    
-
+      <div>
+        <HeaderMenu></HeaderMenu>
+        <!-- 其他页面内容 -->
+      </div>
+    </div>
 </template>
 <script>
-import HeaderMenu from "@/components/HeaderMenu.vue"; // 此路径应根据你的项目结构来修改
+import HeaderMenu from "@/components/NewHeaderMenu.vue"; // 此路径应根据你的项目结构来修改
 import BackGround from "@/components/BackGround.vue"; // 此路径应根据你的项目结构来修改
 import * as echarts from "echarts";
 import $ from "jquery";
@@ -45,7 +48,6 @@ import ecStat from 'echarts-stat';
 
 export default {
   components: {
-    BackGround,
     HeaderMenu
   },
   mounted()
