@@ -53,6 +53,11 @@ const routeSettings: RouteSettings = {
 // 公共路由
 export const constantRoutes = [
     {
+        path: '/',
+        name: 'index1',
+        component: () => import('@/views/Analysis_Predict.vue'),
+    },
+    {
         path: '/index',
         name: 'index',
         component: () => import('@/views/index.vue'),
@@ -131,6 +136,11 @@ export const constantRoutes = [
         path: '/analysis_predict',
         name: 'analysis_predict',
         component: () => import('@/views/Analysis_Predict.vue'),
+    },
+    {
+        path: '/weather',
+        name: 'weather',
+        component: () => import('@/views/NewWeatherMap.vue'),
     },
     {
         path: "/404",

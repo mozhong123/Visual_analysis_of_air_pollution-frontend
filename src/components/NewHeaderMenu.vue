@@ -6,7 +6,7 @@
             <router-link to="/analysis_predict" @click="refreshAndNavigate('/analysis_predict')">
               <li>分析与预测</li>
             </router-link>
-            <router-link to="/analysis_predict" @click="refreshAndNavigate('/analysis_predict')">
+            <router-link to="/weather" @click="refreshAndNavigate('/weather')">
               <li>其他因素分析</li>
             </router-link>
             <router-link to="/cluster" @click="refreshAndNavigate('/cluster')">
