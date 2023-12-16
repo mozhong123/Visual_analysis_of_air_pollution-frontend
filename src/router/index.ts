@@ -127,7 +127,11 @@ export const constantRoutes = [
         name: 'logout',
         component: () => import('@/views/cluster_1.vue'),
     },
-
+    {
+        path: '/analysis_predict',
+        name: 'analysis_predict',
+        component: () => import('@/views/Analysis_Predict.vue'),
+    },
     {
         path: "/404",
         name: 'not-found',
