@@ -17,10 +17,10 @@
       <h1 class="tith1">大气污染时空经济效益可视分析</h1>
       <div class="topbnt_right">
         <ul>
-            <router-link to="/analysis_predict" @click="refreshAndNavigate('/analysis_predict')">
+            <router-link to="/NewHealth" @click="refreshAndNavigate('/newhealth')">
               <li>健康效应</li>
             </router-link>
-            <router-link to="/analysis_predict" @click="refreshAndNavigate('/analysis_predict')">
+            <router-link to="/NewEconomy" @click="refreshAndNavigate('/neweconomy')">
               <li>经济效益</li>
             </router-link>
             <router-link to="/cluster" @click="refreshAndNavigate('/cluster')">
