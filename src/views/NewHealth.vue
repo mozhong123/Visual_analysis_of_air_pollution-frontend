@@ -10,11 +10,11 @@
       </div>
     </div>
   </div>
-</div>
     <div>
       <HeaderMenu></HeaderMenu>
       <!-- 其他页面内容 -->
     </div>
+  </div>
 </template>
 
 <script>
