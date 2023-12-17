@@ -26,6 +26,7 @@
     "lodash-es": "^4.17.21",
     "no": "^0.0.1",
     "vue": "^3.3.4",
+    "vue-baidu-map": "^0.21.22",
     "vue-chartjs": "^5.2.0",
     "vue-devui": "^1.6.0",
     "vue-router": "^4.2.5"

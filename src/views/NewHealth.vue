@@ -191,7 +191,7 @@ function run(Data) {
       top: '5%',
       textStyle: {
         color: 'white',
-        fontSize: 28
+        fontSize: 18
       }
     },
     tooltip: {
@@ -200,10 +200,26 @@ function run(Data) {
     },
     xAxis: {
       type: 'category',
-      nameLocation: 'middle'
+      nameTextStyle:{
+        color: 'white'
+      },
+      nameLocation: 'middle',
+      axisLabel: {
+        textStyle: {
+          color: 'white' // 设置坐标轴文本颜色为白色
+        }
+      }
     },
     yAxis: {
       name: '死亡人数',
+      nameTextStyle:{
+        color: 'white'
+      },
+      axisLabel: {
+        textStyle: {
+          color: 'white' // 设置坐标轴文本颜色为白色
+        }
+      },
     },
     grid: {
       left: '6%',
@@ -214,6 +230,9 @@ function run(Data) {
     series: seriesList,
     legend: {
       data: legendData,
+      textStyle:{
+        color: 'white'
+      },
       selected: createLegendSelected(
         cardiovascularPollutions,
         respiratoryPollutions
@@ -287,7 +306,7 @@ function run1()
                     top: '5%',
                     textStyle: {
                     color: 'white', // 设置文本颜色为白色
-                    fontSize: 28
+                    fontSize: 18
                 }
             },
             tooltip: {
@@ -312,6 +331,9 @@ function run1()
                 ],
                 top: '88%',
                 left: '5%',
+                textStyle:{
+                  color: 'white'
+                }
             },
             series: [
                 {
@@ -341,7 +363,10 @@ function run1()
                 label: {
                     //{a|{a}}{abg|}\n{hr|}\n  
                     formatter: '{b|{b}:}{c}  {per|{d}%} ',
-                    backgroundColor: '#F6F8FC',
+                    textStyle:{
+                      color: 'white'
+                    },
+                    backgroundColor: 'rgba(0,0,0,0)',
                     borderColor: '#8C8D8E',
                     borderWidth: 1,
                     borderRadius: 4,
@@ -359,14 +384,14 @@ function run1()
                         height: 0
                     },
                     b: {
-                        color: '#4C5058',
+                        color: 'white',
                         fontSize: 14,
                         fontWeight: 'bold',
                         lineHeight: 33
                     },
                     per: {
                         color: '#fff',
-                        backgroundColor: '#4C5058',
+                        backgroundColor: 'rgba(255,255,255,0.1)',
                         padding: [3, 4],
                         borderRadius: 4
                     }
