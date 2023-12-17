@@ -1,20 +1,55 @@
 <template>
   <!--顶部-->
+  <!--注意！背景依赖src/assets/html/newPollutionHtml.html-->
+  <div class="background-container1">
+    <iframe
+        class="background-iframe1"
+        src="/src/assets/html/newPollutionHtml.html"
+        ref="iframeDom"
+    ></iframe>
+    <!-- Your main content goes here -->
+  </div>
+  <div class='left-chart'>
+    <div class="left-top">
+      <div class="city-rank">
+        <ol class="rank-list">
+          <li class="rank-record-typeA" id="rank-record-1"></li>
+          <li class="rank-record-typeB" id="rank-record-2"></li>
+          <li class="rank-record-typeA" id="rank-record-3"></li>
+          <li class="rank-record-typeB" id="rank-record-4"></li>
+          <li class="rank-record-typeA" id="rank-record-5"></li>
+          <li class="rank-record-typeB" id="rank-record-6"></li>
+          <li class="rank-record-typeA" id="rank-record-7"></li>
+          <li class="rank-record-typeB" id="rank-record-8"></li>
+          <li class="rank-record-typeA" id="rank-record-9"></li>
+          <li class="rank-record-typeB" id="rank-record-10"></li>
+        </ol>
+      </div>
+    </div>
+    <div class="leftBottom">
+      <div class="chart-child-03" id="radar"
+           style="width: 100%;position: absolute;left: 0;height: 100%;top: 0; ">
+      </div>
+    </div>
+  </div>
+  <div class="main-chart-title">污染物城市定位图</div>
   <div class="pollution-chart-container">
-    <div class="options">
-      <div class="city-location">城市定位</div>
-      <div class="pollution-view">污染情况概览</div>
-      <div class="chart-options">
-        <div class="total_chose_box">
+    <div class="chart-options">
+      <div class="total_chose_box">
+        <div class="box-left">
           <span class="chose_tltle">请输入年份：</span>
           <input class="chose_text_in" id="selectDate1" value=2013>
           <span class="chose_tltle">请输入月份：</span>
           <input class="chose_text_in" id="selectDate2" value=1>
           <span class="chose_tltle">请输入日期：</span>
           <input class="chose_text_in" id="selectDate3" value=1>
-          <button class="chose_enter_right" id="selectDate">确定</button>
-          <button class="chose_enter_right" id="dayPrev">前一天</button>
-          <button class="chose_enter_right" id="dayNext">后一天</button>
+          <button class="chose_enter_left" id="selectDate">确定</button>
+          <button class="chose_enter_left" id="dayPrev">前一天</button>
+          <button class="chose_enter_left" id="dayNext">后一天</button>
+          <button class="chose_enter_left" id="addEvent">添加事件</button>
+          <button class="chose_enter_left" id="addEventViaFile">从文件中添加事件</button>
+        </div>
+        <div class="box-right">
           <button class="chose_enter_right" id="btnAQI">AQI</button>
           <button class="chose_enter_right" id="btn1">PM2.5</button>
           <button class="chose_enter_right" id="btn2">PM10</button>
@@ -23,7 +58,6 @@
           <button class="chose_enter_right" id="btn5">CO</button>
           <button class="chose_enter_right" id="btn6">O3</button>
         </div>
-        <button class="toggleButton"></button>
       </div>
     </div>
 
@@ -42,56 +76,109 @@
             <div class="progress-bar-content"></div>
           </div>
         </div>
-        <div class="cityEvent">
-          <div class="expandBtn"></div>
-          <div class="hideBtn">x</div>
-          <div class="cityEventTitle">S.C.H.A.L.E Event Title</div>
-          <div class="cityEventContent">From:Independent Federal Investigation Club</div>
-        </div>
       </div>
 
       <!-- Chart 2 -->
-      <div class="right-chart">
-        <div class="chart-child-02" id="line"
-             style="width: 100%;position: absolute;left: 0;height: 100%;top: 0;">
-        </div>
+    </div>
+  </div>
+  <div class="right-container">
+    <div class="pollution-city-details">
+      <div class="pollution-details" id="p-city">
+        <div id="value">北京市</div>
+      </div>
+      <div class="pollution-details" id="p-date">
+        <div id="value">日期: 2013-01-01</div>
+      </div>
+      <div class="pollution-details" id="p-AQI">
+        <div id="value">AQI: 29.70</div>
+      </div>
+      <div class="pollution-details" id="p-AQIS">
+        <div id="value">AQI State: 优秀</div>
+      </div>
+      <div class="pollution-details" id="p-PM25">
+        <div id="value">PM2.5: 17.53</div>
+      </div>
+      <div class="pollution-details" id="p-PM10">
+        <div id="value">PM10: 19.38</div>
+      </div>
+      <div class="pollution-details" id="p-SO2">
+        <div id="value">SO2: 6.62</div>
+      </div>
+      <div class="pollution-ditails" id="p-NO2">
+        <div id="value">NO2: 2.77</div>
+      </div>
+      <div class="pollution-ditails" id="p-CO">
+        <div id="value">CO: 0.28</div>
+      </div>
+      <div class="pollution-ditails" id="p-O3">
+        <div id="value">O3: 59.40</div>
+      </div>
+    </div>
+    <div class="cityEvent">
+      <input type="file" id="eventInput">
+      <div class="event-details" id="e-city">
+        <div id="value">Kivotos</div>
+      </div>
+      <div class="event-details" id="e-date">
+        <div id="value">****-**-**</div>
+      </div>
+      <div class="cityEventTitle">S.C.H.A.L.E Event</div>
+      <div class="cityEventContent" id="eventContent1">Kivotos is peaceful now</div>
+      <div class="cityEventContent" id="eventContent2">Independent Federal Investigation Club</div>
+      <div class="cityEventContent" id="eventContent3">FROM: S.C.H.A.L.E</div>
+      <div class="cityEventContent" id="eventContent4">Independent Federal Investigation Club</div>
+      <textarea class="addEventContent" id="inputEvent"></textarea>
+      <div class="eventDateRange">
+        <span class="chose_title_event_from">from:</span>
+        <input class="chose_text_in_event_from" id="eventYearFrom" value=2013>
+        <input class="chose_text_in_event_from" id="eventMonthFrom" value=1>
+        <input class="chose_text_in_event_from" id="eventDayFrom" value=1>
+        <span class="chose_title_event_to">to:</span>
+        <input class="chose_text_in_event_to" id="eventYearTo" value=1>
+        <input class="chose_text_in_event_to" id="eventMonthTo" value=1>
+        <input class="chose_text_in_event_to" id="eventDayTo" value=1>
+      </div>
+
+      <button class="submitEventButton">提交</button>
+      <button class="cancelEventButton">取消</button>
+    </div>
+    <div class="lineChart">
+      <div class="chart-child-02" id="line"
+           style="width: 100%;position: relative;left: 0;height: 100%;top: 0;">
       </div>
     </div>
   </div>
   <div>
-    <HeaderMenu></HeaderMenu>
-    <BackGround></BackGround>
-    <MapChart></MapChart>
+    <div class="Header-Menu">
+      <HeaderMenu></HeaderMenu>
+    </div>
     <!-- 其他页面内容 -->
   </div>
 </template>
 
 <script>
-import HeaderMenu from "@/components/HeaderMenu.vue"; // 此路径应根据你的项目结构来修改
-import MapChart from "@/components/MapChart.vue";
-import BackGround from "@/components/BackGround.vue";
+import HeaderMenu from "@/components/NewHeaderMenu.vue"; // 此路径应根据你的项目结构来修改
 import * as echarts from "echarts";
 import $ from "jquery";
 import 'echarts/extension/bmap/bmap';
 import 'echarts-gl';
 import {backendURL, queryRoute, method, headers} from "@/config/const.ts";
-import ecStat from 'echarts-stat';
-import {result} from "lodash-es";
 
 
 export default {
   components: {
-    BackGround,
-    HeaderMenu, MapChart
+    HeaderMenu,
   },
   created() {
   },
   mounted() {
     const colors = ['#20bf6b', '#0fb9b1', '#f7b731', '#fa8231', '#eb3b5a', '#6F1E51', '#1e90ff', '#5352ed', '#3742fa', '#3c40c6'];
-    const arr = ['AQI', 'PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3', 'U', 'V', 'TEMP', 'RH', 'PSFC']
-    const arrFiltered = ['AQI', 'PM2_5', 'PM10', 'SO2', 'NO2', 'CO', 'O3', 'U', 'V', 'TEMP', 'RH', 'PSFC']
+    const arr = ['AQI', 'PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3', 'U', 'V', 'TEMP', 'RH', 'PSFC'];
+    const arrFiltered = ['AQI', 'PM2_5', 'PM10', 'SO2', 'NO2', 'CO', 'O3', 'U', 'V', 'TEMP', 'RH', 'PSFC'];
+    var updateDataCur = ['北京市', 2013, 1, 1];
     var mCharts1 = echarts.init(document.getElementById('main'), 'dark');
     var mCharts2 = echarts.init(document.getElementById('line'),);
+    var mCharts3 = echarts.init(document.getElementById('radar'),);
     var city = '北京市'
     var year = 2013;
     var month = 1;
@@ -103,11 +190,12 @@ export default {
     const totalDays = 2100;
     var DayCur = 0;
     var playBarLen = 0;
+    var eventWidth = window.innerWidth * 0.21;
     localStorage.setItem("selectCity", '北京市');
     localStorage.setItem('selectDate', JSON.stringify([2013, 1, 1]))
 
 
-    async function fetchData(url) {
+    async function fetchDataGet(url) {
       let result;
       try {
         const response = await fetch(url, {
@@ -132,6 +220,44 @@ export default {
       return result;
     }
 
+    function clickWait(component) {
+      return new Promise((resolve) => {
+        const button = document.getElementById(component);
+        button.addEventListener('change', () => {
+          resolve();
+        });
+        button.click();
+      });
+    }
+
+    async function fetchDataPost(url, fileInputComponent) {
+      const fileInput = document.getElementById(fileInputComponent);
+      // 检查是否选择了文件
+      if (fileInput.files.length === 0) {
+        console.log("failed");
+        return;
+      }
+      // 创建一个 FormData 对象，用于传递文件
+      const formData = new FormData();
+      console.log(fileInput.files[0]);
+      formData.append('file', fileInput.files[0]);
+
+      // 发起 fetch 请求
+      fetch(url, {
+        method: 'POST',
+        body: formData,
+      })
+          .then(response => response.json())
+          .then(data => {
+            // 处理后端返回的数据
+            console.log(data);
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+    }
+
+
     function isDateOutOfRange(date) {
       if (date[1] > 12) {
         return true;
@@ -155,8 +281,25 @@ export default {
           + '&month=' + DateCur[1]
           + '&day=' + DateCur[2];
 
-      await fetchData(queryURL).then(data => {
+      await fetchDataGet(queryURL).then(data => {
         localStorage.setItem("MapCur", JSON.stringify(data));
+      })
+    }
+
+    async function setCityRank() {
+      const DateCur = JSON.parse(localStorage.getItem("selectDate"));
+      const queryMethod = "province_rank?"
+      const queryURL = 'http://' + backendURL + queryRoute + queryMethod
+          + 'year=' + DateCur[0]
+          + '&month=' + DateCur[1]
+          + '&day=' + DateCur[2];
+      await fetchDataGet(queryURL).then(datas => {
+        let i = 1;
+        datas.forEach(data_single => {
+          const rankRecord = document.getElementById("rank-record-" + i);
+          rankRecord.innerText = '城市: ' + data_single['name'] + ' AQI: ' + data_single['AQI'];
+          i += 1;
+        })
       })
     }
 
@@ -165,7 +308,7 @@ export default {
       const queryMethod = "all_AQI?"
       const queryURL = 'http://' + backendURL + queryRoute + queryMethod
           + 'city=' + cityCur;
-      await fetchData(queryURL).then(data => {
+      await fetchDataGet(queryURL).then(data => {
         localStorage.setItem("lineChartCur", JSON.stringify(data));
       })
     }
@@ -181,20 +324,6 @@ export default {
       year = yearD.value;
       month = monthD.value;
       day = dayD.value;
-    }
-
-    function eventUpdate() {
-      const dateCur = JSON.parse(localStorage.getItem("selectDate"));
-      const cityCur = localStorage.getItem("selectCity");
-      //需要更改
-      const queryMethod = "pollution_map?"
-      const queryURL = 'http://' + backendURL + queryRoute + queryMethod
-          + 'year=' + dateCur[0]
-          + '&month=' + dateCur[1]
-          + '&day=' + dateCur[2];
-      const cityEventTitle = document.querySelector(".cityEventTitle");
-      const cityEventContent = document.querySelector(".cityEventContent");
-      cityEventTitle.innerText = cityCur;
     }
 
     function progressBarUpdate() {
@@ -262,7 +391,7 @@ export default {
           + 'year=' + DateCur[0]
           + '&month=' + DateCur[1]
           + '&day=' + DateCur[2];
-      await fetchData(queryURL).then(data => {
+      await fetchDataGet(queryURL).then(data => {
         result = data;
       });
       localStorage.setItem("MapCur", JSON.stringify(result));
@@ -275,9 +404,9 @@ export default {
       const choseEnterAll = document.querySelectorAll(".chose_enter_right");
       choseEnterAll.forEach(choseEnter => {
         if (choseEnter.textContent === pollution) {
-          choseEnter.style.backgroundColor = 'white';
+          choseEnter.style.backgroundColor = '#53B6B2';
         } else {
-          choseEnter.style.backgroundColor = '#f0f0f0';
+          choseEnter.style.backgroundColor = 'rgba(1, 202, 217, .2)';
         }
       })
     }
@@ -286,6 +415,98 @@ export default {
       await nextDay();
       dataChange(url);
     }
+
+    async function dataReset() {
+      // 前端代码
+      // 使用fetch或其他HTTP请求库获取数据
+      // 2. 获取特定日期、城市的污染数据
+      const cityCur = localStorage.getItem('selectCity');
+      const DateCur = JSON.parse(localStorage.getItem("selectDate"));
+      if ((cityCur === updateDataCur[0]) && (DateCur[0] === updateDataCur[1])
+          && (DateCur[1] === updateDataCur[2]) && (DateCur[2] === updateDataCur[3])) {
+        return;
+      }
+
+      const Data = JSON.parse(localStorage.getItem("MapCur"));
+      const cityData = Data.find(record => record.name === cityCur);
+
+      const AQI = document.getElementById('p-AQI');
+      const AQIState = document.getElementById('p-AQIS');
+      const PM25 = document.getElementById('p-PM25');
+      const PM10 = document.getElementById('p-PM10');
+      const SO2 = document.getElementById('p-SO2');
+      const NO2 = document.getElementById('p-NO2');
+      const CO = document.getElementById('p-CO');
+      const O3 = document.getElementById('p-O3');
+      const Pcity = document.getElementById("p-city");
+      const Pdate = document.getElementById("p-date");
+      const Ecity = document.getElementById("e-city");
+      const Edate = document.getElementById("e-date");
+
+      const queryMethod = "events?"
+      const queryURL = 'http://' + backendURL + queryRoute + queryMethod
+          + 'city=' + cityCur
+          + '&year=' + DateCur[0]
+          + '&month=' + DateCur[1]
+          + '&day=' + DateCur[2];
+
+      AQIState.innerText = 'AQI State: ' + cityData.AQIState;
+      AQI.innerText = 'AQI: ' + cityData.AQI.toFixed(2);
+      PM25.innerText = 'PM2.5: ' + cityData.PM2_5.toFixed(2);
+      PM10.innerText = 'PM10: ' + cityData.PM10.toFixed(2);
+      SO2.innerText = 'SO2: ' + cityData.SO2.toFixed(2);
+      NO2.innerText = 'NO2: ' + cityData.NO2.toFixed(2);
+      CO.innerText = 'CO: ' + cityData.CO.toFixed(2);
+      O3.innerText = 'O3: ' + cityData.O3.toFixed(2);
+      Pcity.innerText = cityCur;
+      Pdate.innerText = '日期: ' + DateCur[0] + '-' + DateCur[1] + '-' + DateCur[2];
+      Ecity.innerText = cityCur;
+      Edate.innerText = DateCur[0] + '-' + DateCur[1] + '-' + DateCur[2];
+      updateDataCur[0] = cityCur;
+      updateDataCur[1] = DateCur[0];
+      updateDataCur[2] = DateCur[1];
+      updateDataCur[3] = DateCur[2];
+      await fetchDataGet(queryURL).then(data => {
+        const eventTitle = document.querySelector(".cityEventTitle");
+        if (data === null) {
+
+          if (eventTitle.innerText === 'S.C.H.A.L.E Event') {
+            return;
+          }
+          i = 1;
+          for (; i !== 5; i += 1) {
+            const eventContent = document.getElementById('eventContent' + i);
+            eventContent.style.display = 'none';
+          }
+          return;
+        }
+        eventTitle.innerText = '污染事件';
+        var i = 1;
+        var eventTop = 45;
+        data.forEach(record => {
+          const eventContent = document.getElementById('eventContent' + i);
+          eventContent.innerText = i + '.' + record;
+          const lineCost = Math.ceil(((eventContent.innerText.length) * 18) / eventWidth) * 3.7;
+          eventContent.style.height = lineCost + '%';
+          eventContent.style.top = eventTop;
+          eventTop = eventTop + lineCost + '%';
+          eventContent.style.display = 'block';
+          i += 1;
+        })
+        for (; i !== 5; i += 1) {
+          const eventContent = document.getElementById('eventContent' + i);
+          eventContent.style.display = 'none';
+        }
+      })
+      await setMapLineChart().then(() => {
+        dataChange2(url3);
+      })
+      dataChange3([[cityData.AQI, cityData.PM25,
+        cityData.PM10, cityData.CO, cityData.NO2,
+        cityData.SO2, cityData.O3]]);
+    }
+
+    setInterval(dataReset, 100);
 
     function dataChange(url) {
       $.get('/data/china.json', function (ret) {
@@ -304,7 +525,7 @@ export default {
           }
         }
       })
-
+      setCityRank();
 
       var mapData = [];
       $.get(url, function (ret) {
@@ -340,7 +561,7 @@ export default {
             show: true,
             text: year + '年' + month + '月' + day + '日' + pollution,
             textStyle: {
-              color: 'rgba(0, 0, 0, 1)'// 设置文本颜色为黑色
+              color: '#FFFFFF'// 设置文本颜色为黑色
             }
           },
           tooltip: {
@@ -351,7 +572,6 @@ export default {
             hideDelay: 0,//鼠标移出坐标点时，浮层隐藏的延迟时间，单位为 ms，在 alwaysShowContent 为 true 的时候无效
             formatter: function (params) {
               localStorage.setItem("selectCity", params.data.name);
-              eventUpdate();
               city = params.data.name;
               return params.data.name + pollution + ':' + params.data.value[3]
             }
@@ -366,21 +586,21 @@ export default {
               normal: {
                 show: false,//是否显示省份名称
                 //       fontSize: '10',//字体大小
-                color: '#57606f'//字体颜色
+                color: '#367197'//字体颜色
               },
               emphasis: { //动态展示的样式
                 fontSize: '10',//字体大小
-                color: 'rgba(0,0,0,1)'
+                color: '#FFFFFF'
                 //color: '#485460f'//字体颜色
               },
             },
             itemStyle: {
               normal: {
                 borderColor: 'rgba(0, 0, 0, 0.5)',
-                areaColor: '#dcdde1',//静态时各省份区域颜色
+                areaColor: '#1c2f9a',//静态时各省份区域颜色
               },
               emphasis: {
-                areaColor: '#718093',//鼠标选择区域颜色
+                areaColor: '#367197',//鼠标选择区域颜色
                 shadowOffsetX: 0,
                 shadowOffsetY: 0,
                 shadowBlur: 20,
@@ -513,6 +733,29 @@ export default {
     $('#dayNext').click(async function () {//jqury对元素进行获取
       await nextDay();
       dataChange(url);
+    })
+    $('#addEvent').click(function () {
+      for (let i = 1; i <= 4; i++) {
+        const eventContent = document.getElementById('eventContent' + i);
+        eventContent.style.display = 'none';
+      }
+      const inputEvent = document.getElementById('inputEvent');
+      const eventTitle = document.querySelector('.cityEventTitle');
+      const submitButton = document.querySelector('.submitEventButton');
+      const cancelButton = document.querySelector('.cancelEventButton');
+      const eventDateRange = document.querySelector(".eventDateRange");
+      inputEvent.style.display = 'block';
+      eventTitle.innerText = '事件添加';
+      submitButton.style.display = 'block';
+      cancelButton.style.display = 'block';
+      eventDateRange.style.display = 'block';
+    })
+    $('#addEventViaFile').click(async function () {
+      await clickWait('eventInput');
+      const queryMethod = "add_events_file?"
+      const queryURL = 'http://' + backendURL + queryRoute + queryMethod;
+      console.log('bbb');
+      fetchDataPost(queryURL, 'eventInput');
     })
     $('#btnAQI').click(function () {
       pollution = 'AQI';
@@ -652,7 +895,10 @@ export default {
         mCharts2.setOption(option2 = {
           title: {
             text: localStorage.getItem('selectCity') + 'AQI',
-            left: '1%'
+            left: '1%',
+            textStyle: {
+              color: '#FFFFFF' // 将标题颜色设置为白色
+            },
           },
           tooltip: {
             trigger: 'axis',
@@ -661,18 +907,29 @@ export default {
             }
           },
           grid: {
-            left: '5%',
+            left: '10%',
             right: '15%',
-            bottom: '10%'
+            bottom: '30%',
+            width: '60%',
           },
           xAxis: {
             data: data.map(function (item) {
               return item[0];
-            })
+            }),
+            axisLabel: {
+              color: '#FFFFFF' // 将 Y 轴刻度文字颜色设置为白色
+            },
           },
-          yAxis: {},
+          yAxis: {
+            axisLabel: {
+              color: '#FFFFFF' // 将 Y 轴刻度文字颜色设置为白色
+            }
+          },
           toolbox: {
             right: 10,
+            iconStyle: {
+              borderColor: '#FFFFFF', // 设置按钮图标边框颜色为白色
+            },
             feature: {
               dataZoom: {
                 yAxisIndex: 'none'
@@ -688,8 +945,11 @@ export default {
             type: 'inside'
           }],
           visualMap: {
+            textStyle: {
+              color: '#FFFFFF', // 将图例文字颜色设置为白色
+            },
             top: 50,
-            right: 10,
+            right: 2,
             pieces: [{
               gt: 0,
               lte: 50,
@@ -725,116 +985,116 @@ export default {
             data: data.map(function (item) {
               return item[1];
             }),
-            markLine: {
-              silent: true,
-              lineStyle: {
-                color: '#333'
-              },
-              data: [{
-                yAxis: 0
-              }, {
-                yAxis: 50 * 2
-              }, {
-                yAxis: 50 * 3
-              }, {
-                yAxis: 50 * 4
-              }, {
-                yAxis: 50 * 6
-              }, {
-                yAxis: 50 * 8
-              }, {
-                yAxis: 50 * 10
-              }]
-            }
           }
         });
-      });
+      })
 
       option2 && mCharts2.setOption(option2);
     }
 
-    const toggleButton = document.querySelector('.toggleButton');
-    const content = document.querySelector(".total_chose_box");
-    const chartOptionBox = document.querySelector(".chart-options");
-    const cityLocationBtn = document.querySelector(".city-location");
-    const pollutionViewBtn = document.querySelector(".pollution-view");
-    const cityLocationChart = document.querySelector(".main-chart");
-    const pollutionViewChart = document.querySelector(".right-chart");
-    const chartContainer = document.querySelector(".pollution-chart-container");
-    const choseEnterAll = document.querySelectorAll(".chose_enter_right");
+    function dataChange3(dataBJ) {
+      var option;
+
+      // Schema:
+      // AQI,PM2.5,PM10,CO,NO2,SO2,O3
+      const lineStyle = {
+        width: 1,
+        opacity: 0.5
+      };
+      option = {
+        backgroundColor: 'rgba(1, 202, 217, .2)',
+        radar: {
+          indicator: [
+            {name: 'AQI', max: 300},
+            {name: 'PM2.5', max: 250},
+            {name: 'PM10', max: 300},
+            {name: 'CO', max: 5},
+            {name: 'NO2', max: 200},
+            {name: 'SO2', max: 100},
+            {name: 'O3', max: 300}
+          ],
+          shape: 'circle',
+          splitNumber: 5,
+          axisName: {
+            color: '#FFFFFF'
+          },
+          splitLine: {
+            lineStyle: {
+              color: [
+                'rgba(0, 255, 255, 0.1)',
+                'rgba(0, 255, 255, 0.2)',
+                'rgba(0, 255, 255, 0.4)',
+                'rgba(0, 255, 255, 0.6)',
+                'rgba(0, 255, 255, 0.8)',
+                'rgba(0, 255, 255, 1)'
+              ].reverse()
+            }
+          },
+          splitArea: {
+            show: false
+          },
+          axisLine: {
+            lineStyle: {
+              color: 'rgba(0, 255, 255, .4)'
+            }
+          }
+        },
+        series: [
+          {
+            name: 'city_name',
+            type: 'radar',
+            lineStyle: lineStyle,
+            data: dataBJ,
+            symbol: 'none',
+            itemStyle: {
+              color: '#FFFFFF'
+            },
+            areaStyle: {
+              opacity: 0.1
+            }
+          },
+        ]
+      };
+
+      option && mCharts3.setOption(option);
+    }
+
+    dataChange3([[0, 0, 0, 0, 0, 0, 0]]);
+
     const playBar = document.querySelector(".progress-bar-content");
     const cityEventContainer = document.querySelector(".cityEvent");
-    const eventHideBtn = document.querySelector(".hideBtn");
-    const eventExpandBtn = document.querySelector(".expandBtn");
+    const eventCancelButton = document.querySelector('.cancelEventButton');
+    const submitEventButton = document.querySelector(".submitEventButton");
+    const addeventContent = document.querySelector(".addEventContent");
 
-    chartContainer.style.top = window.innerHeight * 0.11 + 'px';
-    chartOptionBox.style.top = "12.5%"
-    chartOptionBox.style.left = "22%"
-    chartOptionBox.style.maxHeight = window.innerHeight * 0.04 + 'px';
-    content.style.top = -window.innerHeight * 0.0085 + 'px'
-    chartOptionBox.style.width = '2%'
-    chartOptionBox.style.height = '120%'
     playBarLen = window.innerHeight * 0.15;
     playBar.style.width = '0px';
     cityEventContainer.style.left = ((window.innerWidth * 0.85) - 300) + 'px';
     cityEventContainer.style.top = ((window.innerHeight * 0.85) - (window.innerHeight * 0.85 * 0.08) - 300) + 'px';
-    choseEnterAll.forEach(choseEnter => {
-      choseEnter.style.height = window.innerHeight * 0.04 + 'px';
-    });
     mCharts1.resize();
     mCharts2.resize();
 
     window.addEventListener('resize', () => {
-      chartContainer.style.top = window.innerHeight * 0.11 + 'px';
-      chartOptionBox.style.maxHeight = window.innerHeight * 0.04 + 'px';
-      choseEnterAll.forEach(choseEnter => {
-        choseEnter.style.height = window.innerHeight * 0.04 + 'px';
-      });
-      chartOptionBox.style.top = "12.5%"
-      chartOptionBox.style.left = "22%"
+      eventWidth = window.innerWidth * 0.21;
       playBarLen = window.innerHeight * 0.15;
       cityEventContainer.style.left = ((window.innerWidth * 0.85) - 300) + 'px';
       cityEventContainer.style.top = ((window.innerHeight * 0.85) - (window.innerHeight * 0.85 * 0.08) - 300) + 'px';
+      mCharts3.resize();
+    })
+
+    eventCancelButton.addEventListener('click', () => {
+      const cityEventTitle = document.querySelector(".cityEventTitle");
+      const inputEvent = document.getElementById('inputEvent');
+      const eventDateRange = document.querySelector(".eventDateRange");
+      cityEventTitle.innerText = "S.C.H.A.L.E Event";
+      inputEvent.style.display = 'none';
+      submitEventButton.style.display = 'none';
+      eventCancelButton.style.display = 'none';
+      eventDateRange.style.display = 'none';
+      updateDataCur[3] = updateDataCur[3] + 1;
     })
 
 
-    toggleButton.addEventListener("click", () => {
-      if (chartOptionBox.style.width === '2%') {
-        chartOptionBox.style.width = '69%'
-        chartOptionBox.style.justifyContent = "space-between"
-        content.style.display = 'block'
-      } else {
-        chartOptionBox.style.width = '2%'
-        chartOptionBox.style.justifyContent = "center"
-        content.style.display = "none"; // 折叠时将最大高度设为0，实现过渡效果
-
-      }
-      toggleButton.classList.toggle('toggleButtonExpand')
-      toggleButton.classList.toggle('toggleButton')
-    });
-
-    eventHideBtn.addEventListener("click", () => {
-      cityEventContainer.style.top = (window.innerHeight * 0.85) - (window.innerHeight * 0.85 * 0.08)+ 'px';
-    })
-
-    eventExpandBtn.addEventListener("click", () => {
-      cityEventContainer.style.top = ((window.innerHeight * 0.85) - (window.innerHeight * 0.85 * 0.08) - 300) + 'px';
-    })
-
-    cityLocationBtn.addEventListener('click', function () {
-      cityLocationChart.style.display = "block";
-      pollutionViewChart.style.display = "none"
-      mCharts1.resize();
-    });
-
-    pollutionViewBtn.addEventListener('click', function () {
-      cityLocationChart.style.display = "none";
-      pollutionViewChart.style.display = "block"
-      setMapLineChart().then(() => {
-        dataChange2(url);
-      });
-      mCharts2.resize();
-    });
   }
 
   ,
@@ -852,7 +1112,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  z-index: 1;
+  z-index: 0;
 }
 
 .background-iframe1 {
@@ -864,48 +1124,102 @@ export default {
   border: none;
 }
 
+.rank-list {
+  position: fixed;
+  left: 3.2%;
+  top: 15%;
+  width: 15.9%;
+  height: 44%;
+  margin: 0; /* 移除外边距 */
+  padding: 0; /* 移除内边距 */
+  list-style: none;
+}
+
+.leftBottom {
+  position: fixed;
+  left: 3.2%;
+  top: 67.3%;
+  width: 15.9%;
+  height: 27%;
+  background-color: rgba(1, 202, 217, .2);
+}
+
+.rank-record-typeA,
+.rank-record-typeB {
+  position: relative;
+  height: 10%;
+  width: 100%;
+  color: #FFFFFF;
+  font-size: 15px;
+}
+
+.rank-record-typeA {
+  background-color: rgba(1, 202, 217, .2);
+}
+
+.rank-record-typeB {
+  background-color: rgba(0, 255, 255, .4);
+}
+
+.main-chart-title {
+  margin: 0;
+  font-weight: normal;
+  padding: 0;
+  list-style: none;
+  font-style: normal;
+  z-index: 2;
+  position: fixed;
+  top: 11%;
+  left: 42%;
+  color: #FFFFFF;
+}
+
 .pollution-chart-container {
   position: fixed;
   display: flex;
   flex-direction: column;
-  left: 7%;
-  height: 85%;
-  width: 85%;
-}
-
-.options {
-  position: relative;
-  background-color: #f0f0f0;
-  border: 2px solid #c4c7ce; /* 分隔线 */
-  border-bottom: 2px solid #ccc; /* 分隔线 */;
-  font-size: 80%;
-  width: 100%;
-  height: 9%;
-  border-radius: 10px 10px 0 0; /* 10px 圆角，底部为直角 */
-  overflow: hidden;
+  top: 16%;
+  left: 20.5%;
+  height: 80%;
+  width: 53.5%;
 }
 
 
 .total_chose_box {
-  display: none;
+  color: #FFFFFF;
+  display: block;
   position: relative;
-  transition: height 0.7s ease; /* 添加过渡效果，使显示和隐藏平滑 */
   margin-left: 1%;
+  height: 100%;
+  width: 100%;
 }
 
 .chart-options {
-  display: flex;
-  transition: width 0.5s ease; /* 添加过渡效果，使显示和隐藏平滑 */
-  justify-content: center; /* 将内容水平居中 */
   border-radius: 20px;
-  border: 2px solid #ccc;
-  padding: 5px;
-  position: fixed;
-  overflow: hidden;
-  max-height: 20px;
-  font-size: 20px;
-  top: 500px;
-  left: 500px;
+  position: relative;
+  top: 0;
+  width: 100%;
+  height: 5%;
+  font-size: 17px;
+}
+
+.box-left {
+  position: relative;
+  text-align: left;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+}
+
+.box-right {
+  position: relative;
+  display: inline-block;
+  float: right;
+  width: 25%;
+  height: 100%;
+  top: 1650%;
+  left: -3%;
+  z-index: 2;
 }
 
 .chose_tltle,
@@ -915,126 +1229,56 @@ export default {
 
 .chose_text_in {
   position: relative;
-  top: 20%;
-  width: 50px;
-  height: 30px;
-  padding: 5px;
-  border: 1px solid rgb(147, 160, 231);
+  width: 6%;
+  height: 100%;
+  border: 1px solid #53B6B2;
+  background-color: rgba(1, 202, 217, .2);
+  color: #FFFFFF;
   border-radius: 4px;
   font-size: 16px;
-
 }
 
+.chose_enter_left,
 .chose_enter_right {
+  background-color: rgba(1, 202, 217, .2);
+  color: #FFFFFF;
   border: none;
   padding: 0;
   cursor: pointer;
-  float: left;
-  justify-content: center;
-  align-items: center;
-  width: 5%;
+  height: 100%;
   border-radius: 4px;
 }
 
-.chose_enter_right:hover {
-  background-color: #8fc3f4;
-  color: #f48f8f;
-  border: 1px solid #ccc;
-}
 
-#btnAQI {
-  background-color: #ffffff;
-}
-
-
-.city-location,
-.pollution-view {
-  height: 100%;
-  display: flex;
-  float: left;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  transition: background 0.5s; /* 添加过渡效果 */
-}
-
-.city-location {
+.chose_enter_left {
   width: 7%;
 }
 
-.pollution-view {
-  width: 10%;
+#addEventViaFile {
+  width: 14%;
 }
 
-.chose_text_in {
-  width: 6%;
-}
-
-.toggleButton,
-.toggleButtonExpand {
-  position: relative;
-  align-items: center;
-  width: 70px;
-  height: 40px;
-  margin: -10px;
-  display: flex;
+.chose_enter_right {
+  float: left;
   justify-content: center;
-  background-color: transparent;
-  transition: background 0.7s; /* 添加过渡效果 */
-  border: none;
-
+  align-items: center;
+  width: 25%;
 }
 
-.city-location:hover,
-.pollution-view:hover {
-  background: #ffffff;
+.chose_enter_left:hover,
+.chose_enter_right:hover {
+  background-color: #53B6B2;
 }
 
-.toggleButton:hover,
-.toggleButtonExpand:hover {
-  background-color: #f0f0f0;
+#btnAQI {
+  background-color: #53B6B2;
+  width: 50%;
 }
 
-.toggleButton::before,
-.toggleButton::after {
-  content: "";
-  position: absolute;
-  width: 3px;
-  height: 15px;
-  background-color: #989898; /* 图标颜色 */
-}
-
-.toggleButtonExpand::before,
-.toggleButtonExpand::after {
-  content: "";
-  position: absolute;
-  width: 3px;
-  height: 15px;
-  background-color: #989898; /* 图标颜色 */
-}
-
-.toggleButton::before {
-  transform: translate(0, 31%) rotate(45deg);
-}
-
-.toggleButton::after {
-  transform: translate(0, -31%) rotate(-45deg);
-}
-
-.toggleButtonExpand::before {
-  transform: translate(0, 31%) rotate(-45deg);
-}
-
-.toggleButtonExpand::after {
-  transform: translate(0, -31%) rotate(45deg);
-}
 
 .con {
   position: relative;
   background-color: transparent;
-  border: 2px solid #c4c7ce; /* 分隔线 */
-  border-top: none; /* 分隔线 */;
-  border-radius: 0 0 10px 10px; /* 10px 圆角，底部为直角 */
   font-size: 70%;
   width: 100%;
   height: 100%;
@@ -1044,9 +1288,9 @@ export default {
 .playBar {
   position: fixed;
   width: 7%;
-  border: 2px solid #c4c7ce; /* 分隔线 */
-  top: 90%;
-  left: 10%;
+  border: 2px solid #53A5CB; /* 分隔线 */
+  top: 87%;
+  left: 23%;
   height: 5%;
   border-radius: 5px 0 0 5px;
   background-color: #1795bb;
@@ -1066,7 +1310,6 @@ export default {
   background-color: #1795bb;
   text-decoration-color: #ffffff;
   margin: 0;
-  background: none;
   cursor: pointer;
 }
 
@@ -1082,15 +1325,16 @@ export default {
 }
 
 .progress-bar {
-  left: 17%;
+  left: 30%;
   width: 15%;
   height: 5%;
-  top: 90%;
+  top: 87%;
   position: fixed;
-  border: 2px solid #c4c7ce; /* 分隔线 */
+  border: 2px solid #53A5CB; /* 分隔线 */
   border-radius: 0 5px 5px 0; /* 10px 圆角，底部为直角 */
   border-left: none;
   overflow: hidden;
+  display: none;
 }
 
 .progress-bar-content {
@@ -1100,50 +1344,59 @@ export default {
   height: 100%;
 }
 
-
-.cityEvent {
-  position: relative;
-  height: 300px;
-  width: 300px;
-  background-color: #f0f0f0;
-  transition: top 0.7s; /* 添加过渡效果 */
+#eventInput {
+  display: none;
 }
 
-.expandBtn {
-  position: relative;
-  top: -5%;
-  height: 10%;
-  left: 90%;
-  width: 10%;
-  display: block;
+.cityEventTitle,
+.cityEventContent {
+  position: fixed;
+  left: 76%;
+  width: 21%;
+  color: #FFFFFF;
 }
 
-.hideBtn {
-  position: relative;
-  top: -5%;
-  height: 10%;
-  left: 90%;
-  width: 10%;
-  display: inline-block;
-  text-align: center;
-  border-radius: 5px 5px 5px 5px;
-}
 
 .cityEventTitle {
-  position: relative;
-  top: -13%;
+  top: 40%;
   font-size: 25px;
   font-weight: 500;
-  width: 85%;
 }
 
 .cityEventContent {
-  position: relative;
-  top: -13%;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 300;
+  color: #FFFFFF;
+  height: 4.75%;
+  display: none;
 }
 
+#eventContent1, #eventContent3 {
+  background-color: rgba(1, 202, 217, .2);
+}
+
+#eventContent2, #eventContent4 {
+  background-color: rgba(0, 255, 255, .4);
+}
+
+
+#eventContent1 {
+  top: 45%;
+  display: block;
+}
+
+#eventContent2 {
+  top: 49.75%;
+  display: block;
+}
+
+#eventContent3 {
+  top: 54.5%;
+}
+
+#eventContent4 {
+  top: 59.25%;
+}
 
 .main-chart,
 .right-chart {
@@ -1157,7 +1410,208 @@ export default {
   display: block;
 }
 
-.right-chart {
+.lineChart {
+  position: fixed;
+  display: block;
+  background-color: rgba(1, 202, 217, .2);
+  top: 70%;
+  left: 76.1%;
+  width: 20.9%;
+  height: 25%;
+}
+
+#p-city, #p-date {
+  position: fixed;
+  font-size: 13px;
+  top: 12%;
+}
+
+#p-city {
+  left: 76%;
+  color: #FFFFFF;
+}
+
+#p-date {
+  right: 3%;
+  color: #9EA1BA;
+}
+
+
+#p-AQI, #p-AQIS, #p-PM25, #p-PM10, #p-SO2, #p-NO2, #p-CO, #p-O3 {
+  position: fixed;
+  color: #FFFFFF;
+  font-size: 15px;
+  width: 6%;
+  height: 5%;
+  background-color: rgba(1, 202, 217, .2);
+  align-items: center;
+}
+
+#p-AQI, #p-AQIS {
+  top: 16%;
+}
+
+#p-PM25, #p-PM10, #p-SO2 {
+  top: 23%;
+}
+
+#p-NO2, #p-CO, #p-O3 {
+  top: 30%;
+}
+
+#p-AQI {
+  left: 77%;
+}
+
+#p-AQIS {
+  left: 84%;
+  width: 13%;
+}
+
+#p-PM25 {
+  left: 77%;
+}
+
+#p-PM10 {
+  left: 84%;
+}
+
+#p-SO2 {
+  left: 91%;
+}
+
+#p-NO2 {
+  left: 77%;
+}
+
+#p-CO {
+  left: 84%;
+}
+
+#p-O3 {
+  left: 91%;
+}
+
+#e-city, #e-date {
+  position: fixed;
+  font-size: 13px;
+
+  right: 3%;
+}
+
+#e-city {
+  top: 40%;
+  color: #FFFFFF;
+}
+
+#e-date {
+  top: 42%;
+  color: #9EA1BA;
+}
+
+.eventDateRange {
   display: none;
 }
+
+.chose_text_in_event_from,
+.chose_text_in_event_to {
+  position: fixed;
+  left: 90%;
+  width: 2%;
+  height: 2%;
+  border: 1px solid #53B6B2;
+  background-color: rgba(1, 202, 217, .2);
+  color: #FFFFFF;
+  border-radius: 4px;
+  font-size: 8px;
+}
+
+.chose_title_event_from,
+.chose_title_event_to {
+  position: fixed;
+  color: #FFFFFF;
+  font-size: 10px;
+  left: 84%;
+}
+
+.chose_title_event_from {
+  top: 40%;
+}
+
+.chose_title_event_to {
+  top: 42.5%;
+}
+
+.chose_text_in_event_from {
+  top: 40%;
+}
+
+.chose_text_in_event_to {
+  top: 42.5%;
+}
+
+#eventYearFrom,
+#eventYearTo {
+  left: 86%;
+}
+
+#eventMonthFrom,
+#eventMonthTo {
+  left: 88%;
+}
+
+#eventDayFrom,
+#eventDayTo {
+  left: 90%;
+}
+
+
+.addEventContent {
+  position: fixed;
+  left: 76%;
+  width: 21%;
+  color: #FFFFFF;
+  top: 45%;
+  height: 19%;
+  border: 1px solid #53B6B2;
+  background-color: rgba(1, 202, 217, .2);
+  border-radius: 4px;
+  font-size: 18px;
+  display: none;
+}
+
+.cancelEventButton,
+.submitEventButton {
+  display: none;
+  background-color: rgba(1, 202, 217, .2);
+  position: fixed;
+  top: 59.5%;
+  width: 3%;
+  height: 3%;
+  color: #FFFFFF;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.cancelEventButton {
+  left: 93%;
+}
+
+.submitEventButton {
+  left: 89.5%;
+}
+
+.Header-Menu {
+  color: #fff;
+  background-size: 100% 100%;
+  background-position: 0 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 </style>

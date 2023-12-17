@@ -78,6 +78,11 @@ export const constantRoutes = [
         component: () => import('@/views/PollutionMap.vue'),
     },
     {
+        path: '/newpollution',
+        name: 'newpollution',
+        component: () => import('@/views/NewPollution.vue'),
+    },
+    {
         path: '/sankeymap',
         name: 'sankey',
         component: () => import('@/views/SankeyMap.vue'),
@@ -107,6 +112,7 @@ export const constantRoutes = [
         name: 'neweconomy',
         component: () => import('@/views/NewEconomy.vue'),
     },
+
     {
         path: '/economy',
         name: 'economy',
