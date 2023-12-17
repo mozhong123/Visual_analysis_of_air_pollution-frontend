@@ -186,7 +186,7 @@ function run(Data) {
       ...datasetWithFilters
     ],
     title: {
-      text: '因各污染物导致两种疾病死亡人数的变化情况',
+      text: '天津市因各污染物导致两种疾病死亡人数的变化情况',
       left: 'center',
       top: '5%',
       textStyle: {
@@ -301,7 +301,7 @@ function run1()
             //     }
             // ]
             title: {
-                    text: '大气污染造成的心血管疾病与呼吸系统疾病死亡人数图',
+                    text: '大气污染造成的天津市心血管疾病与呼吸系统疾病死亡人数图',
                     left: 'center',
                     top: '5%',
                     textStyle: {
