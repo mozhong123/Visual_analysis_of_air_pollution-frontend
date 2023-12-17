@@ -2,154 +2,155 @@
   <!--顶部-->
   <!--注意！背景依赖src/assets/html/newPollutionHtml.html-->
   <div class="app">
-  <div class="background-container1">
-    <iframe
-        class="background-iframe1"
-        src="/src/assets/html/newPollutionHtml.html"
-        ref="iframeDom"
-    ></iframe>
-    <!-- Your main content goes here -->
-  </div>
-  <div class='left-chart'>
-    <div class="left-top">
-      <div class="city-rank">
-        <ol class="rank-list">
-          <li class="rank-record-typeA" id="rank-record-1"></li>
-          <li class="rank-record-typeB" id="rank-record-2"></li>
-          <li class="rank-record-typeA" id="rank-record-3"></li>
-          <li class="rank-record-typeB" id="rank-record-4"></li>
-          <li class="rank-record-typeA" id="rank-record-5"></li>
-          <li class="rank-record-typeB" id="rank-record-6"></li>
-          <li class="rank-record-typeA" id="rank-record-7"></li>
-          <li class="rank-record-typeB" id="rank-record-8"></li>
-          <li class="rank-record-typeA" id="rank-record-9"></li>
-          <li class="rank-record-typeB" id="rank-record-10"></li>
-        </ol>
-      </div>
+    <div class="background-container1">
+      <iframe
+          class="background-iframe1"
+          src="/src/assets/html/newPollutionHtml.html"
+          ref="iframeDom"
+      ></iframe>
+      <!-- Your main content goes here -->
     </div>
-    <div class="leftBottom">
-      <div class="chart-child-03" id="radar"
-           style="width: 100%;position: absolute;left: 0;height: 100%;top: 0; ">
-      </div>
-    </div>
-  </div>
-  <div class="main-chart-title">污染物城市定位图</div>
-  <div class="pollution-chart-container">
-    <div class="chart-options">
-      <div class="total_chose_box">
-        <div class="box-left">
-          <span class="chose_tltle">请输入年份：</span>
-          <input class="chose_text_in" id="selectDate1" value=2013>
-          <span class="chose_tltle">请输入月份：</span>
-          <input class="chose_text_in" id="selectDate2" value=1>
-          <span class="chose_tltle">请输入日期：</span>
-          <input class="chose_text_in" id="selectDate3" value=1>
-          <button class="chose_enter_left" id="selectDate">确定</button>
-          <button class="chose_enter_left" id="dayPrev">前一天</button>
-          <button class="chose_enter_left" id="dayNext">后一天</button>
-          <button class="chose_enter_left" id="addEvent">添加事件</button>
-          <button class="chose_enter_left" id="addEventViaFile">从文件中添加事件</button>
-        </div>
-        <div class="box-right">
-          <button class="chose_enter_right" id="btnAQI">AQI</button>
-          <button class="chose_enter_right" id="btn1">PM2.5</button>
-          <button class="chose_enter_right" id="btn2">PM10</button>
-          <button class="chose_enter_right" id="btn3">SO2</button>
-          <button class="chose_enter_right" id="btn4">NO2</button>
-          <button class="chose_enter_right" id="btn5">CO</button>
-          <button class="chose_enter_right" id="btn6">O3</button>
+    <div class='left-chart'>
+      <div class="left-top">
+        <div class="city-rank">
+          <ol class="rank-list">
+            <li class="rank-record-typeA" id="rank-record-1"></li>
+            <li class="rank-record-typeB" id="rank-record-2"></li>
+            <li class="rank-record-typeA" id="rank-record-3"></li>
+            <li class="rank-record-typeB" id="rank-record-4"></li>
+            <li class="rank-record-typeA" id="rank-record-5"></li>
+            <li class="rank-record-typeB" id="rank-record-6"></li>
+            <li class="rank-record-typeA" id="rank-record-7"></li>
+            <li class="rank-record-typeB" id="rank-record-8"></li>
+            <li class="rank-record-typeA" id="rank-record-9"></li>
+            <li class="rank-record-typeB" id="rank-record-10"></li>
+          </ol>
         </div>
       </div>
-    </div>
-
-    <!--内容部分-->
-    <!-- Content Part -->
-    <div class="con">
-      <!-- Chart 1 -->
-      <div class="main-chart">
-        <div class="chart-child-01" id="main"
+      <div class="leftBottom">
+        <div class="chart-child-03" id="radar"
              style="width: 100%;position: absolute;left: 0;height: 100%;top: 0; ">
         </div>
-        <div class="playBar">
-          <button class="play" id="playMain">play</button>
-          <button class="stop" id="stopMain">stop</button>
-          <div class="progress-bar">
-            <div class="progress-bar-content"></div>
+      </div>
+    </div>
+    <div class="main-chart-title">污染物城市定位图</div>
+    <div class="pollution-chart-container">
+      <div class="chart-options">
+        <div class="total_chose_box">
+          <div class="box-left">
+            <span class="chose_tltle">请输入年份：</span>
+            <input class="chose_text_in" id="selectDate1" value=2013>
+            <span class="chose_tltle">请输入月份：</span>
+            <input class="chose_text_in" id="selectDate2" value=1>
+            <span class="chose_tltle">请输入日期：</span>
+            <input class="chose_text_in" id="selectDate3" value=1>
+            <button class="chose_enter_left" id="selectDate">确定</button>
+            <button class="chose_enter_left" id="dayPrev">前一天</button>
+            <button class="chose_enter_left" id="dayNext">后一天</button>
+            <button class="chose_enter_left" id="addEvent">添加事件</button>
+            <button class="chose_enter_left" id="addEventViaFile">从文件中添加事件</button>
+          </div>
+          <div class="box-right">
+            <button class="chose_enter_right" id="btnAQI">AQI</button>
+            <button class="chose_enter_right" id="btn1">PM2.5</button>
+            <button class="chose_enter_right" id="btn2">PM10</button>
+            <button class="chose_enter_right" id="btn3">SO2</button>
+            <button class="chose_enter_right" id="btn4">NO2</button>
+            <button class="chose_enter_right" id="btn5">CO</button>
+            <button class="chose_enter_right" id="btn6">O3</button>
           </div>
         </div>
       </div>
 
-      <!-- Chart 2 -->
-    </div>
-  </div>
-  <div class="right-container">
-    <div class="pollution-city-details">
-      <div class="pollution-details" id="p-city">
-        <div id="value">北京市</div>
-      </div>
-      <div class="pollution-details" id="p-date">
-        <div id="value">日期: 2013-01-01</div>
-      </div>
-      <div class="pollution-details" id="p-AQI">
-        <div id="value">AQI: 29.70</div>
-      </div>
-      <div class="pollution-details" id="p-AQIS">
-        <div id="value">AQI State: 优秀</div>
-      </div>
-      <div class="pollution-details" id="p-PM25">
-        <div id="value">PM2.5: 17.53</div>
-      </div>
-      <div class="pollution-details" id="p-PM10">
-        <div id="value">PM10: 19.38</div>
-      </div>
-      <div class="pollution-details" id="p-SO2">
-        <div id="value">SO2: 6.62</div>
-      </div>
-      <div class="pollution-ditails" id="p-NO2">
-        <div id="value">NO2: 2.77</div>
-      </div>
-      <div class="pollution-ditails" id="p-CO">
-        <div id="value">CO: 0.28</div>
-      </div>
-      <div class="pollution-ditails" id="p-O3">
-        <div id="value">O3: 59.40</div>
-      </div>
-    </div>
-    <div class="cityEvent">
-      <input type="file" id="eventInput">
-      <div class="event-details" id="e-city">
-        <!--<div id="value">Kivotos</div>-->
-        <div id="value">---</div>
-      </div>
-      <div class="event-details" id="e-date">
-        <div id="value">****-**-**</div>
-      </div>
-      <div class="cityEventTitle">S.C.H.A.L.E Event</div>
-      <div class="cityEventContent" id="eventContent1">Kivotos is peaceful now</div>
-      <div class="cityEventContent" id="eventContent2">Independent Federal Investigation Club</div>
-      <div class="cityEventContent" id="eventContent3">FROM: S.C.H.A.L.E</div>
-      <div class="cityEventContent" id="eventContent4">Independent Federal Investigation Club</div>
-      <textarea class="addEventContent" id="inputEvent"></textarea>
-      <div class="eventDateRange">
-        <span class="chose_title_event_from">from:</span>
-        <input class="chose_text_in_event_from" id="eventYearFrom" value=2013>
-        <input class="chose_text_in_event_from" id="eventMonthFrom" value=1>
-        <input class="chose_text_in_event_from" id="eventDayFrom" value=1>
-        <span class="chose_title_event_to">to:</span>
-        <input class="chose_text_in_event_to" id="eventYearTo" value=1>
-        <input class="chose_text_in_event_to" id="eventMonthTo" value=1>
-        <input class="chose_text_in_event_to" id="eventDayTo" value=1>
-      </div>
+      <!--内容部分-->
+      <!-- Content Part -->
+      <div class="con">
+        <!-- Chart 1 -->
+        <div class="main-chart">
+          <div class="chart-child-01" id="main"
+               style="width: 100%;position: absolute;left: 0;height: 100%;top: 0; ">
+          </div>
+          <div class="dayChoseMode">MODE: NORMAL</div>
+          <div class="playBar">
+            <button class="play" id="playMain">play</button>
+            <button class="stop" id="stopMain">stop</button>
+            <div class="progress-bar">
+              <div class="progress-bar-content"></div>
+            </div>
+          </div>
+        </div>
 
-      <button class="submitEventButton">提交</button>
-      <button class="cancelEventButton">取消</button>
-    </div>
-    <div class="lineChart">
-      <div class="chart-child-02" id="line"
-           style="width: 100%;position: relative;left: 0;height: 100%;top: 0;">
+        <!-- Chart 2 -->
       </div>
     </div>
-  </div>
+    <div class="right-container">
+      <div class="pollution-city-details">
+        <div class="pollution-details" id="p-city">
+          <div id="value">北京市</div>
+        </div>
+        <div class="pollution-details" id="p-date">
+          <div id="value">日期: 2013-01-01</div>
+        </div>
+        <div class="pollution-details" id="p-AQI">
+          <div id="value">AQI: 29.70</div>
+        </div>
+        <div class="pollution-details" id="p-AQIS">
+          <div id="value">AQI State: 优秀</div>
+        </div>
+        <div class="pollution-details" id="p-PM25">
+          <div id="value">PM2.5: 17.53</div>
+        </div>
+        <div class="pollution-details" id="p-PM10">
+          <div id="value">PM10: 19.38</div>
+        </div>
+        <div class="pollution-details" id="p-SO2">
+          <div id="value">SO2: 6.62</div>
+        </div>
+        <div class="pollution-ditails" id="p-NO2">
+          <div id="value">NO2: 2.77</div>
+        </div>
+        <div class="pollution-ditails" id="p-CO">
+          <div id="value">CO: 0.28</div>
+        </div>
+        <div class="pollution-ditails" id="p-O3">
+          <div id="value">O3: 59.40</div>
+        </div>
+      </div>
+      <div class="cityEvent">
+        <input type="file" id="eventInput">
+        <div class="event-details" id="e-city">
+          <!--<div id="value">Kivotos</div>-->
+          <div id="value">---</div>
+        </div>
+        <div class="event-details" id="e-date">
+          <div id="value">****-**-**</div>
+        </div>
+        <div class="cityEventTitle">S.C.H.A.L.E Event</div>
+        <div class="cityEventContent" id="eventContent1">Kivotos is peaceful now</div>
+        <div class="cityEventContent" id="eventContent2">Independent Federal Investigation Club</div>
+        <div class="cityEventContent" id="eventContent3">FROM: S.C.H.A.L.E</div>
+        <div class="cityEventContent" id="eventContent4">Independent Federal Investigation Club</div>
+        <textarea class="addEventContent" id="inputEvent"></textarea>
+        <div class="eventDateRange">
+          <span class="chose_title_event_from">from:</span>
+          <input class="chose_text_in_event_from" id="eventYearFrom" value=2013>
+          <input class="chose_text_in_event_from" id="eventMonthFrom" value=1>
+          <input class="chose_text_in_event_from" id="eventDayFrom" value=1>
+          <span class="chose_title_event_to">to:</span>
+          <input class="chose_text_in_event_to" id="eventYearTo" value=2013>
+          <input class="chose_text_in_event_to" id="eventMonthTo" value=1>
+          <input class="chose_text_in_event_to" id="eventDayTo" value=1>
+        </div>
+
+        <button class="submitEventButton">提交</button>
+        <button class="cancelEventButton">取消</button>
+      </div>
+      <div class="lineChart">
+        <div class="chart-child-02" id="line"
+             style="width: 100%;position: relative;left: 0;height: 100%;top: 0;">
+        </div>
+      </div>
+    </div>
     <div>
       <HeaderMenu></HeaderMenu>
     </div>
@@ -191,6 +192,7 @@ export default {
     var DayCur = 0;
     var playBarLen = 0;
     var eventWidth = window.innerWidth * 0.21;
+    var isspider = false;
     localStorage.setItem("selectCity", '北京市');
     localStorage.setItem('selectDate', JSON.stringify([2013, 1, 1]))
 
@@ -220,6 +222,10 @@ export default {
       return result;
     }
 
+    function sendMessage(messageContent) {
+      alert(messageContent);
+    }
+
     function clickWait(component) {
       return new Promise((resolve) => {
         const button = document.getElementById(component);
@@ -230,7 +236,25 @@ export default {
       });
     }
 
-    async function fetchDataPost(url, fileInputComponent) {
+    async function fetchDataPost(url, postData) {
+      // 发起 fetch 请求
+      console.log(JSON.stringify(postData));
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(postData),
+      })
+          .then(response => response.json())
+          .then(data => {
+            // 处理后端返回的数据
+            console.log(data);
+            sendMessage(data.data);
+          })
+          .catch(error => {
+            sendMessage('Error:' + error);
+          });
+    }
+
+    async function fetchDataPostFile(url, fileInputComponent) {
       const fileInput = document.getElementById(fileInputComponent);
       // 检查是否选择了文件
       if (fileInput.files.length === 0) {
@@ -268,6 +292,16 @@ export default {
       return false;
     }
 
+    function isDateOutOfDataRange(date) {
+      if (date[0] < 2013) {
+        return true;
+      }
+      if (data[0] > 2018) {
+        return true;
+      }
+      return false;
+    }
+
 
     async function setMap() {
       // 前端代码
@@ -286,7 +320,50 @@ export default {
       })
     }
 
+    function setMapSpider(DateCur) {
+      //需要更改
+      const queryMethod_get = "pollution_map?"
+      const queryURL_get = 'http://' + backendURL + queryRoute + queryMethod_get
+          + 'year=' + DateCur[0]
+          + '&month=' + DateCur[1]
+          + '&day=' + DateCur[2];
+      const queryMethod_post = "spider_day_data?"
+      const queryURL_post = 'http://' + backendURL + queryRoute + queryMethod_post
+      fetchDataPost(queryURL_post, {year: DateCur[0], month: DateCur[1], day: DateCur[2]});
+      fetchDataGet(queryURL_get).then(data => {
+        localStorage.setItem("MapCur", JSON.stringify(data));
+      })
+    }
+
+    async function addEventViaInput() {
+      const fromYear = document.getElementById('eventYearFrom');
+      const fromMonth = document.getElementById('eventMonthFrom');
+      const fromDay = document.getElementById('eventDayFrom');
+      const toYear = document.getElementById('eventYearTo');
+      const toMonth = document.getElementById('eventMonthTo');
+      const toDay = document.getElementById('eventDayTo');
+      const city = localStorage.getItem("selectCity");
+      const eventContent = document.getElementById("inputEvent");
+      const queryMethod_post = "add_events?"
+      const queryURL_post = 'http://' + backendURL + queryRoute + queryMethod_post
+      const beginTime = fromYear.value + '-' + fromMonth.value.padStart(2, '0') + '-' + fromDay.value.padStart(2, '0');
+      const endTime = toYear.value + '-' + toMonth.value.padStart(2, '0') + '-' + toDay.value.padStart(2, '0');
+      const content = eventContent.value;
+      fromYear.value = 2013;
+      fromMonth.value = 1;
+      fromDay.value = 1;
+      toYear.value = 2013;
+      toMonth.value = 1;
+      toDay.value = 1;
+      eventContent.value = '';
+      fetchDataPost(queryURL_post, {"city": city, "begin_time": beginTime, "end_time": endTime, "events": content});
+    }
+
+
     async function setCityRank() {
+      if (isspider) {
+        return;
+      }
       const DateCur = JSON.parse(localStorage.getItem("selectDate"));
       const queryMethod = "province_rank?"
       const queryURL = 'http://' + backendURL + queryRoute + queryMethod
@@ -304,6 +381,9 @@ export default {
     }
 
     async function setMapLineChart() {
+      if (isspider) {
+        return;
+      }
       const cityCur = localStorage.getItem("selectCity");
       const queryMethod = "all_AQI?"
       const queryURL = 'http://' + backendURL + queryRoute + queryMethod
@@ -335,6 +415,9 @@ export default {
       // 前端代码
       // 使用fetch或其他HTTP请求库获取数据
       // 2. 获取特定日期、城市的污染数据
+      if (isspider) {
+        return;
+      }
       let DateCur = JSON.parse(localStorage.getItem("selectDate"));
       if ((DateCur[0] === 2018) && (DateCur[1] === 12) && (DateCur[2] === 31)) {
         return;
@@ -362,6 +445,9 @@ export default {
       // 前端代码
       // 使用fetch或其他HTTP请求库获取数据
       // 2. 获取特定日期、城市的污染数据
+      if (isspider) {
+        return;
+      }
       let DateCur = JSON.parse(localStorage.getItem("selectDate"));
       let result = '';
       //需要更改
@@ -420,6 +506,9 @@ export default {
       // 前端代码
       // 使用fetch或其他HTTP请求库获取数据
       // 2. 获取特定日期、城市的污染数据
+      if (isspider) {
+        return;
+      }
       const cityCur = localStorage.getItem('selectCity');
       const DateCur = JSON.parse(localStorage.getItem("selectDate"));
       if ((cityCur === updateDataCur[0]) && (DateCur[0] === updateDataCur[1])
@@ -692,11 +781,19 @@ export default {
       var y = jQuery("#selectDate1").val();
       var m = jQuery("#selectDate2").val();
       var d = jQuery("#selectDate3").val();
+      const mapMode = document.querySelector(".dayChoseMode");
       if ((parseInt(y) < 2013) || (parseInt(m) < 1) || (parseInt(d) < 1) ||
           (parseInt(y) > 2018) || (parseInt(m) > 12) || (parseInt(d) > 31)) {
-        alert('invalid date!');
+        if (isDateOutOfRange([y, m, d])) {
+          sendMessage("invalid date!");
+        }
+        isspider = true;
+        mapMode.innerText = "MODE: SPIDER";
+        setMapSpider([y, m, d]);
         return;
       }
+      isspider = false;
+      mapMode.innerText = "MODE: NORMAL";
       if (year !== y) {
         year = y;
         flag = 1
@@ -756,7 +853,7 @@ export default {
       const queryMethod = "add_events_file?"
       const queryURL = 'http://' + backendURL + queryRoute + queryMethod;
       console.log('bbb');
-      fetchDataPost(queryURL, 'eventInput');
+      fetchDataPostFile(queryURL, 'eventInput');
     })
     $('#btnAQI').click(function () {
       pollution = 'AQI';
@@ -800,6 +897,9 @@ export default {
       colorChange(pollution);
     })
     $('#playMain').click(function () {
+      if (isspider) {
+        return;
+      }
       if ($(this).text() === 'play') {
         playInterval = setInterval(play, 200);
         $(this).text('pause');
@@ -810,6 +910,9 @@ export default {
       }
     })
     $('#stopMain').click(async function () {
+      isspider = false;
+      const mapMode = document.querySelector(".dayChoseMode");
+      mapMode.innerText = "MODE: NORMAL";
       clearInterval(playInterval);
       playInterval = -1;
       localStorage.setItem('selectDate', JSON.stringify([2013, 1, 1]));
@@ -1087,7 +1190,7 @@ export default {
       const cityEventTitle = document.querySelector(".cityEventTitle");
       const inputEvent = document.getElementById('inputEvent');
       const eventDateRange = document.querySelector(".eventDateRange");
-      cityEventTitle.innerText = "S.C.H.A.L.E Event";
+      cityEventTitle.innerText = "污染事件";
       inputEvent.style.display = 'none';
       submitEventButton.style.display = 'none';
       eventCancelButton.style.display = 'none';
@@ -1095,6 +1198,18 @@ export default {
       updateDataCur[3] = updateDataCur[3] + 1;
     })
 
+    submitEventButton.addEventListener('click', () => {
+      addEventViaInput();
+      const cityEventTitle = document.querySelector(".cityEventTitle");
+      const inputEvent = document.getElementById('inputEvent');
+      const eventDateRange = document.querySelector(".eventDateRange");
+      cityEventTitle.innerText = "污染事件";
+      inputEvent.style.display = 'none';
+      submitEventButton.style.display = 'none';
+      eventCancelButton.style.display = 'none';
+      eventDateRange.style.display = 'none';
+      updateDataCur[3] = updateDataCur[3] + 1;
+    })
 
   }
 
@@ -1284,6 +1399,15 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
+}
+
+.dayChoseMode {
+  position: fixed;
+  top: 19.3%;
+  right: 27%;
+  color: #FFFFFF;
+  font-size: 20px;
+  font-weight: 650;
 }
 
 .playBar {
@@ -1525,7 +1649,7 @@ export default {
   font-size: 8px;
 }
 
-.cityEventTitle{
+.cityEventTitle {
   display: none;
 }
 
@@ -1616,6 +1740,7 @@ export default {
   width: 100%;
   height: 40%;
 }
+
 .app {
   color: #fff;
   background: url(/src/assets/image/bg.jpg);
