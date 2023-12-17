@@ -70,7 +70,7 @@ export const constantRoutes = [
     {
         path: '/weathermap',
         name: 'weather',
-        component: () => import('@/views/WeatherMap.vue'),
+        component: () => import('@/views/NewWeatherMap.vue'),
     },
     {
         path: '/pollutionmap',

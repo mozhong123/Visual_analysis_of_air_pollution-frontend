@@ -31,7 +31,7 @@
         <input class="chose_text_in" id="selectDate2" value=北京市>
         <button class="chose_enter1" id="selectDate">确定</button>
       </div>
-      <div class="total_chose_box1" style="position: absolute;top:8%;left:2%">
+      <div class="total_chose_box1" style="position: absolute;top:8%;left:5%">
         <button class="chose_enter" id="btn7">前一年</button>
         <button class="chose_enter2" id="btn9">前一月</button>
         <button class="chose_enter" id="btn10">后一月</button>
@@ -41,12 +41,12 @@
         <h2 class="tith3">日历图对比与预测情况</h2>
       </div>
       <div class="con" style="display: flex;">
-        <div class="con left" style="position:absolute;left:-12.7%;top:15%;height:28%;width:140%;background-color: rgba(0,0,0,0);flex: 1;">
+        <div class="con left" style="position:absolute;left:-12.7%;top:17%;height:28%;width:140%;background-color: rgba(0,0,0,0);flex: 1;">
             <div id="calander"
                  style="position:relative;height: 100%;transform: scale(0.8);background-color: rgba(0,0,0,0);"></div>
         </div>
         <div class="con right" style="position:absolute;left:-32%;top:40%;width:168%;height:88%;">
-                <div id="line" style="position:relative;top:-20%;height: 110%;transform: scale(0.6);"></div>
+                <div id="line" style="position:relative;top:-21%;height: 110%;transform: scale(0.6);"></div>
         </div>
       </div>
     </div>
@@ -85,7 +85,7 @@ export default {
         border: "solid",
         borderColor: "rgba(0,0,0,0)",
         transform: "rotate(0deg)",
-        height: "650px",
+        height: "850px",
       }
     };
   },
