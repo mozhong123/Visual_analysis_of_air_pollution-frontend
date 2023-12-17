@@ -117,7 +117,8 @@
     <div class="cityEvent">
       <input type="file" id="eventInput">
       <div class="event-details" id="e-city">
-        <div id="value">Kivotos</div>
+        <!--<div id="value">Kivotos</div>-->
+        <div id="value">---</div>
       </div>
       <div class="event-details" id="e-date">
         <div id="value">****-**-**</div>
@@ -481,6 +482,7 @@ export default {
           return;
         }
         eventTitle.innerText = '污染事件';
+        eventTitle.style.display = 'block';
         var i = 1;
         var eventTop = 45;
         data.forEach(record => {
@@ -1382,12 +1384,10 @@ export default {
 
 #eventContent1 {
   top: 45%;
-  display: block;
 }
 
 #eventContent2 {
   top: 49.75%;
-  display: block;
 }
 
 #eventContent3 {
@@ -1526,6 +1526,10 @@ export default {
   font-size: 8px;
 }
 
+.cityEventTitle{
+  display: none;
+}
+
 .chose_title_event_from,
 .chose_title_event_to {
   position: fixed;
@@ -1608,10 +1612,10 @@ export default {
   background-size: 100% 100%;
   background-position: 0 0;
   position: fixed;
-  top: 0;
+  top: 1.8%;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 40%;
 }
 
 </style>
