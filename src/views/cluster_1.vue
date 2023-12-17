@@ -1,7 +1,6 @@
 <template>
     <div class="app">
-    <h1 style="position:fixed;color: aliceblue;top:0%;left:47%;">聚类图</h1>
-    <div class="total_chose_box" style="position: fixed;top:10%;right:2%;">
+    <div class="total_chose_box" style="position: fixed;top:10%;right:6%;">
         <span class="chose_tltle" style="color:aquamarine;">请输入年份：</span>
         <input class="chose_text_in" id="selectDate1" value=2013>
         <button class="chose_enter" id="selectDate">确定</button>
@@ -17,7 +16,7 @@
     
 
 
-    <div class="div_1" style="position:fixed;top:5%;left:3%;width:500px;height:450px;background:url(/src/assets/image/aleftboxtbott.png);background-size: 100% 100%;">
+    <div class="div_1" style="position:fixed;top:8%;left:3%;width:500px;height:450px;background:url(/src/assets/image/aleftboxtbott.png);background-size: 100% 100%;">
         <div class="div_any_title" style="position: relative;left:20px;top:10px;font-size:large;color:aliceblue">~散点聚类</div>
         <div id="main" style="width:450px;height: 450px;position: relative;top:15px;"></div>
     </div>
@@ -27,8 +26,8 @@
         <div id="two" style="width:500px;position:relative;height: 400px;top:10px"></div>
     </div>
 
-    <div class="div_any_child" style="width:750px;position:fixed;bottom:0%;right:8%;background:url(/src/assets/image/aleftboxtbott.png);background-size: 100% 100%;">
-        <div class="div_any_title" style="position: relative;left:100px;font-size:large;color:aliceblue;">污染物相似度对比分析</div>
+    <div class="div_any_child" style="width:750px;position:fixed;top:15%;right:8%;background:url(/src/assets/image/aleftboxtbott.png);background-size: 100% 100%;">
+        <div class="div_any_title" style="position: relative;top:25px;left:25%;font-size:large;color:aliceblue;">污染物相似度对比分析</div>
         <div id="three" style="width:700px;position:relative;height: 750px;top:10px"></div>
     </div>
       <div>
@@ -484,7 +483,7 @@ export default {
 
                       option.grid.push({
                           left: BASE_LEFT + i * (GRID_WIDTH + GAP) + '%',
-                          top: BASE_TOP + j * (GRID_HEIGHT + GAP) + '%',
+                          top:  BASE_TOP + j * (GRID_HEIGHT + GAP) + '%',
                           width: GRID_WIDTH + '%',
                           height: GRID_HEIGHT + '%',
 
@@ -553,7 +552,10 @@ export default {
               },
               title: {
                   text: year + '年',
-                  left: 'left'
+                  left: 'left',
+                  textStyle:{
+                    color: 'white'
+                  }
               },
               animation: false,
               brush: {
@@ -569,7 +571,7 @@ export default {
                   categories: ["北京", "武汉", "广州"],
                   dimension: CATEGORY_DIM,
                   orient: 'horizontal',
-                  top: 0,
+                  top: '3%',
                   left: 'center',
                   inRange: {
                       color: ['#ED4C67', '#4cd137', '#00a8ff']

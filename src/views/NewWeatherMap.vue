@@ -1,7 +1,6 @@
 <template>
   <div class="app">
-  <h1 style="position:fixed;color: aliceblue;top:2%;left:47%;">其他因素分析</h1>
-  <div class="total_chose_box" style="position: fixed;top:8%;left:20%;z-index: 99;">
+  <div class="total_chose_box" style="position: fixed;top:8%;left:10%;z-index: 99;">
     <span class="chose_tltle">请输入年份：</span>
     <input class="chose_text_in" id="hope_year" type="number" value=2013>
     <span class="chose_tltle">请输入月份：</span>
@@ -17,24 +16,24 @@
     <button class="chose_enter" id="btn5">PSFC</button>
   </div>
   <div class ="puleftboxtmidd1">
-    <div class ="con left" style=" position:fixed ;top:5%;right: 0%; width: 950px; height:600px;">
-      <div id="title1" class="title" style="position: absolute; top: 15%; left: 50%; transform: translateX(-50%); text-align: center; color: #fff;font-size: 24px;">
+    <div class ="con left" style=" position:fixed ;top:5%;right: -1%; width: 800px; height:600px;">
+      <div id="title1" class="title" style="position: absolute; top: 16%; left: 30%;  text-align: center; color: #fff;font-size: 24px;">
       </div>
       <div class="div_any_child" style="float: left; width: 96%; height: 140px;">
-        <div id="map_chart01" style="width: 96%; height: 50%; "></div>
+        <div id="map_chart01" style="width: 96%; height: 90%; "></div>
       </div>
-      <div class="div_any_child" style="float: left; width: 96%; height: 1200px;">
+      <div class="div_any_child" style="float: left; width: 96%; height: 1100px;">
         <div id="wind_echart_01" style="width: 94%; height: 65%"></div>
       </div>
     </div>
   </div>
 
-  <div class="con left" style="width:1000px;position:fixed;top:11%;left:1%;background:url(/src/assets/image/aleftboxtbott.png);background-size: 100% 100%;background-position: center center">
-    <div id="title2" class="title" style="position: absolute; top: 35px; left: 50%; transform: translateX(-50%); text-align: center; color: #fff;font-size: 24px;">
+  <div class="con left" style="width:800px;height:850px;position:fixed;top:13%;left:1%;background:url(/src/assets/image/aleftboxtbott.png);background-size: 100% 100%;background-position: center center">
+    <div id="title2" class="title" style="position: absolute; top: 3%; left: 50%; transform: translateX(-50%); text-align: center; color: #fff;font-size: 24px;">
     </div>
     <div class="div_any">
       <div class="left div_any01" style="width: 95%;">
-        <div class="div_any_child" style="width: 100%;position:relative;height: 900px;">
+        <div class="div_any_child" style="top:87px;width: 100%;position:relative;height: 715px;">
           <div class="div_any_title"></div>
           <div id="wind" style="width: 97.5%;height: 750px;position: relative; left: 53%;top: 50%; transform: translate(-50%, -50%);"></div>
         </div>
@@ -662,10 +661,10 @@ export default {
   position: fixed;
   background-size: 100% 100%;
   background-position: center center;
-  top: 10%;
-  width: 49%;
-  height: 100%;
-  right:0%
+  top: 13%;
+  width: 48%;
+  height: 86%;
+  right:2%
 }
 
 </style>
