@@ -23,7 +23,7 @@
             <router-link to="/NewEconomy" @click="refreshAndNavigate('/neweconomy')">
               <li>经济效益</li>
             </router-link>
-            <router-link to="/cluster" @click="refreshAndNavigate('/cluster')">
+            <router-link to="/NewPollution" @click="refreshAndNavigate('/NewPollution')">
               <li>时空变化趋势</li>
             </router-link>
         </ul>

@@ -1,6 +1,7 @@
 <template>
   <!--顶部-->
   <!--注意！背景依赖src/assets/html/newPollutionHtml.html-->
+  <div class="app">
   <div class="background-container1">
     <iframe
         class="background-iframe1"
@@ -149,11 +150,9 @@
       </div>
     </div>
   </div>
-  <div>
-    <div class="Header-Menu">
+    <div>
       <HeaderMenu></HeaderMenu>
     </div>
-    <!-- 其他页面内容 -->
   </div>
 </template>
 
@@ -1617,5 +1616,15 @@ export default {
   width: 100%;
   height: 40%;
 }
-
+.app {
+  color: #fff;
+  background: url(/src/assets/image/bg.jpg);
+  background-size: 100% 100%;
+  background-position: 0 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 </style>

@@ -55,7 +55,7 @@ export const constantRoutes = [
     {
         path: '/',
         name: 'index1',
-        component: () => import('@/views/Analysis_Predict.vue'),
+        component: () => import('@/views/NewPollution.vue'),
     },
     {
         path: '/index',
