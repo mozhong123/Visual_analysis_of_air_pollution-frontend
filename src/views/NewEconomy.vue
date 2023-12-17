@@ -26,6 +26,7 @@
     import * as echarts from "echarts";
     import $ from "jquery";
     import HeaderMenu from "@/components/NewHeaderMenu.vue"; // 根据你的项目结构修改路径
+    import BaiduMap from 'vue-baidu-map'
     export default {
       components: {
         HeaderMenu
@@ -34,11 +35,9 @@
         var myChart3 = echarts.init(document.getElementById('line2'));
         var myChart4 = echarts.init(document.getElementById('pie1'));
         var myChart5 = echarts.init(document.getElementById('scatter1'));
-        var myChart6 = echarts.init(document.getElementById('line1'));
         var option3;
         var option4;
         var option5;
-        var option6;
         const data1 = [
     [
       [2013, 182.67, 182.67, 'PM2.5-2013', 'PM2.5'],
@@ -163,7 +162,10 @@ function Vis_right()
   legend: {
     right: '10%',
     top: '12%',
-    data: ['PM2.5', 'PM10', 'NO2', 'SO2', 'CO', 'O3']
+    data: ['PM2.5', 'PM10', 'NO2', 'SO2', 'CO', 'O3'],
+    textStyle: {
+            color: 'white',  // 这里设置字体颜色
+    },
   },
   grid: {
     left: '8%',
@@ -171,6 +173,11 @@ function Vis_right()
     height: '68%'
   },
   xAxis: {
+    axisLabel: {
+        textStyle: {
+          color: 'white' // 设置坐标轴文本颜色为白色
+        }
+      },
     splitLine: {
       lineStyle: {
         type: 'dashed'
@@ -178,16 +185,27 @@ function Vis_right()
     },
     min: 2012, // 设置横坐标轴的最小值
     max: 2019, // 设置横坐标轴的最大值
-    name: '年份'
+    name: '年份',
+    nameTextStyle:{
+      color: 'white'
+    }
   },
   yAxis: {
+    axisLabel: {
+        textStyle: {
+          color: 'white' // 设置坐标轴文本颜色为白色
+        }
+      },
     splitLine: {
       lineStyle: {
         type: 'dashed'
       }
     },
     scale: true,
-    name: 'GDP'
+    name: 'GDP',
+    nameTextStyle:{
+      color: 'white'
+    }
   },
   series: [
     {
@@ -400,7 +418,10 @@ option4 = {
             }
     },
     legend: {
-      top: '10%'
+      top: '10%',
+      textStyle: {
+            color: 'white',  // 这里设置字体颜色
+    },
     },
     tooltip: {
       trigger: 'axis',
@@ -417,8 +438,18 @@ option4 = {
         ['O3',0.44,0.49,1.10,	0.53,0.91,1.02]
       ]
     },
-    xAxis: { type: 'category' },
-    yAxis: { gridIndex: 0 },
+    xAxis: { type: 'category' ,
+    axisLabel: {
+        textStyle: {
+          color: 'white' // 设置坐标轴文本颜色为白色
+        }
+      }},
+    yAxis: { gridIndex: 0 ,
+      axisLabel: {
+        textStyle: {
+          color: 'white' // 设置坐标轴文本颜色为白色
+        }
+      }},
     grid: { top: '60%' ,
             height:'30%'
     },
@@ -468,7 +499,10 @@ option4 = {
           focus: 'self'
         },
         label: {
-          formatter: '{b}: {@2012} ({d}%)'
+          formatter: '{b}: {@2012} ({d}%)',
+          textStyle:{
+            color: 'white'
+          }
         },
         encode: {
           itemName: '污染物占GDP比重',
@@ -516,7 +550,9 @@ option5 = {
   legend: {
     data: ['PM10', 'NO2'],
     top: '10%',
-    color: 'white'
+    textStyle: {
+        color: 'white',  // 这里设置字体颜色
+    },
   },
   grid: {
     left: '3%',
@@ -526,12 +562,22 @@ option5 = {
   },
   xAxis: [
     {
-      type: 'value'
+      type: 'value',
+      axisLabel:{
+        textStyle:{
+          color: 'white'
+        }
+      }
     }
   ],
   yAxis: [
     {
       type: 'category',
+      axisLabel:{
+        textStyle:{
+          color: 'white'
+        }
+      },
       axisTick: {
         show: false
       },
@@ -577,6 +623,379 @@ option4 && myChart4.setOption(option4);
 option5 && myChart5.setOption(option5);
 }
 Vis_right();
+function Vis_map(){
+  var map = new BMap.Map("line1");
+        map.centerAndZoom(new BMap.Point(117.740583, 38.934309), 10);
+        map.enableScrollWheelZoom();
+
+        // 定义工厂类别和对应的颜色
+        var factoryCategories = [
+            {
+                "name": "钢铁厂",
+                "color": "red",
+                "symbol": BMap_Symbol_SHAPE_POINT,
+                "factories": [
+                    {
+                        "name": "天津钢铁集团有限公司",
+                        "lat": "39.042481",
+                        "lng": "117.522049"
+                    },
+                    {
+                        "name": "天津市宝丰钢管厂",
+                        "lat": "38.765429",
+                        "lng": "117.163013"
+                    },
+                    {
+                        "name": "亿利通钢管厂",
+                        "lat": "38.788404",
+                        "lng": "117.117836"
+                    },
+                    {
+                        "name": "得利伟铸钢厂",
+                        "lat": "39.308963",
+                        "lng": "117.700041"
+                    },
+                    {
+                        "name": "同力玻璃钢厂",
+                        "lat": "39.271005",
+                        "lng": "117.272932"
+                    }
+
+                ]
+            },
+            {
+                "name": "发电厂",
+                "color": "blue",
+                "symbol": BMap_Symbol_SHAPE_POINT,
+                "factories": [
+                    {
+                        "name": "华能(天津)煤气化发电有限公司",
+                        "lat": "38.934309",
+                        "lng": "117.740583"
+                    },
+                    {
+                        "name": "大唐盘山发电公司",
+                        "lat": "39.981895",
+                        "lng": "117.476295"
+                    },
+                    {
+                        "name": "天津国能盘山发电有限责任公司",
+                        "lat": "39.981699",
+                        "lng": "117.470654"
+                    },
+                    {
+                        "name": "卡特彼勒公司大型发动机和发电机组制造工厂",
+                        "lat": "39.14832",
+                        "lng": "117.393727"
+                    },
+                    {
+                        "name": "天津天发发电设备制造有限公司",
+                        "lat": "39.244265",
+                        "lng": "117.271001"
+                    },
+
+
+                ]
+            },
+            {
+                "name": "化肥厂",
+                "color": "green",
+                "symbol": BMap_Symbol_SHAPE_POINT,
+                "factories": [
+                    {
+                        "name": "天津中农化肥储运贸易有限公司",
+                        "lat": "39.324057",
+                        "lng": "117.107443"
+                    },
+                    {
+                        "name": "汉沽化肥厂",
+                        "lat": "39.3249",
+                        "lng": "117.858321"
+                    },
+                    {
+                        "name": "天津东阳化肥股份有限公司",
+                        "lat": "39.312089",
+                        "lng": "117.781748"
+                    },
+                    {
+                        "name": "天津市中天化肥有限公司",
+                        "lat": "39.311797",
+                        "lng": "117.919563"
+                    },
+                    {
+                        "name": "津天化化肥(天津)有限公司",
+                        "lat": "39.584046",
+                        "lng": "116.980026"
+                    },
+
+                ]
+            },
+            {
+                "name": "化工厂",
+                "color": "yellow",
+                "symbol": BMap_Symbol_SHAPE_POINT,
+                "factories": [
+                    {
+                        "name": "科迈化工股份有限公司",
+                        "lat": "38.822688",
+                        "lng": "117.516036"
+                    },
+                    {
+                        "name": "天津渤海化工集团公司",
+                        "lat": "39.124335",
+                        "lng": "117.216381"
+                    },
+                    {
+                        "name": "卡博特化工公司",
+                        "lat": "39.221362",
+                        "lng": "117.7992"
+                    },
+                    {
+                        "name": "天津大沽化工股份有限公司(顺化道)",
+                        "lat": "39.004127",
+                        "lng": "117.65657"
+                    },
+                    {
+                        "name": "海晶集团有限公司化工厂",
+                        "lat": "39.002774",
+                        "lng": "117.65892"
+                    },
+                ]
+            },
+            {
+                "name": "化妆品厂",
+                "color": "Purple",
+                "symbol": BMap_Symbol_SHAPE_POINT,
+                "factories": [
+                    {
+                        "name": "高丽雅娜化妆品(天津有限公司)",
+                        "lat": "38.990803",
+                        "lng": "117.484904"
+                    },
+                    {
+                        "name": "旺通工贸有限公司丽芬化妆品厂",
+                        "lat": "39.084084",
+                        "lng": "117.050015"
+                    },
+                    {
+                        "name": "天津市亨美达化妆品工贸有限公司",
+                        "lat": "39.246372",
+                        "lng": "116.963697"
+                    },
+                    {
+                        "name": "希恩碧化妆品(天津)有限公司",
+                        "lat": "38.9",
+                        "lng": "117.276113"
+                    },
+                    {
+                        "name": "天津佰纳黛丝化妆品",
+                        "lat": "38.824943",
+                        "lng": "117.479817"
+                    },
+
+                ]
+            },
+            {
+                "name": "焦化厂",
+                "color": "Black",
+                "symbol": BMap_Symbol_SHAPE_POINT,
+                "factories": [
+                    {
+                        "name": "天津华电南疆热电有限公司",
+                        "lat": "38.96625",
+                        "lng": "117.58711"
+                    },
+                    {
+                        "name": "天津天保热电公司",
+                        "lat": "39.126803",
+                        "lng": "117.467421"
+                    },
+                    {
+                        "name": "国家能源集团天津国能津能热电有限公司",
+                        "lat": "39.225313",
+                        "lng": "117.363404"
+                    },
+                    {
+                        "name": "天津泰达西区热电有限公司",
+                        "lat": "39.111517",
+                        "lng": "117.557257"
+                    },
+                    {
+                        "name": "天津市陈塘热电有限公司",
+                        "lat": "38.966491",
+                        "lng": "117.198145"
+                    },
+
+                ]
+            },
+            {
+                "name": "炼油厂",
+                "color": "White",
+                "symbol": BMap_Symbol_SHAPE_POINT,
+                "factories": [
+                    {
+                        "name": "中国石化天津分公司炼油部",
+                        "lat": "38.832456",
+                        "lng": "117.414073"
+                    }
+
+                ]
+            },
+            {
+                "name": "水泥厂",
+                "color": "Orange",
+                "symbol": BMap_Symbol_SHAPE_POINT,
+                "factories": [
+                    {
+                        "name": "天津水泥工业设计研究院有限公司(引河里北道)",
+                        "lat": "39.243224",
+                        "lng": "117.125444"
+                    },
+                    {
+                        "name": "大站水泥厂",
+                        "lat": "38.959962",
+                        "lng": "117.493287"
+                    },
+                    {
+                        "name": "天津振兴水泥有限公司(创富路)",
+                        "lat": "39.282071",
+                        "lng": "117.143102"
+                    },
+                    {
+                        "name": "金晟华水泥公司天津水泥厂分厂",
+                        "lat": "38.978348",
+                        "lng": "117.219723"
+                    },
+                    {
+                        "name": "蓟县鑫旺发水泥制品厂",
+                        "lat": "39.027583",
+                        "lng": "117.254044"
+                    },
+                ]
+            },
+
+            {
+                "name": "制药厂",
+                "color": "Brown",
+                "symbol": BMap_Symbol_SHAPE_POINT,
+                "factories": [
+                    {
+                        "name": "诺和诺德(中国)制药有限公司",
+                        "lat": "39.053491",
+                        "lng": "117.711769"
+                    },
+                    {
+                        "name": "中美天津史克制药有限公司",
+                        "lat": "39.141672",
+                        "lng": "117.315049"
+                    },
+                    {
+                        "name": "天津天威制药有限公司",
+                        "lat": "39.071392",
+                        "lng": "117.727366"
+                    },
+                    {
+                        "name": "天津九州通达医药有限公司",
+                        "lat": "39.239726",
+                        "lng": "117.081399"
+                    },
+                    {
+                        "name": "中国大冢制药公司",
+                        "lat": "39.031758",
+                        "lng": "117.094484"
+                    }, {
+                        "name": "天津药明康德新药开发有限公司",
+                        "lat": "39.069397",
+                        "lng": "117.7204"
+                    },
+                    {
+                        "name": "天津市医药集团有限公司",
+                        "lat": "39.128886",
+                        "lng": "117.233874"
+                    },
+                    {
+                        "name": "辰光(天津)制药有限公司",
+                        "lat": "39.100689",
+                        "lng": "117.548405"
+                    },
+                    {
+                        "name": "天士力圣特制药有限公司",
+                        "lat": "39.230451",
+                        "lng": "117.200071"
+                    },
+                    {
+                        "name": "天津生物化学制药有限公司",
+                        "lat": "39.12572",
+                        "lng": "117.428022"
+                    },
+                ]
+            }
+        ];
+
+        // 标注工厂位置
+        factoryCategories.forEach(function (category) {
+            var color = category.color;
+            var symbol = category.symbol;
+            var factories = category.factories;
+
+            factories.forEach(function (factory) {
+                var name = factory.name;
+                var lat = parseFloat(factory.lat);
+                var lng = parseFloat(factory.lng);
+
+                var point = new BMap.Point(lng, lat);
+
+                // 创建标注样式
+                var markerOptions = {
+                    icon: new BMap.Symbol(symbol, {
+                        scale: 1,
+                        fillColor: color, // 使用不同颜色的标记
+                        fillOpacity: 0.8
+                    })
+                };
+
+                // 创建标记对象
+                var marker = new BMap.Marker(point, markerOptions);
+
+                // 创建文本标签
+                var label = new BMap.Label(name, { offset: new BMap.Size(20, -10) });
+                label.setStyle({
+                    color: "black",
+                    backgroundColor: "white",
+                    border: "1px solid #ccc",
+                    padding: "5px"
+                });
+                marker.setLabel(label);
+
+                // 鼠标悬停时显示工厂名称
+                marker.addEventListener("mouseover", function () {
+                    label.show();
+                });
+
+                // 鼠标移开时隐藏工厂名称
+                marker.addEventListener("mouseout", function () {
+                    label.hide();
+                });
+
+                // 将标记对象添加到地图上
+                map.addOverlay(marker);
+            });
+        });
+
+        // 显示工厂种类和标记颜色的对应关系
+        var legendContainer = document.getElementById("legend");
+        factoryCategories.forEach(function (category) {
+            var name = category.name;
+            var color = category.color;
+
+            var legendItem = document.createElement("div");
+            legendItem.classList.add("legend-item");
+            legendItem.innerHTML = '<span style="background-color: ' + color + '; width: 20px; height: 20px; display: inline-block; margin-right: 5px;"></span>' + name;
+
+            legendContainer.appendChild(legendItem);
+        });
+}
+Vis_map();
       }//mounted
     };//export
     

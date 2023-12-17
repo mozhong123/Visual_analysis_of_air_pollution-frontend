@@ -504,6 +504,9 @@ export default {
                               inside: true
                           },
                           axisLabel: {
+                              textStyle:{
+                                color: 'white'
+                              },
                               show: j === 0
                           },
                           type: 'value',
@@ -523,6 +526,9 @@ export default {
                               inside: true
                           },
                           axisLabel: {
+                            textStyle:{
+                                color: 'white'
+                              },
                               show: i === CATEGORY_DIM_COUNT - 1
                           },
                           type: 'value',
@@ -569,6 +575,9 @@ export default {
               visualMap: {
                   type: 'piecewise',
                   categories: ["北京", "武汉", "广州"],
+                  textStyle:{
+                    color: 'white'
+                  },
                   dimension: CATEGORY_DIM,
                   orient: 'horizontal',
                   top: '3%',
@@ -608,6 +617,7 @@ export default {
                       nameGap: 20,
                       splitNumber: 3,
                       nameTextStyle: {
+                          color: 'white',
                           fontSize: 14
                       },
                       axisLine: {
@@ -624,7 +634,10 @@ export default {
                           show: false
                       },
                       axisLabel: {
-                          color: '#555'
+                          color: '#555',
+                          textStyle: {
+                            color: 'white'
+                          }
                       }
                   }
               },
@@ -634,13 +647,19 @@ export default {
               series: [
                   {
                       name: 'parallel',
+                      nameTextStyle:{
+                        color: 'white'
+                      },
                       type: 'parallel',
                       smooth: true,
                       lineStyle: {
                           width: 1,
                           opacity: 0.3
                       },
-                      data: rawData
+                      data: rawData,
+                      textStyle:{
+                        color: 'white'
+                      }
                   }
               ]
           };

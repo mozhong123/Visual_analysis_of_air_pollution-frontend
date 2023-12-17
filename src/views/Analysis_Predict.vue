@@ -43,7 +43,7 @@
       <div class="con" style="display: flex;">
         <div class="con left" style="position:absolute;left:-12.7%;top:17%;height:28%;width:140%;background-color: rgba(0,0,0,0);flex: 1;">
             <div id="calander"
-                 style="position:relative;height: 100%;transform: scale(0.8);background-color: rgba(0,0,0,0);"></div>
+                 style="position:relative;height: 100%;left: 4%;transform: scale(0.8);background-color: rgba(0,0,0,0);"></div>
         </div>
         <div class="con right" style="position:absolute;left:-32%;top:40%;width:168%;height:88%;">
                 <div id="line" style="position:relative;top:-21%;height: 110%;transform: scale(0.6);"></div>
@@ -653,12 +653,12 @@ export default {
 <style>
 .pollution-content {
   position: absolute;
-  width: 33.5%;
+  width: 36%;
   border: 2px solid #c4c7ce; /* 分隔线 */
   border-color: rgb(106, 161, 228);
   padding-left: 5px;
   top: 19%;
-  left: 63.8%;
+  left: 60.8%;
   height: 4.5%;
   border-radius: 10px 10px 10px 10px; /* 10px 圆角，底部为直角 */
 }
