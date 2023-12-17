@@ -4,6 +4,8 @@
         <div class="Left_2_chart_continer">
           <div class="left_up_chart" id="line1">
           </div>
+          <div class="left_mid_chart" id="legend">
+          </div>
           <div class="left_down_chart" id="pie1">
           </div>
         </div>
@@ -152,7 +154,7 @@ function Vis_right()
   //   }
   // ]),
   title: {
-    text: '2013-2018年大气污染造成的GDP损失',
+    text: '天津市2013-2018年大气污染造成的GDP损失',
     left: '10%',
     top: '3%',
     textStyle: {
@@ -410,7 +412,7 @@ function Vis_right()
 };
 option4 = {
     title: {
-            text: '各污染物健康经济损失价值占天津GDP比重与变化趋势',
+            text: '各污染物健康经济损失价值占天津市GDP比重与变化趋势',
             left: 'center',
             top: '3%',
             textStyle: {
@@ -534,7 +536,7 @@ option4 = {
 });
 option5 = {
   title: {
-            text: 'PM10与NO2健康经济损失价值与工业发展指标的相关性分析',
+            text: '天津市PM10与NO2健康经济损失价值与工业发展指标的相关性分析',
             left: 'center',
             top: '3%',
             textStyle: {
@@ -983,17 +985,34 @@ function Vis_map(){
         });
 
         // 显示工厂种类和标记颜色的对应关系
-        var legendContainer = document.getElementById("legend");
-        factoryCategories.forEach(function (category) {
-            var name = category.name;
-            var color = category.color;
+        const data_legend=[{name:'钢铁厂',color:'red'},
+        {name:'发电厂',color:'blue'},
+        {name:'化工厂',color:'yellow'},
+        {name:'化肥厂',color:'green'},
+        {name:'化妆品厂',color:'purple'},
+        {name:'焦化厂',color:'black'},
+        {name:'炼油厂',color:'white'},
+        {name:'水泥厂',color:'orange'},
+        {name:'制药厂',color:'brown'}]
+        var legendContainer = document.getElementById('legend');
 
-            var legendItem = document.createElement("div");
-            legendItem.classList.add("legend-item");
-            legendItem.innerHTML = '<span style="background-color: ' + color + '; width: 20px; height: 20px; display: inline-block; margin-right: 5px;"></span>' + name;
+        data_legend.forEach(item => {
+            var legendItem = document.createElement('div');
+            legendItem.classList.add('legend-item');
+
+            var colorBox = document.createElement('div');
+            colorBox.classList.add('color-box');
+            colorBox.style.backgroundColor = item.color;
+
+            var itemName = document.createElement('span');
+            itemName.textContent = item.name;
+
+            legendItem.appendChild(colorBox);
+            legendItem.appendChild(itemName);
 
             legendContainer.appendChild(legendItem);
         });
+
 }
 Vis_map();
       }//mounted
@@ -1022,6 +1041,13 @@ Vis_map();
         width: 90%;
         height: 86.5%;
         margin-top: 10%;
+        margin-left: 6%;
+    }
+    .left_mid_chart{
+        display: flex;
+        width: 90%;
+        height: 10%;
+        margin-top: 0%;
         margin-left: 6%;
     }
     .left_down_chart{
@@ -1070,5 +1096,15 @@ Vis_map();
       height: 100%;
       box-sizing: border-box;
     }
-    
+    .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .color-box {
+            width: 15px;
+            height: 15px;
+            margin-right: 5px;
+        }
     </style>
