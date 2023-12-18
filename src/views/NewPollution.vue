@@ -327,7 +327,7 @@ export default {
           + 'year=' + DateCur[0]
           + '&month=' + DateCur[1]
           + '&day=' + DateCur[2];
-      const queryMethod_post = "spider_day_data?"
+      const queryMethod_post = "spider_day_data/"
       const queryURL_post = 'http://' + backendURL + queryRoute + queryMethod_post
       fetchDataPost(queryURL_post, {year: DateCur[0], month: DateCur[1], day: DateCur[2]});
       fetchDataGet(queryURL_get).then(data => {
