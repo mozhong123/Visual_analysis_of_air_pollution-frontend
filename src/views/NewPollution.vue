@@ -283,16 +283,18 @@ export default {
     }
 
     async function fetchDataPost(url, postData) {
-      // 发起 fetch 请求
-      console.log(JSON.stringify(postData));
       fetch(url, {
         method: 'POST',
         body: JSON.stringify(postData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+        }
       })
           .then(response => response.json())
           .then(data => {
             // 处理后端返回的数据
-            console.log(data);
             sendMessage(data.data);
           })
           .catch(error => {
@@ -373,7 +375,7 @@ export default {
           + 'year=' + DateCur[0]
           + '&month=' + DateCur[1]
           + '&day=' + DateCur[2];
-      const queryMethod_post = "spider_day_data/"
+      const queryMethod_post = "spider_day_data"
       const queryURL_post = 'http://' + backendURL + queryRoute + queryMethod_post
       fetchDataPost(queryURL_post, {year: DateCur[0], month: DateCur[1], day: DateCur[2]});
       fetchDataGet(queryURL_get).then(data => {
@@ -390,7 +392,7 @@ export default {
       const toDay = document.getElementById('eventDayTo');
       const city = localStorage.getItem("selectCity");
       const eventContent = document.getElementById("inputEvent");
-      const queryMethod_post = "add_events?"
+      const queryMethod_post = "add_events"
       const queryURL_post = 'http://' + backendURL + queryRoute + queryMethod_post
       const beginTime = fromYear.value + '-' + fromMonth.value.padStart(2, '0') + '-' + fromDay.value.padStart(2, '0');
       const endTime = toYear.value + '-' + toMonth.value.padStart(2, '0') + '-' + toDay.value.padStart(2, '0');
