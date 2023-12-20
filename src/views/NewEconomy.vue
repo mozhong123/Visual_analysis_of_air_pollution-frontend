@@ -27,6 +27,10 @@
         </div>
       </div>
     </div>
+    <div>
+      <HeaderMenu></HeaderMenu>
+      <!-- <NaiveButton></NaiveButton> -->
+    </div>
   </div>
     </template>
     
@@ -37,7 +41,8 @@
     import BaiduMap from 'vue-baidu-map'
     export default {
       components: {
-        HeaderMenu
+        HeaderMenu,
+        //NaiveButton,
       },
       mounted(){
         var myChart3 = echarts.init(document.getElementById('line2'));
