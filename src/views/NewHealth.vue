@@ -10,11 +10,11 @@
       </div>
     </div>
   </div>
-    <div>
+  <div>
       <HeaderMenu></HeaderMenu>
-      <!-- 其他页面内容 -->
+      <!-- <NaiveButton></NaiveButton> -->
     </div>
-  </div>
+</div>
 </template>
 
 <script>
@@ -23,7 +23,8 @@ import $ from "jquery";
 import HeaderMenu from "@/components/NewHeaderMenu.vue"; // 根据你的项目结构修改路径
 export default {
   components: {
-    HeaderMenu
+    HeaderMenu,
+    //NaiveButton,
   },
   mounted(){
     var myChart = echarts.init(document.getElementById('line1'));
