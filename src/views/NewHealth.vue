@@ -12,7 +12,7 @@
   </div>
     <div>
       <HeaderMenu></HeaderMenu>
-      <!-- 其他页面内容 -->
+      <NaiveButton></NaiveButton>
     </div>
   </div>
 </template>
@@ -21,9 +21,10 @@
 import * as echarts from "echarts";
 import $ from "jquery";
 import HeaderMenu from "@/components/NewHeaderMenu.vue"; // 根据你的项目结构修改路径
+import NaiveButton from "@/components/NaiveIcon.vue";
 export default {
   components: {
-    HeaderMenu
+    HeaderMenu,NaiveButton
   },
   mounted(){
     var myChart = echarts.init(document.getElementById('line1'));

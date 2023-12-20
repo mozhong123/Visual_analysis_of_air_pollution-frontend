@@ -52,6 +52,7 @@
     </div>
     <div>
       <HeaderMenu></HeaderMenu>
+      <NaiveButton></NaiveButton>
     </div>
   </div>
 
@@ -61,6 +62,7 @@
 <script>
 import * as echarts from "echarts";
 import $ from "jquery";
+import NaiveButton from "@/components/NaiveIcon.vue";
 import {data2013, data2014, data2015, data2016, data2017, data2018} from "@/../data/2013.js"; // 根据你的项目结构修改路径
 import {pcp_whole} from "@/./assets/js/SankeyMap.js";
 import {backendURL, method, queryRoute} from "@/config/const.ts";
@@ -68,7 +70,7 @@ import HeaderMenu from "@/components/NewHeaderMenu.vue"; // 根据你的项目�
 
 export default {
   components: {
-    HeaderMenu
+    HeaderMenu,NaiveButton
   },
   data() {
     return {

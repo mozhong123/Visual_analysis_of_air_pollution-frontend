@@ -24,6 +24,7 @@
     "element-ui": "^2.15.14",
     "fund": "^1.0.0",
     "jquery": "^3.7.1",
+    "js-audio-recorder": "^1.0.7",
     "lodash-es": "^4.17.21",
     "no": "^0.0.1",
     "vue": "^3.3.4",
