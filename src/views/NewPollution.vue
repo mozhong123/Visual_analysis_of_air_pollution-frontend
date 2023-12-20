@@ -157,12 +157,14 @@
     </div>
     <div>
       <HeaderMenu></HeaderMenu>
+      <NaiveButton></NaiveButton>
     </div>
   </div>
 </template>
 
 <script>
 import HeaderMenu from "@/components/NewHeaderMenu.vue"; // 此路径应根据你的项目结构来修改
+import NaiveButton from "@/components/NaiveIcon.vue";
 import * as echarts from "echarts";
 import $ from "jquery";
 import 'echarts/extension/bmap/bmap';
@@ -173,6 +175,7 @@ import {backendURL, queryRoute, method, headers} from "@/config/const.ts";
 export default {
   components: {
     HeaderMenu,
+    NaiveButton,
   },
   created() {
   },
