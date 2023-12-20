@@ -1,10 +1,69 @@
 <script>
 
 export default {
+  data(){
+      return {
+  historyRecords: [
+    {
+      time: '2023-01-01 10:00',
+      question: '历史问题1',
+      answer: '历史回答1',
+      image: '/src/assets/image/leftb1.png'
+    },
+    {
+      time: '2023-01-01 10:00',
+      question: '历史问题1',
+      answer: '历史回答1',
+      image: 'path/to/image1.jpg'
+    },
+    {
+      time: '2023-01-01 10:00',
+      question: '历史问题1',
+      answer: '历史回答1',
+      image: 'path/to/image1.jpg'
+    },
+    {
+      time: '2023-01-01 10:00',
+      question: '历史问题1',
+      answer: '历史回答1',
+      image: 'path/to/image1.jpg'
+    },
+    {
+      time: '2023-01-01 10:00',
+      question: '历史问题1',
+      answer: '历史回答1',
+      image: 'path/to/image1.jpg'
+    },
+    {
+      time: '2023-01-01 10:00',
+      question: '历史问题1',
+      answer: '历史回答1',
+      image: 'path/to/image1.jpg'
+    },
+    {
+      time: '2023-01-01 10:00',
+      question: '历史问题1',
+      answer: '历史回答1',
+      image: 'path/to/image1.jpg'
+    },
+    {
+      time: '2023-01-01 10:00',
+      question: '历史问题1',
+      answer: '历史回答1',
+      image: 'path/to/image1.jpg'
+    },
+    // ... 其他历史记录
+  ],
+  itemsPerPage: 5, // 每页显示的记录数
+  currentPage: 1 // 当前页
+};
+  },
   created() {
   },
   mounted() {
-
+    function addHistory(){
+      this.historyRecords.push(newRecord);
+  }
     let isExpanded = false;
 
 // 监听鼠标移入logo事件
@@ -258,8 +317,38 @@ export default {
     })
     initBtn();
   },
-  methods: {}
-  ,
+  computed: {
+  totalPages() {
+    return Math.ceil(this.historyRecords.length / this.itemsPerPage);
+  },
+  displayedRecords() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.historyRecords.slice(startIndex, endIndex);
+  }
+},
+methods: {
+  addHistoryRecord(question, answer, image) {
+  const currentTime = new Date().toLocaleString();
+  const newRecord = {
+    time: currentTime,
+    question: question,
+    answer: answer,
+    image: image
+  };
+  this.historyRecords.push(newRecord);
+},
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  },
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+}
 };
 
 </script>
@@ -269,7 +358,26 @@ export default {
     <button class="Jnmh-btnlogo"></button>
 
     <div class="chat-block-right" id="chat-history">
-      <div class="close-block-btn" id="history-close"></div>
+      <svg class="close-block-btn" id="history-close" viewBox="0 0 1026 1024">
+        <path
+            d="M786.432 173.568L510.976 449.024 235.52 173.568c-18.944-18.944-49.664-18.944-69.12 0-18.944 18.944-18.944 49.664 0 69.12l275.456 275.456L166.4 793.6c-18.944 18.944-18.944 49.664 0 69.12 18.944 18.944 49.664 18.944 69.12 0l275.456-275.968 275.456 275.456c18.944 18.944 49.664 18.944 69.12 0 18.944-18.944 18.944-49.664 0-69.12l-275.456-275.456 275.456-275.456c18.944-18.944 18.944-49.664 0-69.12-19.456-17.92-50.176-17.92-69.12 0.512z"
+            p-id="583"></path>
+      </svg>
+        <div class="history_con">
+          <template v-for="(record, index) in displayedRecords" :key="index" >
+            <div class="history-record">
+            <div>{{ record.time }}</div>
+            <div>{{ record.question }}</div>
+            <div>{{ record.answer }}</div>
+            <img v-if="record.image" :src="record.image" alt="Question Image" />
+            </div>
+          </template>
+          <div class="pagination">
+            <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
+            <span>Page {{ currentPage }} of {{ totalPages }}</span>
+            <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+          </div>
+        </div>
     </div>
     <div class="chat-block-right" id="speak-chat">
       <form id="myForm" enctype="multipart/form-data">
@@ -616,4 +724,15 @@ html, body {
   display: none;
 }
 
+.history_con{
+  position: absolute;
+  width: 385px;
+  height: 350px;
+  top: 13%;
+  overflow-y: auto; /* 添加滚动条 */
+}
+.history-record{
+  position: relative;
+  
+}
 </style>
