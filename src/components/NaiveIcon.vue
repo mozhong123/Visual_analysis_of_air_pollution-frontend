@@ -3,57 +3,7 @@
 export default {
   data(){
       return {
-  historyRecords: [
-    {
-      time: '2023-01-01 10:00',
-      question: '历史问题1',
-      answer: '历史回答1',
-      image: '/src/assets/image/leftb1.png'
-    },
-    {
-      time: '2023-01-01 10:00',
-      question: '历史问题1',
-      answer: '历史回答1',
-      image: 'path/to/image1.jpg'
-    },
-    {
-      time: '2023-01-01 10:00',
-      question: '历史问题1',
-      answer: '历史回答1',
-      image: 'path/to/image1.jpg'
-    },
-    {
-      time: '2023-01-01 10:00',
-      question: '历史问题1',
-      answer: '历史回答1',
-      image: 'path/to/image1.jpg'
-    },
-    {
-      time: '2023-01-01 10:00',
-      question: '历史问题1',
-      answer: '历史回答1',
-      image: 'path/to/image1.jpg'
-    },
-    {
-      time: '2023-01-01 10:00',
-      question: '历史问题1',
-      answer: '历史回答1',
-      image: 'path/to/image1.jpg'
-    },
-    {
-      time: '2023-01-01 10:00',
-      question: '历史问题1',
-      answer: '历史回答1',
-      image: 'path/to/image1.jpg'
-    },
-    {
-      time: '2023-01-01 10:00',
-      question: '历史问题1',
-      answer: '历史回答1',
-      image: 'path/to/image1.jpg'
-    },
-    // ... 其他历史记录
-  ],
+  historyRecords: [],
   itemsPerPage: 5, // 每页显示的记录数
   currentPage: 1 // 当前页
 };
@@ -61,8 +11,18 @@ export default {
   created() {
   },
   mounted() {
-    function addHistory(){
-      this.historyRecords.push(newRecord);
+    const addHistory = async () => {
+      let result = await fetchDataGet('http://127.0.0.1:8000/gpts/gpt_content');
+      for(var i = 0;i < result.length;i++)
+      {
+        let newRecord = {
+          time: result[i]['create_dt'],
+          question: result[i]['ask_content'],
+          answer: result[i]['reply_content'],
+          image: result[i]['url']
+        };
+        this.historyRecords.push(newRecord);
+      }
   }
     let isExpanded = false;
 
@@ -187,7 +147,7 @@ export default {
       let result;
       try {
         const response = await fetch(url, {
-          method: method,
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
@@ -275,6 +235,7 @@ export default {
       historyBlock.style.display = 'block';
       $('#nmh-navicon').removeClass('Jnmh-open');
       GtoggleNavlogo();
+      addHistory();
     })
     wordBtn.addEventListener('click', () => {
       isExpanded = true;
@@ -328,16 +289,6 @@ export default {
   }
 },
 methods: {
-  addHistoryRecord(question, answer, image) {
-  const currentTime = new Date().toLocaleString();
-  const newRecord = {
-    time: currentTime,
-    question: question,
-    answer: answer,
-    image: image
-  };
-  this.historyRecords.push(newRecord);
-},
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
