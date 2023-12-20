@@ -27,6 +27,7 @@
         </div>
       </div>
     </div>
+  </div>
     </template>
     
     <script>
@@ -212,13 +213,7 @@ series: [
       formatter: function (param) {
         return param.data[3];
       },
-      emphasis: {
-        focus: 'series',
-        label: {
-          show: true,
-          formatter: function (param) {
-            return param.data[3];
-          },
+      
           position: 'top'
         }
       },
@@ -238,155 +233,7 @@ series: [
         ])
       }
     },
-    {
-      name: 'NO2',
-      data: data1[2],
-      type: 'scatter',
-      symbolSize: function (data) {
-        return Math.sqrt(data[2]);
-      },
-      emphasis: {
-        focus: 'series',
-        label: {
-          show: true,
-          formatter: function (param) {
-            return param.data[3];
-          },
-          position: 'top'
-        }
-      },
-      itemStyle: {
-        shadowBlur: 10,
-        shadowColor: 'rgba(150, 36, 5, 0.5)',
-        shadowOffsetY: 5,
-        color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [
-          {
-            offset: 0,
-            color: 'rgb(147,222,0)'
-          },
-          {
-            offset: 1,
-            color: 'rgb(104, 246, 172)'
-          }
-        ])
-      }
-    },
-    {
-      name: 'SO2',
-      data: data1[3],
-      type: 'scatter',
-      symbolSize: function (data) {
-        return Math.sqrt(data[2]);
-      },
-      emphasis: {
-        focus: 'series',
-        label: {
-          show: true,
-          formatter: function (param) {
-            return param.data[3];
-          },
-          position: 'top'
-        }
-      },
-      itemStyle: {
-        shadowBlur: 10,
-        shadowColor: 'rgba(12, 86, 100, 0.5)',
-        shadowOffsetY: 5,
-        color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [
-          {
-            offset: 0,
-            color: 'rgb(157,0,0)'
-          },
-          {
-            offset: 1,
-            color: 'rgb(185,65,0)'
-          }
-        ])
-      }
-    },
-    {
-      name: 'CO',
-      data: data1[4],
-      type: 'scatter',
-      symbolSize: function (data) {
-        return Math.sqrt(data[2])*4;
-      },
-      emphasis: {
-        focus: 'series',
-        label: {
-          show: true,
-          formatter: function (param) {
-            return param.data[3];
-          },
-          position: 'top'
-        }
-      },
-      itemStyle: {
-        shadowBlur: 10,
-        shadowColor: 'rgba(129, 16, 90, 0.5)',
-        shadowOffsetY: 5,
-        color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [
-          {
-            offset: 0,
-            color: 'rgb(115,48,53)'
-          },
-          {
-            offset: 1,
-            color: 'rgb(213,0,117)'
-          }
-        ])
-      }
-    },
-    {
-      name: 'O3',
-      data: data1[5],
-      type: 'scatter',
-      symbolSize: function (data) {
-        return Math.sqrt(data[2]);
-      },
-      emphasis: {
-        focus: 'series',
-        label: {
-          show: true,
-          formatter: function (param) {
-            return param.data[3];
-          },
-          position: 'top'
-        }
-      },
-      itemStyle: {
-        shadowBlur: 10,
-        shadowColor: 'rgba(120, 36, 50, 0.5)',
-        shadowOffsetY: 5,
-        color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [
-          {
-            offset: 0,
-            color: 'rgb(25, 10, 123)'
-          },
-          {
-            offset: 1,
-            color: 'rgb(140,140,140)'
-          }
-        ])
-      }
-    }
-  },
-  itemStyle: {
-    shadowBlur: 10,
-    shadowColor: 'rgba(120, 6, 50, 0.5)',
-    shadowOffsetY: 5,
-    color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [
-      {
-        offset: 0,
-        color: 'rgb(107,107,107)'
-      },
-      {
-        offset: 1,
-        color: 'rgb(80,80,80)'
-      }
-    ])
-  }
-},
+    
 {
   name: 'NO2',
   data: data1[2],
