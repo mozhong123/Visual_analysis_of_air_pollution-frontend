@@ -124,6 +124,11 @@ export const constantRoutes = [
         component: () => import('@/views/Tianjin.vue'),
     },
     {
+        path: '/button',
+        name: 'button',
+        component: () => import('@/views/Button.vue'),
+    },
+    {
         path: '/register',
         name: 'register',
         component: () => import('@/views/Register.vue'),

@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>百度地图热力图示例</title>
+    <style type="text/css">
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+        #map1 {
+            height: 400px;
+            width: 100%;
+        }
+
+        #heatmap-buttons {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 9999;
+        }
+
+        #heatmap-buttons button {
+            margin-bottom: 10px;
+        }
+        #legend{
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: 5%;
+        }
+        .legend-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        color: white;
+    }
+
+    .color-box {
+        width: 15px;
+        height: 15px;
+        margin-right: 5px;
+    }
+    </style>
+    <script type="text/javascript"
+        src="http://api.map.baidu.com/api?v=2.0&ak=GGlV4bTSB5oG3Ys1zaQKU6lHGIGOl4A9"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+</head>
+
+<body>
+    <div id="map"></div>
+    <div id="heatmap-buttons">
+        <button onclick="Vis_map()">工厂分布</button>
+        <button onclick="showHeatmap1()">PMx</button>
+        <button onclick="showHeatmap2()">NOx</button>
+        <button onclick="showHeatmap3()">SOx</button>
+    </div>
+    <div id="legend"></div>
+
+    <script type="text/javascript">
+        var flag = 0;
+        function showHeatmap1(){
+        // 创建地图实例
+        var map = new BMap.Map("map");
+        // 创建地图中心点
+        var point = new BMap.Point(117.198, 39.117);
+        // 初始化地图，设置中心点和缩放级别
+        map.centerAndZoom(point, 10);
+        // 启用滚轮缩放
+        map.enableScrollWheelZoom(true);
+
+        // 模拟污染物浓度数据
+        var pollutionData1 = [
+            { lat: 38.82269, lng: 117.51604, intensity: 20 },
+            { lat: 38.96625, lng: 117.58711, intensity: 21.72 },
+            { lat: 39.22531, lng: 117.36340, intensity: 189.6 },
+            { lat: 39.11152, lng: 117.55726, intensity: 74.2 },
+            { lat: 39.14167, lng: 117.31505, intensity: 117.6 },
+            { lat: 39.96030, lng: 117.42430, intensity: 45.6 },
+            { lat: 39.10921, lng: 117.27588, intensity: 70.56 },
+            { lat: 39.84813, lng: 117.43146, intensity: 81.8 },
+            { lat: 38.87222, lng: 116.84222, intensity: 96 },
+            { lat: 38.84527, lng: 116.80587, intensity: 188.32 },
+            { lat: 38.78142, lng: 117.18111, intensity: 22.2 },
+            { lat: 39.31690, lng: 117.73440, intensity: 195.048 },
+            { lat: 39.35178, lng: 117.72483, intensity: 17.2 },
+            { lat: 39.35390, lng: 117.77000, intensity: 47.9 },
+            { lat: 39.32270, lng: 117.72500, intensity: 15 },
+            { lat: 39.88420, lng: 117.40080, intensity: 31 },
+            { lat: 40.02490, lng: 117.32490, intensity: 20.28 },
+            { lat: 39.96265, lng: 117.46265, intensity: 12.455 },
+            { lat: 39.98825, lng: 39.98825, intensity: 47.8 },
+            { lat: 38.81352, lng: 117.24685, intensity: 56.8 },
+            { lat: 38.98959, lng: 117.62292, intensity: 72 },
+            { lat: 39.09003, lng: 117.54003, intensity: 90 },
+            { lat: 38.92111, lng: 117.72111, intensity: 125.88 },
+            { lat: 39.09817, lng: 117.63151, intensity: 23.6 },
+            { lat: 38.92750, lng: 117.72750, intensity: 13 },
+            { lat: 38.92944, lng: 117.72945, intensity: 50 },
+            { lat: 38.95880, lng: 117.57547, intensity: 21.72 },
+            { lat: 39.14816, lng: 117.51480, intensity: 53 },
+            { lat: 38.92525, lng: 117.79191, intensity: 122.7 },
+            // 添加更多污染物浓度数据
+        ];
+
+        var pollutionData2 = [
+            { lat: 38.82269, lng: 117.51604, intensity: 61 },
+            { lat: 38.96625, lng: 117.58711, intensity: 110.284 },
+            { lat: 39.22531, lng: 117.36340, intensity: 345.01 },
+            { lat: 39.11152, lng: 117.55726, intensity: 118.19 },
+            { lat: 39.14167, lng: 117.31505, intensity: 35.938 },
+            { lat: 39.96030, lng: 117.42430, intensity: 45.6 },
+            { lat: 39.10921, lng: 117.27588, intensity: 141.12 },
+            { lat: 39.84813, lng: 117.43146, intensity: 36.7 },
+            { lat: 38.87222, lng: 116.84222, intensity: 72 },
+            { lat: 38.84527, lng: 116.80587, intensity: 188.32 },
+            { lat: 38.78142, lng: 117.18111, intensity: 41 },
+            { lat: 39.31690, lng: 117.73440, intensity: 168.216 },
+            { lat: 39.35178, lng: 117.72483, intensity: 24.7 },
+            { lat: 39.35390, lng: 117.77000, intensity: 47.9 },
+            { lat: 39.32270, lng: 117.72500, intensity: 67.5 },
+            { lat: 39.88420, lng: 117.40080, intensity: 31 },
+            { lat: 40.02490, lng: 117.32490, intensity: 20.28 },
+            { lat: 39.96265, lng: 117.46265, intensity: 12.455 },
+            { lat: 39.98825, lng: 39.98825, intensity: 47.8 },
+            { lat: 38.81352, lng: 117.24685, intensity: 42.3 },
+            { lat: 38.98959, lng: 117.62292, intensity: 34.55 },
+            { lat: 39.09003, lng: 117.54003, intensity: 22.3 },
+            { lat: 38.92111, lng: 117.72111, intensity: 247.525 },
+            { lat: 39.09817, lng: 117.63151, intensity: 199.2 },
+            { lat: 38.92750, lng: 117.72750, intensity: 61 },
+            { lat: 38.92944, lng: 117.72945, intensity: 107.6 },
+            { lat: 38.95880, lng: 117.57547, intensity: 110.284 },
+            { lat: 39.14816, lng: 117.51480, intensity: 48.8 },
+            { lat: 38.92525, lng: 117.79191, intensity: 33.214 },
+            // 添加更多污染物浓度数据
+        ];
+
+        var pollutionData3 = [
+            { lat: 38.82269, lng: 117.51604, intensity: 61 },
+            { lat: 38.96625, lng: 117.58711, intensity: 23.94 },
+            { lat: 39.22531, lng: 117.36340, intensity: 121.21 },
+            { lat: 39.11152, lng: 117.55726, intensity: 14.617 },
+            { lat: 39.14167, lng: 117.31505, intensity: 35.938 },
+            { lat: 39.96030, lng: 117.42430, intensity: 45.6 },
+            { lat: 39.10921, lng: 117.27588, intensity: 35.28 },
+            { lat: 39.84813, lng: 117.43146, intensity: 34 },
+            { lat: 38.87222, lng: 116.84222, intensity: 12 },
+            { lat: 38.84527, lng: 116.80587, intensity: 18.832 },
+            { lat: 38.78142, lng: 117.18111, intensity: 25.2 },
+            { lat: 39.31690, lng: 117.73440, intensity: 78.948 },
+            { lat: 39.35178, lng: 117.72483, intensity: 49.5 },
+            { lat: 39.35390, lng: 117.77000, intensity: 47.9 },
+            { lat: 39.32270, lng: 117.72500, intensity: 18 },
+            { lat: 39.88420, lng: 117.40080, intensity: 31 },
+            { lat: 40.02490, lng: 117.32490, intensity: 20.28 },
+            { lat: 39.96265, lng: 117.46265, intensity: 12.455 },
+            { lat: 39.98825, lng: 39.98825, intensity: 47.8 },
+            { lat: 38.81352, lng: 117.24685, intensity: 42.3 },
+            { lat: 38.98959, lng: 117.62292, intensity: 57 },
+            { lat: 39.09003, lng: 117.54003, intensity: 36 },
+            { lat: 38.92111, lng: 117.72111, intensity: 65.617 },
+            { lat: 39.09817, lng: 117.63151, intensity: 35 },
+            { lat: 38.92750, lng: 117.72750, intensity: 60 },
+            { lat: 38.92944, lng: 117.72945, intensity: 120 },
+            { lat: 38.95880, lng: 117.57547, intensity: 53.94 },
+            { lat: 39.14816, lng: 117.51480, intensity: 82 },
+            { lat: 38.92525, lng: 117.79191, intensity: 60.37 },
+            // 添加更多污染物浓度数据
+        ];
+
+        // 创建热力图数据集
+        var heatmapData1 = [];
+        pollutionData1.forEach(function (data) {
+            var point = new BMap.Point(data.lng, data.lat);
+            var intensity = data.intensity;
+            heatmapData1.push({ "lng": point.lng, "lat": point.lat, "count": intensity });
+        });
+
+        var heatmapData2 = [];
+        pollutionData2.forEach(function (data) {
+            var point = new BMap.Point(data.lng, data.lat);
+            var intensity = data.intensity;
+            heatmapData2.push({ "lng": point.lng, "lat": point.lat, "count": intensity });
+        });
+
+        var heatmapData3 = [];
+        pollutionData3.forEach(function (data) {
+            var point = new BMap.Point(data.lng, data.lat);
+            var intensity = data.intensity;
+            heatmapData3.push({ "lng": point.lng, "lat": point.lat, "count": intensity });
+        });
+
+        // 创建热力图图层
+        var heatmapOverlay1 = new BMapLib.HeatmapOverlay({ radius: 20, gradient: { 0.1: 'blue', 0.8: 'yellow', 1: 'red' } });
+        var heatmapOverlay2 = new BMapLib.HeatmapOverlay({ radius: 20, gradient: { 0.1: 'green', 0.8: 'yellow', 1: 'orange' } });
+        var heatmapOverlay3 = new BMapLib.HeatmapOverlay({ radius: 20, gradient: { 0.1: 'purple', 0.8: 'blue', 1: 'green' } });
+
+        // 添加热力图图层到地图
+        map.addOverlay(heatmapOverlay1);
+        map.addOverlay(heatmapOverlay2);
+        map.addOverlay(heatmapOverlay3);
+        // 显示热力图1
+            heatmapOverlay1.setDataSet({ data: heatmapData1, max: 120 });
+            heatmapOverlay1.show();
+            heatmapOverlay2.hide();
+            heatmapOverlay3.hide();
+    }
+        // 显示热力图2
+        function showHeatmap2() {
+            // 创建地图实例
+        var map = new BMap.Map("map");
+        // 创建地图中心点
+        var point = new BMap.Point(117.198, 39.117);
+        // 初始化地图，设置中心点和缩放级别
+        map.centerAndZoom(point, 10);
+        // 启用滚轮缩放
+        map.enableScrollWheelZoom(true);
+
+        // 模拟污染物浓度数据
+        var pollutionData1 = [
+            { lat: 38.82269, lng: 117.51604, intensity: 20 },
+            { lat: 38.96625, lng: 117.58711, intensity: 21.72 },
+            { lat: 39.22531, lng: 117.36340, intensity: 189.6 },
+            { lat: 39.11152, lng: 117.55726, intensity: 74.2 },
+            { lat: 39.14167, lng: 117.31505, intensity: 117.6 },
+            { lat: 39.96030, lng: 117.42430, intensity: 45.6 },
+            { lat: 39.10921, lng: 117.27588, intensity: 70.56 },
+            { lat: 39.84813, lng: 117.43146, intensity: 81.8 },
+            { lat: 38.87222, lng: 116.84222, intensity: 96 },
+            { lat: 38.84527, lng: 116.80587, intensity: 188.32 },
+            { lat: 38.78142, lng: 117.18111, intensity: 22.2 },
+            { lat: 39.31690, lng: 117.73440, intensity: 195.048 },
+            { lat: 39.35178, lng: 117.72483, intensity: 17.2 },
+            { lat: 39.35390, lng: 117.77000, intensity: 47.9 },
+            { lat: 39.32270, lng: 117.72500, intensity: 15 },
+            { lat: 39.88420, lng: 117.40080, intensity: 31 },
+            { lat: 40.02490, lng: 117.32490, intensity: 20.28 },
+            { lat: 39.96265, lng: 117.46265, intensity: 12.455 },
+            { lat: 39.98825, lng: 39.98825, intensity: 47.8 },
+            { lat: 38.81352, lng: 117.24685, intensity: 56.8 },
+            { lat: 38.98959, lng: 117.62292, intensity: 72 },
+            { lat: 39.09003, lng: 117.54003, intensity: 90 },
+            { lat: 38.92111, lng: 117.72111, intensity: 125.88 },
+            { lat: 39.09817, lng: 117.63151, intensity: 23.6 },
+            { lat: 38.92750, lng: 117.72750, intensity: 13 },
+            { lat: 38.92944, lng: 117.72945, intensity: 50 },
+            { lat: 38.95880, lng: 117.57547, intensity: 21.72 },
+            { lat: 39.14816, lng: 117.51480, intensity: 53 },
+            { lat: 38.92525, lng: 117.79191, intensity: 122.7 },
+            // 添加更多污染物浓度数据
+        ];
+
+        var pollutionData2 = [
+            { lat: 38.82269, lng: 117.51604, intensity: 61 },
+            { lat: 38.96625, lng: 117.58711, intensity: 110.284 },
+            { lat: 39.22531, lng: 117.36340, intensity: 345.01 },
+            { lat: 39.11152, lng: 117.55726, intensity: 118.19 },
+            { lat: 39.14167, lng: 117.31505, intensity: 35.938 },
+            { lat: 39.96030, lng: 117.42430, intensity: 45.6 },
+            { lat: 39.10921, lng: 117.27588, intensity: 141.12 },
+            { lat: 39.84813, lng: 117.43146, intensity: 36.7 },
+            { lat: 38.87222, lng: 116.84222, intensity: 72 },
+            { lat: 38.84527, lng: 116.80587, intensity: 188.32 },
+            { lat: 38.78142, lng: 117.18111, intensity: 41 },
+            { lat: 39.31690, lng: 117.73440, intensity: 168.216 },
+            { lat: 39.35178, lng: 117.72483, intensity: 24.7 },
+            { lat: 39.35390, lng: 117.77000, intensity: 47.9 },
+            { lat: 39.32270, lng: 117.72500, intensity: 67.5 },
+            { lat: 39.88420, lng: 117.40080, intensity: 31 },
+            { lat: 40.02490, lng: 117.32490, intensity: 20.28 },
+            { lat: 39.96265, lng: 117.46265, intensity: 12.455 },
+            { lat: 39.98825, lng: 39.98825, intensity: 47.8 },
+            { lat: 38.81352, lng: 117.24685, intensity: 42.3 },
+            { lat: 38.98959, lng: 117.62292, intensity: 34.55 },
+            { lat: 39.09003, lng: 117.54003, intensity: 22.3 },
+            { lat: 38.92111, lng: 117.72111, intensity: 247.525 },
+            { lat: 39.09817, lng: 117.63151, intensity: 199.2 },
+            { lat: 38.92750, lng: 117.72750, intensity: 61 },
+            { lat: 38.92944, lng: 117.72945, intensity: 107.6 },
+            { lat: 38.95880, lng: 117.57547, intensity: 110.284 },
+            { lat: 39.14816, lng: 117.51480, intensity: 48.8 },
+            { lat: 38.92525, lng: 117.79191, intensity: 33.214 },
+            // 添加更多污染物浓度数据
+        ];
+
+        var pollutionData3 = [
+            { lat: 38.82269, lng: 117.51604, intensity: 61 },
+            { lat: 38.96625, lng: 117.58711, intensity: 23.94 },
+            { lat: 39.22531, lng: 117.36340, intensity: 121.21 },
+            { lat: 39.11152, lng: 117.55726, intensity: 14.617 },
+            { lat: 39.14167, lng: 117.31505, intensity: 35.938 },
+            { lat: 39.96030, lng: 117.42430, intensity: 45.6 },
+            { lat: 39.10921, lng: 117.27588, intensity: 35.28 },
+            { lat: 39.84813, lng: 117.43146, intensity: 34 },
+            { lat: 38.87222, lng: 116.84222, intensity: 12 },
+            { lat: 38.84527, lng: 116.80587, intensity: 18.832 },
+            { lat: 38.78142, lng: 117.18111, intensity: 25.2 },
+            { lat: 39.31690, lng: 117.73440, intensity: 78.948 },
+            { lat: 39.35178, lng: 117.72483, intensity: 49.5 },
+            { lat: 39.35390, lng: 117.77000, intensity: 47.9 },
+            { lat: 39.32270, lng: 117.72500, intensity: 18 },
+            { lat: 39.88420, lng: 117.40080, intensity: 31 },
+            { lat: 40.02490, lng: 117.32490, intensity: 20.28 },
+            { lat: 39.96265, lng: 117.46265, intensity: 12.455 },
+            { lat: 39.98825, lng: 39.98825, intensity: 47.8 },
+            { lat: 38.81352, lng: 117.24685, intensity: 42.3 },
+            { lat: 38.98959, lng: 117.62292, intensity: 57 },
+            { lat: 39.09003, lng: 117.54003, intensity: 36 },
+            { lat: 38.92111, lng: 117.72111, intensity: 65.617 },
+            { lat: 39.09817, lng: 117.63151, intensity: 35 },
+            { lat: 38.92750, lng: 117.72750, intensity: 60 },
+            { lat: 38.92944, lng: 117.72945, intensity: 120 },
+            { lat: 38.95880, lng: 117.57547, intensity: 53.94 },
+            { lat: 39.14816, lng: 117.51480, intensity: 82 },
+            { lat: 38.92525, lng: 117.79191, intensity: 60.37 },
+            // 添加更多污染物浓度数据
+        ];
+
+        // 创建热力图数据集
+        var heatmapData1 = [];
+        pollutionData1.forEach(function (data) {
+            var point = new BMap.Point(data.lng, data.lat);
+            var intensity = data.intensity;
+            heatmapData1.push({ "lng": point.lng, "lat": point.lat, "count": intensity });
+        });
+
+        var heatmapData2 = [];
+        pollutionData2.forEach(function (data) {
+            var point = new BMap.Point(data.lng, data.lat);
+            var intensity = data.intensity;
+            heatmapData2.push({ "lng": point.lng, "lat": point.lat, "count": intensity });
+        });
+
+        var heatmapData3 = [];
+        pollutionData3.forEach(function (data) {
+            var point = new BMap.Point(data.lng, data.lat);
+            var intensity = data.intensity;
+            heatmapData3.push({ "lng": point.lng, "lat": point.lat, "count": intensity });
+        });
+
+        // 创建热力图图层
+        var heatmapOverlay1 = new BMapLib.HeatmapOverlay({ radius: 20, gradient: { 0.1: 'blue', 0.8: 'yellow', 1: 'red' } });
+        var heatmapOverlay2 = new BMapLib.HeatmapOverlay({ radius: 20, gradient: { 0.1: 'green', 0.8: 'yellow', 1: 'orange' } });
+        var heatmapOverlay3 = new BMapLib.HeatmapOverlay({ radius: 20, gradient: { 0.1: 'purple', 0.8: 'blue', 1: 'green' } });
+
+        // 添加热力图图层到地图
+        map.addOverlay(heatmapOverlay1);
+        map.addOverlay(heatmapOverlay2);
+        map.addOverlay(heatmapOverlay3);
+            heatmapOverlay1.hide();
+            heatmapOverlay2.setDataSet({ data: heatmapData2, max: 130 });
+            heatmapOverlay2.show();
+            heatmapOverlay3.hide();
+        }
+
+        // 显示热力图3
+        function showHeatmap3() {
+            // 创建地图实例
+        var map = new BMap.Map("map");
+        // 创建地图中心点
+        var point = new BMap.Point(117.198, 39.117);
+        // 初始化地图，设置中心点和缩放级别
+        map.centerAndZoom(point, 10);
+        // 启用滚轮缩放
+        map.enableScrollWheelZoom(true);
+
+        // 模拟污染物浓度数据
+        var pollutionData1 = [
+            { lat: 38.82269, lng: 117.51604, intensity: 20 },
+            { lat: 38.96625, lng: 117.58711, intensity: 21.72 },
+            { lat: 39.22531, lng: 117.36340, intensity: 189.6 },
+            { lat: 39.11152, lng: 117.55726, intensity: 74.2 },
+            { lat: 39.14167, lng: 117.31505, intensity: 117.6 },
+            { lat: 39.96030, lng: 117.42430, intensity: 45.6 },
+            { lat: 39.10921, lng: 117.27588, intensity: 70.56 },
+            { lat: 39.84813, lng: 117.43146, intensity: 81.8 },
+            { lat: 38.87222, lng: 116.84222, intensity: 96 },
+            { lat: 38.84527, lng: 116.80587, intensity: 188.32 },
+            { lat: 38.78142, lng: 117.18111, intensity: 22.2 },
+            { lat: 39.31690, lng: 117.73440, intensity: 195.048 },
+            { lat: 39.35178, lng: 117.72483, intensity: 17.2 },
+            { lat: 39.35390, lng: 117.77000, intensity: 47.9 },
+            { lat: 39.32270, lng: 117.72500, intensity: 15 },
+            { lat: 39.88420, lng: 117.40080, intensity: 31 },
+            { lat: 40.02490, lng: 117.32490, intensity: 20.28 },
+            { lat: 39.96265, lng: 117.46265, intensity: 12.455 },
+            { lat: 39.98825, lng: 39.98825, intensity: 47.8 },
+            { lat: 38.81352, lng: 117.24685, intensity: 56.8 },
+            { lat: 38.98959, lng: 117.62292, intensity: 72 },
+            { lat: 39.09003, lng: 117.54003, intensity: 90 },
+            { lat: 38.92111, lng: 117.72111, intensity: 125.88 },
+            { lat: 39.09817, lng: 117.63151, intensity: 23.6 },
+            { lat: 38.92750, lng: 117.72750, intensity: 13 },
+            { lat: 38.92944, lng: 117.72945, intensity: 50 },
+            { lat: 38.95880, lng: 117.57547, intensity: 21.72 },
+            { lat: 39.14816, lng: 117.51480, intensity: 53 },
+            { lat: 38.92525, lng: 117.79191, intensity: 122.7 },
+            // 添加更多污染物浓度数据
+        ];
+
+        var pollutionData2 = [
+            { lat: 38.82269, lng: 117.51604, intensity: 61 },
+            { lat: 38.96625, lng: 117.58711, intensity: 110.284 },
+            { lat: 39.22531, lng: 117.36340, intensity: 345.01 },
+            { lat: 39.11152, lng: 117.55726, intensity: 118.19 },
+            { lat: 39.14167, lng: 117.31505, intensity: 35.938 },
+            { lat: 39.96030, lng: 117.42430, intensity: 45.6 },
+            { lat: 39.10921, lng: 117.27588, intensity: 141.12 },
+            { lat: 39.84813, lng: 117.43146, intensity: 36.7 },
+            { lat: 38.87222, lng: 116.84222, intensity: 72 },
+            { lat: 38.84527, lng: 116.80587, intensity: 188.32 },
+            { lat: 38.78142, lng: 117.18111, intensity: 41 },
+            { lat: 39.31690, lng: 117.73440, intensity: 168.216 },
+            { lat: 39.35178, lng: 117.72483, intensity: 24.7 },
+            { lat: 39.35390, lng: 117.77000, intensity: 47.9 },
+            { lat: 39.32270, lng: 117.72500, intensity: 67.5 },
+            { lat: 39.88420, lng: 117.40080, intensity: 31 },
+            { lat: 40.02490, lng: 117.32490, intensity: 20.28 },
+            { lat: 39.96265, lng: 117.46265, intensity: 12.455 },
+            { lat: 39.98825, lng: 39.98825, intensity: 47.8 },
+            { lat: 38.81352, lng: 117.24685, intensity: 42.3 },
+            { lat: 38.98959, lng: 117.62292, intensity: 34.55 },
+            { lat: 39.09003, lng: 117.54003, intensity: 22.3 },
+            { lat: 38.92111, lng: 117.72111, intensity: 247.525 },
+            { lat: 39.09817, lng: 117.63151, intensity: 199.2 },
+            { lat: 38.92750, lng: 117.72750, intensity: 61 },
+            { lat: 38.92944, lng: 117.72945, intensity: 107.6 },
+            { lat: 38.95880, lng: 117.57547, intensity: 110.284 },
+            { lat: 39.14816, lng: 117.51480, intensity: 48.8 },
+            { lat: 38.92525, lng: 117.79191, intensity: 33.214 },
+            // 添加更多污染物浓度数据
+        ];
+
+        var pollutionData3 = [
+            { lat: 38.82269, lng: 117.51604, intensity: 61 },
+            { lat: 38.96625, lng: 117.58711, intensity: 23.94 },
+            { lat: 39.22531, lng: 117.36340, intensity: 121.21 },
+            { lat: 39.11152, lng: 117.55726, intensity: 14.617 },
+            { lat: 39.14167, lng: 117.31505, intensity: 35.938 },
+            { lat: 39.96030, lng: 117.42430, intensity: 45.6 },
+            { lat: 39.10921, lng: 117.27588, intensity: 35.28 },
+            { lat: 39.84813, lng: 117.43146, intensity: 34 },
+            { lat: 38.87222, lng: 116.84222, intensity: 12 },
+            { lat: 38.84527, lng: 116.80587, intensity: 18.832 },
+            { lat: 38.78142, lng: 117.18111, intensity: 25.2 },
+            { lat: 39.31690, lng: 117.73440, intensity: 78.948 },
+            { lat: 39.35178, lng: 117.72483, intensity: 49.5 },
+            { lat: 39.35390, lng: 117.77000, intensity: 47.9 },
+            { lat: 39.32270, lng: 117.72500, intensity: 18 },
+            { lat: 39.88420, lng: 117.40080, intensity: 31 },
+            { lat: 40.02490, lng: 117.32490, intensity: 20.28 },
+            { lat: 39.96265, lng: 117.46265, intensity: 12.455 },
+            { lat: 39.98825, lng: 39.98825, intensity: 47.8 },
+            { lat: 38.81352, lng: 117.24685, intensity: 42.3 },
+            { lat: 38.98959, lng: 117.62292, intensity: 57 },
+            { lat: 39.09003, lng: 117.54003, intensity: 36 },
+            { lat: 38.92111, lng: 117.72111, intensity: 65.617 },
+            { lat: 39.09817, lng: 117.63151, intensity: 35 },
+            { lat: 38.92750, lng: 117.72750, intensity: 60 },
+            { lat: 38.92944, lng: 117.72945, intensity: 120 },
+            { lat: 38.95880, lng: 117.57547, intensity: 53.94 },
+            { lat: 39.14816, lng: 117.51480, intensity: 82 },
+            { lat: 38.92525, lng: 117.79191, intensity: 60.37 },
+            // 添加更多污染物浓度数据
+        ];
+
+        // 创建热力图数据集
+        var heatmapData1 = [];
+        pollutionData1.forEach(function (data) {
+            var point = new BMap.Point(data.lng, data.lat);
+            var intensity = data.intensity;
+            heatmapData1.push({ "lng": point.lng, "lat": point.lat, "count": intensity });
+        });
+
+        var heatmapData2 = [];
+        pollutionData2.forEach(function (data) {
+            var point = new BMap.Point(data.lng, data.lat);
+            var intensity = data.intensity;
+            heatmapData2.push({ "lng": point.lng, "lat": point.lat, "count": intensity });
+        });
+
+        var heatmapData3 = [];
+        pollutionData3.forEach(function (data) {
+            var point = new BMap.Point(data.lng, data.lat);
+            var intensity = data.intensity;
+            heatmapData3.push({ "lng": point.lng, "lat": point.lat, "count": intensity });
+        });
+
+        // 创建热力图图层
+        var heatmapOverlay1 = new BMapLib.HeatmapOverlay({ radius: 20, gradient: { 0.1: 'blue', 0.8: 'yellow', 1: 'red' } });
+        var heatmapOverlay2 = new BMapLib.HeatmapOverlay({ radius: 20, gradient: { 0.1: 'green', 0.8: 'yellow', 1: 'orange' } });
+        var heatmapOverlay3 = new BMapLib.HeatmapOverlay({ radius: 20, gradient: { 0.1: 'purple', 0.8: 'blue', 1: 'green' } });
+
+        // 添加热力图图层到地图
+        map.addOverlay(heatmapOverlay1);
+        map.addOverlay(heatmapOverlay2);
+        map.addOverlay(heatmapOverlay3);
+            heatmapOverlay1.hide();
+            heatmapOverlay2.hide();
+            heatmapOverlay3.setDataSet({ data: heatmapData3, max: 120 });
+            heatmapOverlay3.show();
+        }
+
+        // 默认显示热力图1
+        //showHeatmap1();
+        function Vis_map(){
+var map = new BMap.Map("map");
+    map.centerAndZoom(new BMap.Point(117.740583, 38.934309), 10);
+    map.enableScrollWheelZoom();
+
+    // 定义工厂类别和对应的颜色
+    var factoryCategories = [
+        {
+            "name": "钢铁厂",
+            "color": "red",
+            "symbol": BMap_Symbol_SHAPE_POINT,
+            "factories": [
+                {
+                    "name": "天津钢铁集团有限公司",
+                    "lat": "39.042481",
+                    "lng": "117.522049"
+                },
+                {
+                    "name": "天津市宝丰钢管厂",
+                    "lat": "38.765429",
+                    "lng": "117.163013"
+                },
+                {
+                    "name": "亿利通钢管厂",
+                    "lat": "38.788404",
+                    "lng": "117.117836"
+                },
+                {
+                    "name": "得利伟铸钢厂",
+                    "lat": "39.308963",
+                    "lng": "117.700041"
+                },
+                {
+                    "name": "同力玻璃钢厂",
+                    "lat": "39.271005",
+                    "lng": "117.272932"
+                }
+
+            ]
+        },
+        {
+            "name": "发电厂",
+            "color": "blue",
+            "symbol": BMap_Symbol_SHAPE_POINT,
+            "factories": [
+                {
+                    "name": "华能(天津)煤气化发电有限公司",
+                    "lat": "38.934309",
+                    "lng": "117.740583"
+                },
+                {
+                    "name": "大唐盘山发电公司",
+                    "lat": "39.981895",
+                    "lng": "117.476295"
+                },
+                {
+                    "name": "天津国能盘山发电有限责任公司",
+                    "lat": "39.981699",
+                    "lng": "117.470654"
+                },
+                {
+                    "name": "卡特彼勒公司大型发动机和发电机组制造工厂",
+                    "lat": "39.14832",
+                    "lng": "117.393727"
+                },
+                {
+                    "name": "天津天发发电设备制造有限公司",
+                    "lat": "39.244265",
+                    "lng": "117.271001"
+                },
+
+
+            ]
+        },
+        {
+            "name": "化肥厂",
+            "color": "green",
+            "symbol": BMap_Symbol_SHAPE_POINT,
+            "factories": [
+                {
+                    "name": "天津中农化肥储运贸易有限公司",
+                    "lat": "39.324057",
+                    "lng": "117.107443"
+                },
+                {
+                    "name": "汉沽化肥厂",
+                    "lat": "39.3249",
+                    "lng": "117.858321"
+                },
+                {
+                    "name": "天津东阳化肥股份有限公司",
+                    "lat": "39.312089",
+                    "lng": "117.781748"
+                },
+                {
+                    "name": "天津市中天化肥有限公司",
+                    "lat": "39.311797",
+                    "lng": "117.919563"
+                },
+                {
+                    "name": "津天化化肥(天津)有限公司",
+                    "lat": "39.584046",
+                    "lng": "116.980026"
+                },
+
+            ]
+        },
+        {
+            "name": "化工厂",
+            "color": "yellow",
+            "symbol": BMap_Symbol_SHAPE_POINT,
+            "factories": [
+                {
+                    "name": "科迈化工股份有限公司",
+                    "lat": "38.822688",
+                    "lng": "117.516036"
+                },
+                {
+                    "name": "天津渤海化工集团公司",
+                    "lat": "39.124335",
+                    "lng": "117.216381"
+                },
+                {
+                    "name": "卡博特化工公司",
+                    "lat": "39.221362",
+                    "lng": "117.7992"
+                },
+                {
+                    "name": "天津大沽化工股份有限公司(顺化道)",
+                    "lat": "39.004127",
+                    "lng": "117.65657"
+                },
+                {
+                    "name": "海晶集团有限公司化工厂",
+                    "lat": "39.002774",
+                    "lng": "117.65892"
+                },
+            ]
+        },
+        {
+            "name": "化妆品厂",
+            "color": "Purple",
+            "symbol": BMap_Symbol_SHAPE_POINT,
+            "factories": [
+                {
+                    "name": "高丽雅娜化妆品(天津有限公司)",
+                    "lat": "38.990803",
+                    "lng": "117.484904"
+                },
+                {
+                    "name": "旺通工贸有限公司丽芬化妆品厂",
+                    "lat": "39.084084",
+                    "lng": "117.050015"
+                },
+                {
+                    "name": "天津市亨美达化妆品工贸有限公司",
+                    "lat": "39.246372",
+                    "lng": "116.963697"
+                },
+                {
+                    "name": "希恩碧化妆品(天津)有限公司",
+                    "lat": "38.9",
+                    "lng": "117.276113"
+                },
+                {
+                    "name": "天津佰纳黛丝化妆品",
+                    "lat": "38.824943",
+                    "lng": "117.479817"
+                },
+
+            ]
+        },
+        {
+            "name": "焦化厂",
+            "color": "Black",
+            "symbol": BMap_Symbol_SHAPE_POINT,
+            "factories": [
+                {
+                    "name": "天津华电南疆热电有限公司",
+                    "lat": "38.96625",
+                    "lng": "117.58711"
+                },
+                {
+                    "name": "天津天保热电公司",
+                    "lat": "39.126803",
+                    "lng": "117.467421"
+                },
+                {
+                    "name": "国家能源集团天津国能津能热电有限公司",
+                    "lat": "39.225313",
+                    "lng": "117.363404"
+                },
+                {
+                    "name": "天津泰达西区热电有限公司",
+                    "lat": "39.111517",
+                    "lng": "117.557257"
+                },
+                {
+                    "name": "天津市陈塘热电有限公司",
+                    "lat": "38.966491",
+                    "lng": "117.198145"
+                },
+
+            ]
+        },
+        {
+            "name": "炼油厂",
+            "color": "White",
+            "symbol": BMap_Symbol_SHAPE_POINT,
+            "factories": [
+                {
+                    "name": "中国石化天津分公司炼油部",
+                    "lat": "38.832456",
+                    "lng": "117.414073"
+                }
+
+            ]
+        },
+        {
+            "name": "水泥厂",
+            "color": "Orange",
+            "symbol": BMap_Symbol_SHAPE_POINT,
+            "factories": [
+                {
+                    "name": "天津水泥工业设计研究院有限公司(引河里北道)",
+                    "lat": "39.243224",
+                    "lng": "117.125444"
+                },
+                {
+                    "name": "大站水泥厂",
+                    "lat": "38.959962",
+                    "lng": "117.493287"
+                },
+                {
+                    "name": "天津振兴水泥有限公司(创富路)",
+                    "lat": "39.282071",
+                    "lng": "117.143102"
+                },
+                {
+                    "name": "金晟华水泥公司天津水泥厂分厂",
+                    "lat": "38.978348",
+                    "lng": "117.219723"
+                },
+                {
+                    "name": "蓟县鑫旺发水泥制品厂",
+                    "lat": "39.027583",
+                    "lng": "117.254044"
+                },
+            ]
+        },
+
+        {
+            "name": "制药厂",
+            "color": "Brown",
+            "symbol": BMap_Symbol_SHAPE_POINT,
+            "factories": [
+                {
+                    "name": "诺和诺德(中国)制药有限公司",
+                    "lat": "39.053491",
+                    "lng": "117.711769"
+                },
+                {
+                    "name": "中美天津史克制药有限公司",
+                    "lat": "39.141672",
+                    "lng": "117.315049"
+                },
+                {
+                    "name": "天津天威制药有限公司",
+                    "lat": "39.071392",
+                    "lng": "117.727366"
+                },
+                {
+                    "name": "天津九州通达医药有限公司",
+                    "lat": "39.239726",
+                    "lng": "117.081399"
+                },
+                {
+                    "name": "中国大冢制药公司",
+                    "lat": "39.031758",
+                    "lng": "117.094484"
+                }, {
+                    "name": "天津药明康德新药开发有限公司",
+                    "lat": "39.069397",
+                    "lng": "117.7204"
+                },
+                {
+                    "name": "天津市医药集团有限公司",
+                    "lat": "39.128886",
+                    "lng": "117.233874"
+                },
+                {
+                    "name": "辰光(天津)制药有限公司",
+                    "lat": "39.100689",
+                    "lng": "117.548405"
+                },
+                {
+                    "name": "天士力圣特制药有限公司",
+                    "lat": "39.230451",
+                    "lng": "117.200071"
+                },
+                {
+                    "name": "天津生物化学制药有限公司",
+                    "lat": "39.12572",
+                    "lng": "117.428022"
+                },
+            ]
+        }
+    ];
+
+    // 标注工厂位置
+    factoryCategories.forEach(function (category) {
+        var color = category.color;
+        var symbol = category.symbol;
+        var factories = category.factories;
+
+        factories.forEach(function (factory) {
+            var name = factory.name;
+            var lat = parseFloat(factory.lat);
+            var lng = parseFloat(factory.lng);
+
+            var point = new BMap.Point(lng, lat);
+
+            // 创建标注样式
+            var markerOptions = {
+                icon: new BMap.Symbol(symbol, {
+                    scale: 1,
+                    fillColor: color, // 使用不同颜色的标记
+                    fillOpacity: 0.8
+                })
+            };
+
+            // 创建标记对象
+            var marker = new BMap.Marker(point, markerOptions);
+
+            // 创建文本标签
+            var label = new BMap.Label(name, { offset: new BMap.Size(20, -10) });
+            label.setStyle({
+                color: "black",
+                backgroundColor: "white",
+                border: "1px solid #ccc",
+                padding: "5px"
+            });
+            marker.setLabel(label);
+
+            // 鼠标悬停时显示工厂名称
+            marker.addEventListener("mouseover", function () {
+                label.show();
+            });
+
+            // 鼠标移开时隐藏工厂名称
+            marker.addEventListener("mouseout", function () {
+                label.hide();
+            });
+
+            // 将标记对象添加到地图上
+            map.addOverlay(marker);
+        });
+    });
+
+    // 显示工厂种类和标记颜色的对应关系
+    const data_legend=[{name:'钢铁厂',color:'red'},
+    {name:'发电厂',color:'blue'},
+    {name:'化工厂',color:'yellow'},
+    {name:'化肥厂',color:'green'},
+    {name:'化妆品厂',color:'purple'},
+    {name:'焦化厂',color:'black'},
+    {name:'炼油厂',color:'white'},
+    {name:'水泥厂',color:'orange'},
+    {name:'制药厂',color:'brown'}]
+    var legendContainer = document.getElementById('legend');
+
+    if (flag == 0){
+    data_legend.forEach(item => {
+        var legendItem = document.createElement('div');
+        legendItem.classList.add('legend-item');
+
+        var colorBox = document.createElement('div');
+        colorBox.classList.add('color-box');
+        colorBox.style.backgroundColor = item.color;
+
+        var itemName = document.createElement('span');
+        itemName.textContent = item.name;
+
+        legendItem.appendChild(colorBox);
+        legendItem.appendChild(itemName);
+
+        legendContainer.appendChild(legendItem);
+    })
+    flag ++;
+    };
+
+}
+Vis_map();
+    </script>
+</body>
+
+</html>
