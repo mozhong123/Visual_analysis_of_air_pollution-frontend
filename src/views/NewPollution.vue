@@ -10,6 +10,10 @@
       ></iframe>
       <!-- Your main content goes here -->
     </div>
+    <div class="message-block">
+      <div class="message-background"></div>
+      <div class="message-content">tmp-message</div>
+    </div>
     <div class='left-chart'>
       <div class="left-top">
         <div class="city-rank">
@@ -222,8 +226,50 @@ export default {
       return result;
     }
 
+    function expandMessage(leftPercent) {
+      const messageBox = document.querySelector('.message-block');
+      const messageBackGround = document.querySelector('.message-background');
+      const messageContent = document.querySelector('.message-content');
+      messageBox.style.left = (leftPercent - 100) + '%';
+      messageBackGround.style.left = (leftPercent - 100) + '%';
+      messageContent.style.right = (102 - leftPercent) + '%';
+    }
+
+    function hideMessage() {
+      const messageBox = document.querySelector('.message-block');
+      const messageBackGround = document.querySelector('.message-background');
+      const messageContent = document.querySelector('.message-content');
+      messageBox.style.left = '-100%';
+      messageBackGround.style.left = '-100%';
+      messageContent.style.right = '100%';
+    }
+
     function sendMessage(messageContent) {
-      alert(messageContent);
+      hideMessage();
+      const messageContentContainer = document.querySelector('.message-content');
+      messageContentContainer.innerText = messageContent;
+      // 创建一个临时元素，用于测量字符串的宽度
+      const tempElement = document.createElement('div');
+      tempElement.style.position = 'fixed';
+      tempElement.style.top = '30%';
+      tempElement.style.left = '30%';
+      tempElement.style.height = '4%';
+      tempElement.style.fontSize = '100%';
+      console.log(messageContent);
+      tempElement.textContent = messageContent;
+      tempElement.style.whiteSpace = 'nowrap';
+      tempElement.style.display = 'inline'; // Make it an inline element to measure the width accurately
+      // 将临时元素添加到文档中
+      document.body.appendChild(tempElement);
+      // 获取字符串的宽度
+      const textWidth = tempElement.offsetWidth;
+      console.log(textWidth);
+
+      // 计算字符串宽度在元素宽度中所占的百分比
+      const widthPercentage = (textWidth / window.innerWidth) * 100;
+      document.body.removeChild(tempElement);
+      expandMessage(widthPercentage+3);
+      setTimeout(hideMessage, 3000);
     }
 
     function clickWait(component) {
@@ -237,16 +283,18 @@ export default {
     }
 
     async function fetchDataPost(url, postData) {
-      // 发起 fetch 请求
-      console.log(JSON.stringify(postData));
       fetch(url, {
         method: 'POST',
         body: JSON.stringify(postData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+        }
       })
           .then(response => response.json())
           .then(data => {
             // 处理后端返回的数据
-            console.log(data);
             sendMessage(data.data);
           })
           .catch(error => {
@@ -327,7 +375,7 @@ export default {
           + 'year=' + DateCur[0]
           + '&month=' + DateCur[1]
           + '&day=' + DateCur[2];
-      const queryMethod_post = "spider_day_data?"
+      const queryMethod_post = "spider_day_data"
       const queryURL_post = 'http://' + backendURL + queryRoute + queryMethod_post
       fetchDataPost(queryURL_post, {year: DateCur[0], month: DateCur[1], day: DateCur[2]});
       fetchDataGet(queryURL_get).then(data => {
@@ -344,7 +392,7 @@ export default {
       const toDay = document.getElementById('eventDayTo');
       const city = localStorage.getItem("selectCity");
       const eventContent = document.getElementById("inputEvent");
-      const queryMethod_post = "add_events?"
+      const queryMethod_post = "add_events"
       const queryURL_post = 'http://' + backendURL + queryRoute + queryMethod_post
       const beginTime = fromYear.value + '-' + fromMonth.value.padStart(2, '0') + '-' + fromDay.value.padStart(2, '0');
       const endTime = toYear.value + '-' + toMonth.value.padStart(2, '0') + '-' + toDay.value.padStart(2, '0');
@@ -1239,6 +1287,40 @@ export default {
   height: 100%;
   border: none;
 }
+
+.message-block,
+.message-content,
+.message-background {
+  position: fixed;
+  top: 5%;
+  width: 100%;
+  height: 4%;
+  z-index: 3;
+}
+
+.message-block {
+  transition: left 0.7s ease; /* 添加过渡效果，使显示和隐藏平滑 */
+  overflow: hidden;
+  left: -100%;
+}
+
+.message-background {
+  transition: left 0.7s ease; /* 添加过渡效果，使显示和隐藏平滑 */
+  left: -100%;
+  transform: skewX(-20deg);
+  border-radius: 3%; /* 添加圆角 */
+  transform-origin: 0 0;
+  background-color: #0C2F4F;
+}
+
+.message-content {
+  color: #F2F9FF;
+  font-size: 100%;
+  transition: right 0.7s ease; /* 添加过渡效果，使显示和隐藏平滑 */
+  right: 100%;
+  text-align: right;
+}
+
 
 .rank-list {
   position: fixed;
