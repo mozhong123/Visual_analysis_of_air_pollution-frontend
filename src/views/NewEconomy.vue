@@ -27,7 +27,12 @@
         </div>
       </div>
     </div>
+    <div>
+      <HeaderMenu></HeaderMenu>
+      <NaiveButton></NaiveButton>
+    </div>
   </div>
+
 </template>
 
 <script>
@@ -35,10 +40,11 @@ import * as echarts from "echarts";
 import $ from "jquery";
 import HeaderMenu from "@/components/NewHeaderMenu.vue"; // 根据你的项目结构修改路径
 import BaiduMap from 'vue-baidu-map'
-
+import NaiveButton from "@/components/NaiveIcon.vue";
 export default {
   components: {
-    HeaderMenu
+    HeaderMenu,
+    NaiveButton,
   },
   mounted() {
     var myChart3 = echarts.init(document.getElementById('line2'));
