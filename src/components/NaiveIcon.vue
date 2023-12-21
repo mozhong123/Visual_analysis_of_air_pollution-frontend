@@ -1,6 +1,7 @@
 <script>
 import {backendURL, queryRoute, method, headers} from "@/config/const.ts";
 import Recorder from 'js-audio-recorder'
+
 export default {
   props: {
     msg: String
@@ -22,7 +23,7 @@ export default {
         //     },
       ],
       itemsPerPage: 5, // 每页显示的记录数
-      currentPage: 1 ,// 当前页
+      currentPage: 1,// 当前页
       recorder: null,
       playTime: 0,
       timer: null,
@@ -37,7 +38,7 @@ export default {
     })
   },
   mounted() {
-    let that=this;
+    let that = this;
     const addHistory = async () => {
       let result = await fetchDataGet('http://127.0.0.1:8000/gpts/gpt_content');
       for (var i = 0; i < result.length; i++) {
@@ -244,6 +245,32 @@ export default {
       return result;
     }
 
+    async function fetchDataPostFile2(url) {
+      const blob = that.recorder.getPCMBlob() // 获取 pcm 格式音频数据
+      // 此处获取到 blob 对象后需要设置 fileName 满足项目上传需求，这里选择直接把 blob 作为 file 塞入 formData
+      const fileOfBlob = new File([blob], new Date().getTime() + '.pcm')
+      let result;
+      let formData = new window.FormData();
+      formData.append('voice', fileOfBlob, new Date().getTime() + '.pcm');
+      formData.append('file', that.file);
+      console.log(fileOfBlob);
+      console.log(that.file);
+      console.log(formData);
+      await fetch(url, {
+        method: 'POST',
+        body: formData
+      })
+          .then(response => response.json())
+          .then(data => {
+            // 处理后端返回的数据
+            result = data;
+          })
+          .catch(error => {
+            result = {message: 'Error:' + error, code: -1};
+          });
+      return result;
+    }
+
 
     function clickWait(component) {
       return new Promise((resolve) => {
@@ -261,6 +288,20 @@ export default {
       const queryURL = 'http://' + backendURL + 'gpts/' + queryMethod;
       outputContent.innerText = '等待回应...';
       const result = await fetchDataPostFile(queryURL, formId);
+      console.log(result);
+      if (result.code !== 0) {
+        outputContent.innerText = result.message;
+      } else {
+        outputContent.innerText = result.data.reply_content;
+      }
+    }
+
+    async function waitForAnswer2(pictureId, outputId) {
+      const outputContent = document.getElementById(outputId);
+      const queryMethod = "ask_gpt_by_voice"
+      const queryURL = 'http://' + backendURL + 'gpts/' + queryMethod;
+      outputContent.innerText = '等待回应...';
+      const result = await fetchDataPostFile2(queryURL);
       console.log(result);
       if (result.code !== 0) {
         outputContent.innerText = result.message;
@@ -321,8 +362,8 @@ export default {
     })
 
     addSpeakPicture.addEventListener('click', async () => {
-      await uploadPictures('picture-input-speak');
-      const button = document.getElementById('picture-input-speak');
+      await uploadPictures('picture-input-word');
+      const button = document.getElementById('picture-input-word');
       if (button.files.length === 0) {
         return;
       }
@@ -366,20 +407,26 @@ export default {
       recordPauseComponentHidden.click();
     })
     //在这里加入上传逻辑
-    speakSubmit.addEventListener('click', () => {
+    speakSubmit.addEventListener('click', async () => {
       //上传逻辑
       //待补充
-      //将要展示的结果
-      const resultData = '';
-      //以下是上传后处理
-      const answerContent = document.getElementById('speak-answer');
       const inputPicture = document.getElementById('picture-input-speak');
+      await waitForAnswer2('picture-input-speak', 'speak-answer');
+      inputPicture.value = '';
+      //将要展示的结果
+      //以下是上传后处理
       //销毁录音并且复原按键
-      recordRetryButton.click();
+      recordRetryComponentHidden.click();
+      recordButton.style.display = 'block';
+      recordedIcon.style.display = 'none';
+      recordPauseButton.style.display = 'none';
+      recordPlayButton.style.display = 'block';
+      addSpeakPicture.style.display = 'block';
+      addSpeakPictureComplete.style.display = 'none';
       //清除图片
       inputPicture.value = '';
       //展示结果
-      answerContent.value = resultData;
+
     })
 
     closeHistory.addEventListener('click', () => {
@@ -975,14 +1022,16 @@ html, body {
 #speak-GPT-Form {
   display: none;
 }
+
 .record-component {
   position: fixed;
   top: 20%;
   left: 30%;
   width: 50%;
   height: 50%;
-  display: none;
+//display: none;
 }
+
 .history_con {
   position: absolute;
   width: 385px;
@@ -995,6 +1044,7 @@ html, body {
   position: relative;
 
 }
+
 .record-button {
   position: absolute;
   bottom: 4%;
@@ -1006,6 +1056,7 @@ html, body {
   fill: currentColor;
   overflow: hidden;
 }
+
 .recorded-button {
   position: absolute;
   bottom: 0%;
@@ -1018,6 +1069,7 @@ html, body {
   overflow: hidden;
   display: none;
 }
+
 .record-play {
   position: absolute;
   bottom: 4%;
@@ -1029,6 +1081,7 @@ html, body {
   fill: currentColor;
   overflow: hidden;
 }
+
 .record-pause {
   position: absolute;
   bottom: 4%;
@@ -1041,6 +1094,7 @@ html, body {
   overflow: hidden;
   display: none;
 }
+
 .record-retry {
   position: absolute;
   bottom: 4%;
