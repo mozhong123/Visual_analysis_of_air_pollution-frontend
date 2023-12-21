@@ -1,32 +1,32 @@
 <script>
+import {backendURL, queryRoute, method, headers} from "@/config/const.ts";
 
 export default {
-  data(){
-      return {
-  historyRecords: [
-  //{
-  //       time: '2023-01-01 10:00',
-  //       question: '历史问题1',
-  //       answer: '历史回答1',
-  //       image: '/src/assets/image/bg.jpg'
-  //     },{
-  //       time: '2023-01-01 10:00',
-  //       question: '历史问题1',
-  //       answer: '历史回答1',
-  //       image: '/src/assets/image/leftb1.png'
-  //     },
-        ],
-  itemsPerPage: 5, // 每页显示的记录数
-  currentPage: 1 // 当前页
-};
+  data() {
+    return {
+      historyRecords: [
+        //{
+        //       time: '2023-01-01 10:00',
+        //       question: '历史问题1',
+        //       answer: '历史回答1',
+        //       image: '/src/assets/image/bg.jpg'
+        //     },{
+        //       time: '2023-01-01 10:00',
+        //       question: '历史问题1',
+        //       answer: '历史回答1',
+        //       image: '/src/assets/image/leftb1.png'
+        //     },
+      ],
+      itemsPerPage: 5, // 每页显示的记录数
+      currentPage: 1 // 当前页
+    };
   },
   created() {
   },
   mounted() {
     const addHistory = async () => {
       let result = await fetchDataGet('http://127.0.0.1:8000/gpts/gpt_content');
-      for(var i = 0;i < result.length;i++)
-      {
+      for (var i = 0; i < result.length; i++) {
         let newRecord = {
           time: result[i]['create_dt'],
           question: result[i]['ask_content'],
@@ -35,7 +35,7 @@ export default {
         };
         this.historyRecords.push(newRecord);
       }
-  }
+    }
     let isExpanded = false;
 
 // 监听鼠标移入logo事件
@@ -148,6 +148,8 @@ export default {
     const addWordPicture = document.getElementById("word-picture-submit");
     const addSpeakPicture = document.getElementById("speak-picture-submit");
     const addWordPictureComplete = document.getElementById('word-update-picture-complete');
+    const wordSubmit = document.getElementById('word-submit');
+
 
     function initBtn() {
       const navIconContainer = document.getElementById("nmh-navicon");
@@ -202,29 +204,32 @@ export default {
 
     async function fetchDataPostFile(url, fileInputComponent) {
       const fileInput = document.getElementById(fileInputComponent);
+      let result;
       // 检查是否选择了文件
-      if (fileInput.files.length === 0) {
-        console.log("failed");
-        return;
-      }
       // 创建一个 FormData 对象，用于传递文件
-      const formData = new FormData();
-      console.log(fileInput.files[0]);
-      formData.append('file', fileInput.files[0]);
+      console.log(fileInput);
+      const formData = new FormData(fileInput);
+      //console.log(fileInput.files[0]);
 
       // 发起 fetch 请求
-      fetch(url, {
+      await fetch(url, {
         method: 'POST',
         body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+        }
       })
           .then(response => response.json())
           .then(data => {
             // 处理后端返回的数据
-            console.log(data);
+            result = data;
           })
           .catch(error => {
-            console.error('Error:', error);
+            result = {message: 'Error:' + error, code: -1};
           });
+      return result;
     }
 
 
@@ -236,6 +241,20 @@ export default {
         });
         button.click();
       });
+    }
+
+    async function waitForAnswer(formId, outputId) {
+      const outputContent = document.getElementById(outputId);
+      const queryMethod = "ask_gpt_by_content?"
+      const queryURL = 'http://' + backendURL + 'gpts/' + queryMethod;
+      outputContent.innerText = '等待回应...';
+      const result = await fetchDataPostFile(queryURL, formId);
+      console.log(result);
+      if (result.code !== 0) {
+        outputContent.innerText = result.message;
+      } else {
+        outputContent.innerText = result.data.reply_conetnt;
+      }
     }
 
     async function uploadPictures(destination) {
@@ -272,6 +291,23 @@ export default {
       addWordPictureComplete.style.display = 'block';
     })
 
+    wordSubmit.addEventListener('click', async () => {
+      const inputText = document.getElementById('text-chat');
+      const askContent = document.getElementById('ask-content');
+      const wordAnswer = document.getElementById('word-answer');
+      const inputPicture = document.getElementById('picture-input-word');
+      if (inputText.value === '') {
+        wordAnswer.innerText = '请输入提问内容！';
+        return;
+      }
+      askContent.value = inputText.value;
+      waitForAnswer('word-GPT-Form', 'word-answer');
+      inputText.value = '';
+      inputPicture.value = '';
+      addWordPicture.style.display = 'block';
+      addWordPictureComplete.style.display = 'none';
+    })
+
     addSpeakPicture.addEventListener('click', () => {
       uploadPictures();
     })
@@ -291,27 +327,27 @@ export default {
     initBtn();
   },
   computed: {
-  totalPages() {
-    return Math.ceil(this.historyRecords.length / this.itemsPerPage);
-  },
-  displayedRecords() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.historyRecords.slice(startIndex, endIndex);
-  }
-},
-methods: {
-  prevPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
+    totalPages() {
+      return Math.ceil(this.historyRecords.length / this.itemsPerPage);
+    },
+    displayedRecords() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.historyRecords.slice(startIndex, endIndex);
     }
   },
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
+  methods: {
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
     }
   }
-}
 };
 
 </script>
@@ -326,21 +362,21 @@ methods: {
             d="M786.432 173.568L510.976 449.024 235.52 173.568c-18.944-18.944-49.664-18.944-69.12 0-18.944 18.944-18.944 49.664 0 69.12l275.456 275.456L166.4 793.6c-18.944 18.944-18.944 49.664 0 69.12 18.944 18.944 49.664 18.944 69.12 0l275.456-275.968 275.456 275.456c18.944 18.944 49.664 18.944 69.12 0 18.944-18.944 18.944-49.664 0-69.12l-275.456-275.456 275.456-275.456c18.944-18.944 18.944-49.664 0-69.12-19.456-17.92-50.176-17.92-69.12 0.512z"
             p-id="583"></path>
       </svg>
-        <div class="history_con">
-          <template v-for="(record, index) in displayedRecords" :key="index" >
-            <div class="history-record">
+      <div class="history_con">
+        <template v-for="(record, index) in displayedRecords" :key="index">
+          <div class="history-record">
             <div>{{ record.time }}</div>
             <div>{{ record.question }}</div>
             <div>{{ record.answer }}</div>
             <img v-if="record.image" :src="record.image" alt="Question Image" style="width: 70%;height: 70%;"/>
-            </div>
-          </template>
-          <div class="pagination">
-            <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
-            <span>Page {{ currentPage }} of {{ totalPages }}</span>
-            <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
           </div>
+        </template>
+        <div class="pagination">
+          <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
+          <span>Page {{ currentPage }} of {{ totalPages }}</span>
+          <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
         </div>
+      </div>
     </div>
     <div class="chat-block-right" id="speak-chat">
       <form id="myForm" enctype="multipart/form-data">
@@ -384,7 +420,7 @@ methods: {
     <div class="chat-block-right" id="word-chat">
       <form id="word-GPT-Form" enctype="multipart/form-data">
         <input type="text" id="ask-content" name="gpt_ask" required>
-        <input type="file" id="picture-input-word">
+        <input type="file" id="picture-input-word" name="file">
       </form>
       <svg class="close-block-btn" id="word-close" viewBox="0 0 1026 1024">
         <path
@@ -687,15 +723,16 @@ html, body {
   display: none;
 }
 
-.history_con{
+.history_con {
   position: absolute;
   width: 385px;
   height: 350px;
   top: 13%;
   overflow-y: auto; /* 添加滚动条 */
 }
-.history-record{
+
+.history-record {
   position: relative;
-  
+
 }
 </style>
