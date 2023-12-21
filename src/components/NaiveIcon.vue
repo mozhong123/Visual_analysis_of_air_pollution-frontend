@@ -3,7 +3,19 @@
 export default {
   data(){
       return {
-  historyRecords: [],
+  historyRecords: [
+  //{
+  //       time: '2023-01-01 10:00',
+  //       question: '历史问题1',
+  //       answer: '历史回答1',
+  //       image: '/src/assets/image/bg.jpg'
+  //     },{
+  //       time: '2023-01-01 10:00',
+  //       question: '历史问题1',
+  //       answer: '历史回答1',
+  //       image: '/src/assets/image/leftb1.png'
+  //     },
+        ],
   itemsPerPage: 5, // 每页显示的记录数
   currentPage: 1 // 当前页
 };
@@ -320,7 +332,7 @@ methods: {
             <div>{{ record.time }}</div>
             <div>{{ record.question }}</div>
             <div>{{ record.answer }}</div>
-            <img v-if="record.image" :src="record.image" alt="Question Image" />
+            <img v-if="record.image" :src="record.image" alt="Question Image" style="width: 70%;height: 70%;"/>
             </div>
           </template>
           <div class="pagination">
