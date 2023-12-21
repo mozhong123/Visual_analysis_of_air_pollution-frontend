@@ -275,7 +275,7 @@ export default {
       setTimeout(hideMessage, 3000);
     }
 
-    sendMessage('敵が来ます！準備してください');
+    // sendMessage('敵が来ます！準備してください');
 
     function clickWait(component) {
       return new Promise((resolve) => {

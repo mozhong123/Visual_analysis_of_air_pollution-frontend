@@ -1,9 +1,13 @@
 <script>
 import {backendURL, queryRoute, method, headers} from "@/config/const.ts";
-
+import Recorder from 'js-audio-recorder'
 export default {
+  props: {
+    msg: String
+  },
   data() {
     return {
+      file: null,
       historyRecords: [
         //{
         //       time: '2023-01-01 10:00',
@@ -18,12 +22,22 @@ export default {
         //     },
       ],
       itemsPerPage: 5, // 每页显示的记录数
-      currentPage: 1 // 当前页
+      currentPage: 1 ,// 当前页
+      recorder: null,
+      playTime: 0,
+      timer: null,
+      src: null
     };
   },
   created() {
+    this.recorder = new Recorder({
+      sampleBits: 16, // 采样位数，支持 8 或 16，默认是 16
+      sampleRate: 16000, // 采样率，支持 11025、16000、22050、24000、44100、48000，根据浏览器默认值，Chrome 是 48000
+      numChannels: 1, // 声道数，支持 1 或 2， 默认是 1
+    })
   },
   mounted() {
+    let that=this;
     const addHistory = async () => {
       let result = await fetchDataGet('http://127.0.0.1:8000/gpts/gpt_content');
       for (var i = 0; i < result.length; i++) {
@@ -148,8 +162,15 @@ export default {
     const addWordPicture = document.getElementById("word-picture-submit");
     const addSpeakPicture = document.getElementById("speak-picture-submit");
     const addWordPictureComplete = document.getElementById('word-update-picture-complete');
+    const addSpeakPictureComplete = document.getElementById('speak-update-picture-complete');
+    const recordButton = document.querySelector('.record-button');
+    const recordedIcon = document.querySelector('.recorded-button');
+    const recordRetryButton = document.querySelector('.record-retry');
+    const recordPlayButton = document.querySelector('.record-play');
+    const recordPauseButton = document.querySelector('.record-pause');
+    const speakSubmit = document.getElementById('speak-submit');
     const wordSubmit = document.getElementById('word-submit');
-
+    let recording = false;
 
     function initBtn() {
       const navIconContainer = document.getElementById("nmh-navicon");
@@ -205,21 +226,12 @@ export default {
     async function fetchDataPostFile(url, fileInputComponent) {
       const fileInput = document.getElementById(fileInputComponent);
       let result;
-      // 检查是否选择了文件
-      // 创建一个 FormData 对象，用于传递文件
-      console.log(fileInput);
-      const formData = new FormData(fileInput);
-      //console.log(fileInput.files[0]);
-
-      // 发起 fetch 请求
+      let formData = new window.FormData();
+      formData.append('gpt_ask', String(fileInput[0].value));
+      formData.append('file', that.file)
       await fetch(url, {
         method: 'POST',
-        body: formData,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
-        }
+        body: formData
       })
           .then(response => response.json())
           .then(data => {
@@ -245,7 +257,7 @@ export default {
 
     async function waitForAnswer(formId, outputId) {
       const outputContent = document.getElementById(outputId);
-      const queryMethod = "ask_gpt_by_content?"
+      const queryMethod = "ask_gpt_by_content"
       const queryURL = 'http://' + backendURL + 'gpts/' + queryMethod;
       outputContent.innerText = '等待回应...';
       const result = await fetchDataPostFile(queryURL, formId);
@@ -253,7 +265,7 @@ export default {
       if (result.code !== 0) {
         outputContent.innerText = result.message;
       } else {
-        outputContent.innerText = result.data.reply_conetnt;
+        outputContent.innerText = result.data.reply_content;
       }
     }
 
@@ -301,15 +313,73 @@ export default {
         return;
       }
       askContent.value = inputText.value;
-      waitForAnswer('word-GPT-Form', 'word-answer');
+      await waitForAnswer('word-GPT-Form', 'word-answer');
       inputText.value = '';
       inputPicture.value = '';
       addWordPicture.style.display = 'block';
       addWordPictureComplete.style.display = 'none';
     })
 
-    addSpeakPicture.addEventListener('click', () => {
-      uploadPictures();
+    addSpeakPicture.addEventListener('click', async () => {
+      await uploadPictures('picture-input-speak');
+      const button = document.getElementById('picture-input-speak');
+      if (button.files.length === 0) {
+        return;
+      }
+      addSpeakPicture.style.display = 'none';
+      addSpeakPictureComplete.style.display = 'block';
+    })
+    recordButton.addEventListener('click', () => {
+      const answerContent = document.getElementById('speak-answer');
+      const recordComponentHidden = document.getElementById('start-record');
+      const recordStopComponentHidden = document.getElementById('stop-record');
+      if (recording === false) {
+        recordComponentHidden.click();
+        answerContent.innerText = '录音中，再点击一次录音键以完成录音';
+        recording = true;
+        return;
+      }
+      recording = false;
+      recordButton.style.display = 'none';
+      recordedIcon.style.display = 'block';
+      answerContent.innerText = '';
+      recordStopComponentHidden.click();
+    })
+    recordRetryButton.addEventListener('click', () => {
+      const recordRetryComponentHidden = document.getElementById('play-record-retry');
+      recordButton.style.display = 'block';
+      recordedIcon.style.display = 'none';
+      recordPauseButton.style.display = 'none';
+      recordPlayButton.style.display = 'block';
+      recordRetryComponentHidden.click();
+    })
+    recordPlayButton.addEventListener('click', () => {
+      const recordPlayComponentHidden = document.getElementById('play-record-start');
+      recordPauseButton.style.display = 'block';
+      recordPlayButton.style.display = 'none';
+      recordPlayComponentHidden.click();
+    })
+    recordPauseButton.addEventListener('click', () => {
+      const recordPauseComponentHidden = document.getElementById('play-record-stop');
+      recordPauseButton.style.display = 'none';
+      recordPlayButton.style.display = 'block';
+      recordPauseComponentHidden.click();
+    })
+    //在这里加入上传逻辑
+    speakSubmit.addEventListener('click', () => {
+      //上传逻辑
+      //待补充
+      //将要展示的结果
+      const resultData = '';
+      //以下是上传后处理
+      const answerContent = document.getElementById('speak-answer');
+      const inputPicture = document.getElementById('picture-input-speak');
+      //销毁录音并且复原按键
+      recordRetryButton.click();
+      //清除图片
+      inputPicture.value = '';
+      //展示结果
+      answerContent.value = resultData;
     })
 
     closeHistory.addEventListener('click', () => {
@@ -319,10 +389,29 @@ export default {
     closeSpeak.addEventListener('click', () => {
       isExpanded = false;
       speakBlock.style.display = 'none';
+      const answerContent = document.getElementById('speak-answer');
+      const inputPicture = document.getElementById('picture-input-speak');
+      //销毁录音并且复原按键
+      recordRetryButton.click();
+      //清除图片
+      inputPicture.value = '';
+      //重置图片状态
+      addSpeakPicture.style.display = 'block';
+      addSpeakPictureComplete.style.display = 'none';
+      //展示结果
+      answerContent.value = resultData;
     })
     closeWord.addEventListener('click', () => {
       isExpanded = false;
       wordBlock.style.display = 'none';
+      const inputText = document.getElementById('text-chat');
+      const askContent = document.getElementById('ask-content');
+      const wordAnswer = document.getElementById('word-answer');
+      const inputPicture = document.getElementById('picture-input-word');
+      inputText.value = '';
+      inputPicture.value = '';
+      addWordPicture.style.display = 'block';
+      addWordPictureComplete.style.display = 'none';
     })
     initBtn();
   },
@@ -346,6 +435,111 @@ export default {
       if (this.currentPage < this.totalPages) {
         this.currentPage++;
       }
+    },
+    handleFileChange(event) {
+      this.file = event.target.files[0];
+    },
+    handleStart() {
+      this.recorder = new Recorder()
+      Recorder.getPermission().then(() => {
+        console.log('开始录音')
+        this.recorder.start() // 开始录音
+      }, (error) => {
+        this.$message({
+          message: '请先允许该网页使用麦克风',
+          type: 'info'
+        })
+        console.log(`${error.name} : ${error.message}`)
+      })
+    },
+    handlePause() {
+      console.log('暂停录音')
+      this.recorder.pause() // 暂停录音
+    },
+    handleResume() {
+      console.log('恢复录音')
+      this.recorder.resume() // 恢复录音
+    },
+    handleStop() {
+      console.log('停止录音')
+      this.recorder.stop() // 停止录音
+    },
+    handlePlay() {
+      console.log('播放录音')
+      console.log(this.recorder)
+      this.recorder.play() // 播放录音
+      // 播放时长
+      this.timer = setInterval(() => {
+        try {
+          this.playTime = this.recorder.getPlayTime()
+        } catch (error) {
+          this.timer = null
+        }
+      }, 100)
+    },
+    handlePausePlay() {
+      console.log('暂停播放')
+      this.recorder.pausePlay() // 暂停播放
+      // 播放时长
+      this.playTime = this.recorder.getPlayTime()
+      this.time = null
+    },
+    handleResumePlay() {
+      console.log('恢复播放')
+      this.recorder.resumePlay() // 恢复播放
+      // 播放时长
+      this.timer = setInterval(() => {
+        try {
+          this.playTime = this.recorder.getPlayTime()
+        } catch (error) {
+          this.timer = null
+        }
+      }, 100)
+    },
+    handleStopPlay() {
+      console.log('停止播放')
+      this.recorder.stopPlay() // 停止播放
+      // 播放时长
+      this.playTime = this.recorder.getPlayTime()
+      this.timer = null
+    },
+    handleDestroy() {
+      console.log('销毁实例')
+      this.recorder.destroy() // 销毁实例
+      this.timer = null
+    },
+    downloadPCM() {
+      console.log('下载PCM格式数据')
+      // 注：使用该方法会默认调用 stop() 方法
+      this.recorder.downloadPCM('record-pcm')
+    },
+    downloadWAV() {
+      console.log('下载WAV格式数据')
+      // 注：使用该方法会默认调用 stop() 方法
+      this.recorder.downloadWAV('record-wav')
+    },
+    uploadRecord() {
+      if (this.recorder == null || this.recorder.duration === 0) {
+        this.$message({
+          message: '请先录音',
+          type: 'error'
+        })
+        return false
+      }
+      this.recorder.pause() // 暂停录音
+      this.timer = null
+      console.log('上传录音') // 上传录音
+      const formData = new FormData()
+      const blob = this.recorder.getPCMBlob() // 获取 pcm 格式音频数据
+      // 此处获取到 blob 对象后需要设置 fileName 满足项目上传需求，这里选择直接把 blob 作为 file 塞入 formData
+      const fileOfBlob = new File([blob], new Date().getTime() + '.pcm')
+      formData.append('file', fileOfBlob)
+      const url = window.URL.createObjectURL(fileOfBlob)
+      this.src = url
+      // const axios = require('axios')
+      // axios.post(url, formData).then(res => {
+      //   console.log(res.data.data[0].url)
+      // })
     }
   }
 };
@@ -353,6 +547,34 @@ export default {
 </script>
 
 <template>
+  <div class="record-component">
+    <div style="padding: 20px;">
+      <h1>{{ msg }}</h1>
+      <h3>录音上传</h3>
+      <div style="font-size:14px">
+        <h3>录音时长：{{ recorder && recorder.duration.toFixed(4) }}</h3>
+        <br/>
+        <el-button id="start-record" type="primary" @click="handleStart">开始录音</el-button>
+        <el-button id="pause-record" type="info" @click="handlePause">暂停录音</el-button>
+        <el-button id="continue-record" type="success" @click="handleResume">继续录音</el-button>
+        <el-button id="stop-record" type="warning" @click="handleStop">停止录音</el-button>
+        <br/>
+        <br/>
+        <h3>
+          播放时长：{{ recorder && (playTime > recorder.duration ? recorder.duration.toFixed(4) : playTime.toFixed(4)) }}
+        </h3>
+        <br/>
+        <el-button id="play-record-start" type="primary" @click="handlePlay">播放录音</el-button>
+        <el-button id="play-record-pause" type="info" @click="handlePausePlay">暂停播放</el-button>
+        <el-button id="play-record-continue" type="success" @click="handleResumePlay">继续播放</el-button>
+        <el-button id="play-record-stop" type="warning" @click="handleStopPlay">停止播放</el-button>
+        <el-button id="play-record-retry" type="error" @click="handleDestroy">销毁录音</el-button>
+        <el-button type="primary" @click="downloadPCM">下载PCM数据</el-button>
+        <el-button type="primary" @click="downloadWAV">下载WAV数据</el-button>
+        <el-button type="primary" @click="uploadRecord">上传</el-button>
+      </div>
+    </div>
+  </div>
   <div id="nmh-navicon" class="NMH-g-plugin NMH-g-navicon">
     <button class="Jnmh-btnlogo"></button>
 
@@ -379,10 +601,9 @@ export default {
       </div>
     </div>
     <div class="chat-block-right" id="speak-chat">
-      <form id="myForm" enctype="multipart/form-data">
-        <input type="text" id="gptAsk" name="gpt_ask" required>
-        <input type="file" id="picture-input-speak">
-        <button type="button" onclick="submitForm()">Submit</button>
+      <form id="speak-GPT-Form" enctype="multipart/form-data">
+        <input type="text" id="voice-content" name="gpt_ask" required>
+        <input type="file" id="picture-input-speak" name="file">
       </form>
       <svg class="close-block-btn" id="speak-close" viewBox="0 0 1026 1024">
         <path
@@ -390,6 +611,32 @@ export default {
             p-id="583"></path>
       </svg>
       <h2 class="chat-block-title" id="speak-chat-title">语音询问</h2>
+      <div class="answer-block" id="speak-answer"></div>
+      <svg class="record-button" viewBox="0 0 1024 1024">
+        <path
+            d="M543.507692 747.657846v127.428923h94.523077a25.856 25.856 0 1 1 0 50.451693H385.969231a25.856 25.856 0 1 1 0-50.471385h94.523077v-127.409231c-159.212308-12.662154-283.569231-120.123077-283.569231-251.037538a28.888615 28.888615 0 0 1 31.507692-25.225846 28.888615 28.888615 0 0 1 31.507693 25.225846c0 111.478154 112.856615 201.846154 252.061538 201.846154s252.061538-90.368 252.061538-201.846154a32.295385 32.295385 0 0 1 63.015385 0c0 130.816-124.356923 238.355692-283.569231 251.037538zM512 647.995077c-104.369231 0-189.046154-67.780923-189.046154-151.374769V269.548308C322.953846 185.934769 407.630769 118.153846 512 118.153846s189.046154 67.780923 189.046154 151.394462v227.072c0 83.593846-84.676923 151.374769-189.046154 151.374769z m126.030769-378.466462c0-55.748923-56.418462-100.923077-126.030769-100.923077s-126.030769 45.174154-126.030769 100.923077v227.091693c0 55.748923 56.418462 100.923077 126.030769 100.923077s126.030769-45.174154 126.030769-100.923077V269.548308z"
+            fill="#FFFFFF"></path>
+      </svg>
+      <svg class="recorded-button" id="word-update-picture-complete" viewBox="0 0 1024 1024">
+        <path
+            d="M823.3 303.6c-12.5-12.4-32.9-12.4-45.3 0L429.1 652.5 246 459.3c-12.5-12.4-32.9-12.4-45.3 0-12.4 12.5-12.4 32.9 0 45.3l205.8 215.8c6.2 6.2 14.4 9.3 22.6 9.3 8.2 0 16.4-3.1 22.7-9.3l371.5-371.5c12.4-12.5 12.4-32.8 0-45.3z"
+            fill="#FFFFFF" p-id="18253"></path>
+      </svg>
+      <svg class="record-retry" viewBox="0 0 1024 1024">
+        <path
+            d="M512 962.68a430 430 0 1 1 236.39-789.24 35 35 0 1 1-38.53 58.44A358.37 358.37 0 0 0 512 172.68c-198.5 0-360 161.5-360 360s161.5 360 360 360 360-161.49 360-360a35 35 0 0 1 70 0 429.65 429.65 0 0 1-430 430zM783.7 263.12a35 35 0 0 1-32.62-22.32L699.77 109A35 35 0 0 1 765 83.62l51.3 131.79a35 35 0 0 1-32.61 47.71zM651.91 314.42a35 35 0 0 1-12.7-67.63L771 195.49a35 35 0 1 1 25.39 65.23L664.6 312a34.81 34.81 0 0 1-12.69 2.42z "
+            fill="#FFFFFF"></path>
+      </svg>
+      <svg class="record-play" viewBox="0 0 1024 1024">
+        <path
+            d="M224 938.713333a53.58 53.58 0 0 1-53.333333-53.433333V138.72a53.333333 53.333333 0 0 1 80.886666-45.666667l618.666667 373.28a53.333333 53.333333 0 0 1 0 91.333334l-618.666667 373.28a53.16 53.16 0 0 1-27.553333 7.766666z m0.046667-810.666666a10.98 10.98 0 0 0-5.333334 1.42 10.466667 10.466667 0 0 0-5.38 9.253333v746.56a10.666667 10.666667 0 0 0 16.18 9.133333l618.666667-373.28a10.666667 10.666667 0 0 0 0-18.266666l-618.666667-373.28a10.386667 10.386667 0 0 0-5.446666-1.586667z"
+            fill="#FFFFFF"></path>
+      </svg>
+      <svg class="record-pause" viewBox="0 0 1024 1024">
+        <path
+            d="M320 938.666667a21.333333 21.333333 0 0 1-21.333333-21.333334V106.666667a21.333333 21.333333 0 0 1 42.666666 0v810.666666a21.333333 21.333333 0 0 1-21.333333 21.333334z m405.333333-21.333334V106.666667a21.333333 21.333333 0 0 0-42.666666 0v810.666666a21.333333 21.333333 0 0 0 42.666666 0z"
+            fill="#FFFFFF"></path>
+      </svg>
       <svg class="add-picture-button" id="speak-picture-submit" viewBox="0 0 1024 1024">
         <path
             d="M716.78 609.59L604.8 525.61c-16.97-12.72-40.62-12.72-57.59 0l-98.58 73.92L317.2 494.39c-16.48-13.19-39.28-14.19-56.81-2.39L128 581.02V224h704v352c0 17.67 14.33 32 32 32s32-14.33 32-32V221.31c0-33.81-27.5-61.31-61.31-61.31H125.31C91.5 160 64 187.5 64 221.31v581.38C64 836.5 91.5 864 125.31 864H608c17.67 0 32-14.33 32-32s-14.33-32-32-32H128V658.16l158.36-106.48 161.02 128.8L576 584l102.38 76.78c14.19 10.67 34.23 7.73 44.8-6.39 10.6-14.14 7.74-34.2-6.4-44.8z"
@@ -416,11 +663,16 @@ export default {
           </g>
         </g>
       </svg>
+      <svg class="update-complete" id="speak-update-picture-complete" viewBox="0 0 1024 1024">
+        <path
+            d="M823.3 303.6c-12.5-12.4-32.9-12.4-45.3 0L429.1 652.5 246 459.3c-12.5-12.4-32.9-12.4-45.3 0-12.4 12.5-12.4 32.9 0 45.3l205.8 215.8c6.2 6.2 14.4 9.3 22.6 9.3 8.2 0 16.4-3.1 22.7-9.3l371.5-371.5c12.4-12.5 12.4-32.8 0-45.3z"
+            fill="#FFFFFF" p-id="18253"></path>
+      </svg>
     </div>
     <div class="chat-block-right" id="word-chat">
       <form id="word-GPT-Form" enctype="multipart/form-data">
-        <input type="text" id="ask-content" name="gpt_ask" required>
-        <input type="file" id="picture-input-word" name="file">
+        <input type="text" id="ask-content" name="gpt_ask" required/>
+        <input type="file" ref="fileInput" @change="handleFileChange" id="picture-input-word" name="file" required/>
       </form>
       <svg class="close-block-btn" id="word-close" viewBox="0 0 1026 1024">
         <path
@@ -719,10 +971,18 @@ html, body {
   transform: translate3d(0px, 0px, 0px);
 }
 
-#word-GPT-Form {
+#word-GPT-Form,
+#speak-GPT-Form {
   display: none;
 }
-
+.record-component {
+  position: fixed;
+  top: 20%;
+  left: 30%;
+  width: 50%;
+  height: 50%;
+  display: none;
+}
 .history_con {
   position: absolute;
   width: 385px;
@@ -735,4 +995,63 @@ html, body {
   position: relative;
 
 }
+.record-button {
+  position: absolute;
+  bottom: 4%;
+  right: 83%;
+  width: 11%;
+  height: 11%;
+  color: #FFFFFF;
+  vertical-align: middle;
+  fill: currentColor;
+  overflow: hidden;
+}
+.recorded-button {
+  position: absolute;
+  bottom: 0%;
+  right: 80%;
+  width: 17%;
+  height: 17%;
+  color: #FFFFFF;
+  vertical-align: middle;
+  fill: currentColor;
+  overflow: hidden;
+  display: none;
+}
+.record-play {
+  position: absolute;
+  bottom: 4%;
+  right: 69%;
+  width: 10%;
+  height: 10%;
+  color: #FFFFFF;
+  vertical-align: middle;
+  fill: currentColor;
+  overflow: hidden;
+}
+.record-pause {
+  position: absolute;
+  bottom: 4%;
+  right: 69%;
+  width: 10%;
+  height: 10%;
+  color: #FFFFFF;
+  vertical-align: middle;
+  fill: currentColor;
+  overflow: hidden;
+  display: none;
+}
+.record-retry {
+  position: absolute;
+  bottom: 4%;
+  right: 55%;
+  width: 9.8%;
+  height: 9.8%;
+  color: #FFFFFF;
+  vertical-align: middle;
+  fill: currentColor;
+  overflow: hidden;
+}
+
+
 </style>
