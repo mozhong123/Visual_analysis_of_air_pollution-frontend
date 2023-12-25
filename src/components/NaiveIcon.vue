@@ -484,7 +484,7 @@ export default {
       addSpeakPicture.style.display = 'block';
       addSpeakPictureComplete.style.display = 'none';
       //展示结果
-      answerContent.value = resultData;
+      answerContent.value = '';
       answerPage = 0;
     })
     closeWord.addEventListener('click', () => {
