@@ -485,6 +485,7 @@ export default {
       addSpeakPictureComplete.style.display = 'none';
       //展示结果
       answerContent.value = resultData;
+      answerPage = 0;
     })
     closeWord.addEventListener('click', () => {
       isExpanded = false;
