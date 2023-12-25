@@ -160,6 +160,8 @@ export default {
     const closeHistory = document.getElementById('history-close');
     const closeSpeak = document.getElementById('speak-close');
     const closeWord = document.getElementById('word-close');
+    const wordAnswerBlock = document.getElementById('word-answer');
+    const speakAnswerBLock = document.getElementById('speak-answer');
     const addWordPicture = document.getElementById("word-picture-submit");
     const addSpeakPicture = document.getElementById("speak-picture-submit");
     const addWordPictureComplete = document.getElementById('word-update-picture-complete');
@@ -172,6 +174,7 @@ export default {
     const speakSubmit = document.getElementById('speak-submit');
     const wordSubmit = document.getElementById('word-submit');
     let recording = false;
+    let answerPage = 0;
 
     function initBtn() {
       const navIconContainer = document.getElementById("nmh-navicon");
@@ -246,9 +249,9 @@ export default {
     }
 
     async function fetchDataPostFile2(url) {
-      const blob = that.recorder.getPCMBlob() // 获取 pcm 格式音频数据
+      const blob = that.recorder.getWAVBlob() // 获取 pcm 格式音频数据
       // 此处获取到 blob 对象后需要设置 fileName 满足项目上传需求，这里选择直接把 blob 作为 file 塞入 formData
-      const fileOfBlob = new File([blob], new Date().getTime() + '.pcm')
+      const fileOfBlob = new File([blob], new Date().getTime() + '.wav')
       let result;
       let formData = new window.FormData();
       formData.append('voice', fileOfBlob, new Date().getTime() + '.pcm');
@@ -314,6 +317,7 @@ export default {
       await clickWait(destination);
     }
 
+
     histroyBtn.addEventListener('click', () => {
       isExpanded = true;
       historyBlock.style.display = 'block';
@@ -347,18 +351,52 @@ export default {
     wordSubmit.addEventListener('click', async () => {
       const inputText = document.getElementById('text-chat');
       const askContent = document.getElementById('ask-content');
-      const wordAnswer = document.getElementById('word-answer');
+      const wordAnswer = document.getElementById('word-answer-content');
       const inputPicture = document.getElementById('picture-input-word');
       if (inputText.value === '') {
         wordAnswer.innerText = '请输入提问内容！';
         return;
       }
       askContent.value = inputText.value;
-      await waitForAnswer('word-GPT-Form', 'word-answer');
+      await waitForAnswer('word-GPT-Form', 'word-answer-content');
       inputText.value = '';
       inputPicture.value = '';
       addWordPicture.style.display = 'block';
       addWordPictureComplete.style.display = 'none';
+    })
+
+    wordAnswerBlock.addEventListener('wheel', (event) => {
+      const answerContent = document.getElementById('word-answer-content');
+      const wheelDown = event.deltaY > 0;
+      if (answerContent.innerText.length <= 100) {
+        return;
+      }
+      if ((answerPage === -4 && wheelDown === true)) {
+        return;
+      }
+      if ((answerPage === 0) && (wheelDown === false)) {
+        return;
+      }
+      answerPage += wheelDown ? (-1) : 1;
+      console.log(answerContent.style.top);
+      answerContent.style.top = (answerPage * 90) + '%';
+    })
+
+    speakAnswerBLock.addEventListener('wheel', (event) => {
+      const answerContent = document.getElementById('speak-answer-content');
+      const wheelDown = event.deltaY > 0;
+      if (answerContent.innerText.length <= 100) {
+        return;
+      }
+      if ((answerPage === -4 && wheelDown === true)) {
+        return;
+      }
+      if ((answerPage === 0) && (wheelDown === false)) {
+        return;
+      }
+      answerPage += wheelDown ? (-1) : 1;
+      console.log(answerContent.style.top);
+      answerContent.style.top = (answerPage * 90) + '%';
     })
 
     addSpeakPicture.addEventListener('click', async () => {
@@ -371,7 +409,7 @@ export default {
       addSpeakPictureComplete.style.display = 'block';
     })
     recordButton.addEventListener('click', () => {
-      const answerContent = document.getElementById('speak-answer');
+      const answerContent = document.getElementById('speak-answer-content');
       const recordComponentHidden = document.getElementById('start-record');
       const recordStopComponentHidden = document.getElementById('stop-record');
       if (recording === false) {
@@ -411,20 +449,20 @@ export default {
       //上传逻辑
       //待补充
       const inputPicture = document.getElementById('picture-input-speak');
-      await waitForAnswer2('picture-input-speak', 'speak-answer');
-      inputPicture.value = '';
-      //将要展示的结果
-      //以下是上传后处理
-      //销毁录音并且复原按键
-      recordRetryComponentHidden.click();
+      const recordRetryComponentHidden = document.getElementById('play-record-retry');
+      await waitForAnswer2('picture-input-speak', 'speak-answer-content')
+      addSpeakPicture.style.display = 'block';
+      addSpeakPictureComplete.style.display = 'none';
       recordButton.style.display = 'block';
       recordedIcon.style.display = 'none';
       recordPauseButton.style.display = 'none';
       recordPlayButton.style.display = 'block';
-      addSpeakPicture.style.display = 'block';
-      addSpeakPictureComplete.style.display = 'none';
-      //清除图片
+      recordRetryComponentHidden.click();
       inputPicture.value = '';
+      //将要展示的结果
+      //以下是上传后处理
+      //销毁录音并且复原按键
+      //清除图片
       //展示结果
 
     })
@@ -436,7 +474,7 @@ export default {
     closeSpeak.addEventListener('click', () => {
       isExpanded = false;
       speakBlock.style.display = 'none';
-      const answerContent = document.getElementById('speak-answer');
+      const answerContent = document.getElementById('speak-answer-content');
       const inputPicture = document.getElementById('picture-input-speak');
       //销毁录音并且复原按键
       recordRetryButton.click();
@@ -452,13 +490,15 @@ export default {
       isExpanded = false;
       wordBlock.style.display = 'none';
       const inputText = document.getElementById('text-chat');
-      const askContent = document.getElementById('ask-content');
-      const wordAnswer = document.getElementById('word-answer');
+      const wordAnswer = document.getElementById('word-answer-content');
       const inputPicture = document.getElementById('picture-input-word');
       inputText.value = '';
       inputPicture.value = '';
+      wordAnswer.innerText = '';
+      wordAnswer.style.top = '0%';
       addWordPicture.style.display = 'block';
       addWordPictureComplete.style.display = 'none';
+      answerPage = 0;
     })
     initBtn();
   },
@@ -658,7 +698,9 @@ export default {
             p-id="583"></path>
       </svg>
       <h2 class="chat-block-title" id="speak-chat-title">语音询问</h2>
-      <div class="answer-block" id="speak-answer"></div>
+      <div class="answer-block" id="speak-answer">
+        <div class="answer-content" id="speak-answer-content"></div>
+      </div>
       <svg class="record-button" viewBox="0 0 1024 1024">
         <path
             d="M543.507692 747.657846v127.428923h94.523077a25.856 25.856 0 1 1 0 50.451693H385.969231a25.856 25.856 0 1 1 0-50.471385h94.523077v-127.409231c-159.212308-12.662154-283.569231-120.123077-283.569231-251.037538a28.888615 28.888615 0 0 1 31.507692-25.225846 28.888615 28.888615 0 0 1 31.507693 25.225846c0 111.478154 112.856615 201.846154 252.061538 201.846154s252.061538-90.368 252.061538-201.846154a32.295385 32.295385 0 0 1 63.015385 0c0 130.816-124.356923 238.355692-283.569231 251.037538zM512 647.995077c-104.369231 0-189.046154-67.780923-189.046154-151.374769V269.548308C322.953846 185.934769 407.630769 118.153846 512 118.153846s189.046154 67.780923 189.046154 151.394462v227.072c0 83.593846-84.676923 151.374769-189.046154 151.374769z m126.030769-378.466462c0-55.748923-56.418462-100.923077-126.030769-100.923077s-126.030769 45.174154-126.030769 100.923077v227.091693c0 55.748923 56.418462 100.923077 126.030769 100.923077s126.030769-45.174154 126.030769-100.923077V269.548308z"
@@ -726,7 +768,9 @@ export default {
             d="M786.432 173.568L510.976 449.024 235.52 173.568c-18.944-18.944-49.664-18.944-69.12 0-18.944 18.944-18.944 49.664 0 69.12l275.456 275.456L166.4 793.6c-18.944 18.944-18.944 49.664 0 69.12 18.944 18.944 49.664 18.944 69.12 0l275.456-275.968 275.456 275.456c18.944 18.944 49.664 18.944 69.12 0 18.944-18.944 18.944-49.664 0-69.12l-275.456-275.456 275.456-275.456c18.944-18.944 18.944-49.664 0-69.12-19.456-17.92-50.176-17.92-69.12 0.512z"
             p-id="583"></path>
       </svg>
-      <div class="answer-block" id="word-answer"></div>
+      <div class="answer-block" id="word-answer">
+        <div class="answer-content" id="word-answer-content"></div>
+      </div>
       <input class="input-text" id="text-chat" placeholder="你想问我什么？">
       <h2 class="chat-block-title" id="word-chat-title">文字询问</h2>
       <svg class="add-picture-button" id="word-picture-submit" viewBox="0 0 1024 1024">
@@ -971,6 +1015,16 @@ html, body {
   color: #FFFFFF;
   border: 2px solid #53B6B2; /* 分隔线 */
   border-radius: 10px 10px 10px 10px; /* 10px 圆角，底部为直角 */
+  overflow: hidden;
+}
+
+.answer-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  word-wrap: break-word;
 }
 
 .input-text {
