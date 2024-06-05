@@ -2,6 +2,8 @@
 山东大学计算机科学与技术学院数据班大数据分析与实践（可视化）课程大作业：大气污染时空经济效益可视分析（前端）Vue3+百度地图API+ECharts
 ## 项目详细介绍见:
 https://github.com/mozhong123/Visual_analysis_of_air_pollution-backend
+## 项目展示：
+[![Watch the video](https://img.youtube.com/vi/_p6OPUBtzNQ/maxresdefault.jpg)](https://youtu.be/_p6OPUBtzNQ)
 ## 开发基本流程如下：                 
 ## 参考链接：https://xie.infoq.cn/article/056d8e9c078ac6a327b66bf3e#
 ## 省流版：
