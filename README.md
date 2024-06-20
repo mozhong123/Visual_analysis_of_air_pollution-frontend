@@ -53,3 +53,5 @@ assets 目录: 这是存放静态资源文件，如图像、样式和字体的�
 ## public 目录: 这是存放静态文件的目录，这些文件不会被 Webpack 处理，而是直接复制到构建目录。通常包括 index.html 作为主 HTML 模板，以及其他不需要经过构建过程的文件。
 ## package.json: 这是项目的配置文件，包括项目名称、依赖、脚本等信息。
 ## vue.config.js: 这是自定义 Vue CLI 配置的文件，你可以在这里配置构建、开发服务器、代理、自定义 webpack 配置等。
+# Thanks for star!
+[![Stargazers repo roster for @mozhong123/Visual_analysis_of_air_pollution-frontend](https://reporoster.com/stars/mozhong123/Visual_analysis_of_air_pollution-frontend)](https://github.com/mozhong123/Visual_analysis_of_air_pollution-frontend/stargazers)
